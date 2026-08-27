@@ -3,14 +3,14 @@ kin_checks:
   slug: tandoor
   schema_version: 0.15.1
   scored_at: '2026-08-27'
-  run_ts: 2026-08-27T093052
+  run_ts: 2026-08-27T132314
   note: Actionable checks only (missed + partial). earned/na are every other check
     in rubric/scoring-0.15.1.yml; counts below let you verify that.
   counts:
     total: 130
-    earned: 47
-    partial: 5
-    missed: 55
+    earned: 45
+    partial: 3
+    missed: 59
     na: 23
   checks:
   - id: multiple_apis
@@ -38,10 +38,18 @@ kin_checks:
   - id: operations_summary_coverage
     status: missed
     detail: 0 of 1 openapi documents pass
-  - id: operations_description_coverage
+  - id: response_coverage
     status: missed
     detail: 0 of 1 openapi documents pass
   - id: error_responses_documented
+    status: missed
+    detail: 0 of 1 openapi documents pass
+  - id: examples_present
+    status: missed
+  - id: components_reuse
+    status: missed
+    detail: 0 of 1 openapi documents pass
+  - id: security_schemes_defined
     status: missed
     detail: 0 of 1 openapi documents pass
   - id: webhooks_or_callbacks
@@ -113,6 +121,8 @@ kin_checks:
     status: missed
   - id: error_semantics
     status: missed
+  - id: openapi_examples
+    status: missed
   - id: event_surface_described
     status: missed
   - id: well_known_catalog
@@ -131,9 +141,6 @@ kin_checks:
     status: missed
   - id: agentic_commerce
     status: missed
-  - id: examples_present
-    status: partial
-    earned: 0.07
   - id: mcp_server
     status: partial
     earned: 4.8
@@ -142,10 +149,6 @@ kin_checks:
     status: partial
     earned: 3.5
     detail: 'grade: bearer'
-  - id: openapi_examples
-    status: partial
-    earned: 3.5
-    detail: 'grade: partial'
   - id: rate_limit_signal
     status: partial
     earned: 3.5
