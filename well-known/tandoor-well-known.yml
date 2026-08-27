@@ -1,0 +1,82 @@
+generated: '2026-08-27'
+method: probed
+source: live GET of every /.well-known/ path on each Tandoor host, 2026-08-27
+summary: >-
+  Tandoor serves NO /.well-known/ discovery surface on any of its three hosts. tandoor.dev and
+  docs.tandoor.dev return a real 404 for every probed path; app.tandoor.dev (the Django application)
+  answers 302 to /accounts/login/ for every unknown path, so nothing under /.well-known/ is reachable
+  anonymously there either. Because no path returned a 200 carrying a real document, NO WellKnown and
+  NO SecurityTxt pointer is emitted in apis.yml — this file records a verified absence, not a surface.
+hit_count: 0
+hosts:
+  - host: https://tandoor.dev
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://app.tandoor.dev
+    note: >-
+      Django catch-all. Every unauthenticated request to an unknown path is answered with a 302 to
+      /accounts/login/?next=<path>. No document is served; these are login redirects, not documents.
+    documents:
+      - path: /.well-known/security.txt
+        status: 302
+      - path: /.well-known/openid-configuration
+        status: 302
+      - path: /.well-known/oauth-authorization-server
+        status: 302
+      - path: /.well-known/oauth-protected-resource
+        status: 302
+      - path: /.well-known/api-catalog
+        status: 302
+      - path: /.well-known/ai-plugin.json
+        status: 302
+      - path: /.well-known/agent-card.json
+        status: 302
+      - path: /.well-known/agent.json
+        status: 302
+  - host: https://docs.tandoor.dev
+    note: >-
+      MkDocs Material static site on GitHub Pages. Returns the themed 404 page (24,862 bytes) with an
+      HTTP 404 status for every unknown path — a correct negative, not a soft 404.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+also_probed:
+  - url: https://tandoor.dev/llms.txt
+    status: 404
+  - url: https://tandoor.dev/robots.txt
+    status: 404
+  - url: https://docs.tandoor.dev/llms.txt
+    status: 404
+  - url: https://docs.tandoor.dev/robots.txt
+    status: 404
+  - url: https://app.tandoor.dev/llms.txt
+    status: 302

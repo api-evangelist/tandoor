@@ -1,0 +1,79 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.tandoor.dev/system/configuration/,
+  https://github.com/TandoorRecipes/recipes/blob/develop/recipes/settings.py,
+  https://docs.tandoor.dev/faq/
+checked: '2026-08-27'
+limit_count: 3
+summary: >-
+  Tandoor publishes no API rate limit for its hosted service. What it does publish is a set of
+  OPERATOR-CONFIGURABLE throttles that a self-hoster sets in the environment — and none of them emits
+  a rate-limit response header. There is no X-RateLimit-*, no RateLimit-*, no documented Retry-After
+  and no documented status code on exhaustion. An agent gets no runtime signal; it finds out by being
+  refused.
+response_headers:
+  standard_headers: []
+  retry_after: false
+  status_on_exhaustion: null
+  note: >-
+    None of the three throttles below is documented as returning a rate-limit header. Django REST
+    Framework's own throttling returns 429 with Retry-After, but Tandoor sets no
+    DEFAULT_THROTTLE_RATES and the URL-import throttle is applied per-view, so the behaviour is not
+    stated by the provider and is not asserted here.
+limits:
+  - name: Recipe URL import
+    scope: per-user
+    limit: 60
+    window: hour
+    default: '60/hour'
+    configurable: true
+    env: DRF_THROTTLE_RECIPE_URL_IMPORT
+    format: 'x/hour | x/day | x/minute | x/second'
+    applies_to: [apiRecipeFromSourceCreate, apiRecipeImportCreate]
+    rationale: >-
+      Documented as protection against using the server as a DDoS relay and against third-party recipe
+      sites blocking the instance.
+    docs: https://docs.tandoor.dev/system/configuration/
+  - name: AI request rate limit
+    scope: per-space
+    limit: 60
+    window: hour
+    default: '60/hour'
+    configurable: true
+    env: AI_RATELIMIT
+    applies_to: [apiAiImportCreate, apiAiStepSortCreate, apiRecipeAipropertiesCreate, apiFoodAipropertiesCreate]
+    docs: https://docs.tandoor.dev/features/ai/
+  - name: Login rate limiting
+    scope: per-client-ip
+    limit: unstated
+    window: unstated
+    since: 2.6.1
+    configurable: unstated
+    applies_to: ['/accounts/login/', '/api-token-auth/']
+    detail: >-
+      Added in 2.6.1 as brute-force protection. The docs describe the symptom (a 403 on login) and the
+      requirement (a correct X-Forwarded-For from the reverse proxy) but never state the numeric
+      threshold or the window.
+    docs: https://docs.tandoor.dev/faq/
+quotas:
+  - name: AI credit spend cap
+    scope: per-space
+    default: ~1 USD per month
+    reset: first of the month
+    configurable: true
+    detail: >-
+      Not a request rate limit but the practical ceiling on the AI endpoints. Tracked through
+      /api/ai-log/ and enforced per provider when "log credit cost" is enabled.
+  - name: Space resource limits
+    scope: per-space
+    env: [SPACE_DEFAULT_MAX_RECIPES, SPACE_DEFAULT_MAX_USERS, SPACE_DEFAULT_MAX_FILES]
+    default: unlimited
+    detail: >-
+      Operator-set caps on recipes, users and file storage per space; these are the mechanism behind
+      the hosted plan tiers. Exceeding them is a business-logic refusal, not a throttle.
+hosted_service:
+  published_limits: false
+  detail: >-
+    tandoor.dev's pricing page attaches no request quota to any tier. The hosted service presumably
+    runs the same defaults, but nothing states that, so it is not asserted here.

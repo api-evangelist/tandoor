@@ -1,0 +1,148 @@
+generated: '2026-08-27'
+method: derived
+status: candidate
+source: openapi/tandoor-api-openapi.yml
+checked: '2026-08-27'
+summary: >-
+  Tandoor ships NO Model Context Protocol server — not hosted, not stdio, not in the GitHub
+  organization, not on npm or PyPI. This file records that absence plus a DERIVED candidate tool list
+  built from the published OpenAPI operations. No `MCPServer` pointer is emitted in apis.yml and none
+  should be added by a later round: the pointer asserts an agent surface this provider does not serve.
+  The gap is conspicuous, because at least eleven independent developers have built one — a Tandoor
+  MCP server is the most-forked unmet ask in this profile.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: searched
+  auth_note: >-
+    Any future server would authenticate the same way the API does — an access token in the
+    Authorization header, minted at /api/access-token/ or POST /api-token-auth/ — and would need the
+    instance base URL as configuration, because Tandoor is self-hosted first.
+searched:
+  github_org:
+    url: https://github.com/TandoorRecipes
+    repos: [recipes, open-tandoor-data, open_data_plugin, vue-simple-calendar]
+    result: no MCP repository
+  registries:
+    npm: no package under a Tandoor-owned name
+    pypi: no package under a Tandoor-owned name
+  docs:
+    url: https://docs.tandoor.dev/
+    result: MCP is not mentioned anywhere in the 361-document search index
+community_servers:
+  note: >-
+    Recorded as market evidence only. None is published, endorsed or maintained by Tandoor, and none
+    is wired into apis.yml.
+  observed: 11
+  examples:
+    - repo: starbuck93/tandoor-mcp-server
+      stars: 15
+      last_push: '2025-03-29'
+    - repo: ChristopherJMiller/tandoor-mcp
+      stars: 5
+      last_push: '2026-01-26'
+    - repo: mc-mario/tandoor-mcp
+      stars: 3
+      last_push: '2026-08-02'
+    - repo: compilercomplied/tandoor-mcp
+      stars: 0
+      last_push: '2026-08-20'
+    - repo: Hugeldugelking/tandoor-mcp
+      stars: 0
+      last_push: '2026-08-03'
+    - repo: oculairmedia/Tandoor.mcp
+      stars: 1
+      last_push: '2026-04-19'
+  observation: >-
+    Every one of these wraps the same public REST API against a user-supplied instance URL and token.
+    The demand is real and the contract to build against is already published; what is missing is a
+    first-party server.
+transport_note: >-
+  A hosted (remote) server is only meaningful for app.tandoor.dev. For self-hosted instances the
+  natural shape is local-stdio with TANDOOR_URL + TANDOOR_TOKEN, or an MCP endpoint mounted inside
+  the Django app itself.
+tools_note: >-
+  Candidate tools derived one-to-one from real operationIds in the published contract. Each carries
+  its backing operation so an implementer inherits the real parameters and request body. These are
+  proposals, not a manifest of anything that exists.
+tools:
+  - name: search_recipes
+    description: Search recipes by text, keywords, foods, books, rating and cook history.
+    source_operation: openapi/tandoor-api-openapi.yml#apiRecipeList
+  - name: get_recipe
+    description: Retrieve a full recipe with its steps, ingredients, keywords and nutrition.
+    source_operation: openapi/tandoor-api-openapi.yml#apiRecipeRetrieve
+  - name: create_recipe
+    description: Create a recipe with steps and ingredients.
+    source_operation: openapi/tandoor-api-openapi.yml#apiRecipeCreate
+  - name: update_recipe
+    description: Partially update a recipe.
+    source_operation: openapi/tandoor-api-openapi.yml#apiRecipePartialUpdate
+  - name: import_recipe_from_url
+    description: Scrape a recipe from a URL or pasted source text.
+    source_operation: openapi/tandoor-api-openapi.yml#apiRecipeFromSourceCreate
+  - name: ai_import_recipe
+    description: Convert an image or PDF into a structured recipe using the configured AI provider.
+    source_operation: openapi/tandoor-api-openapi.yml#apiAiImportCreate
+  - name: list_meal_plans
+    description: List planned meals over a date range.
+    source_operation: openapi/tandoor-api-openapi.yml#apiMealPlanList
+  - name: create_meal_plan
+    description: Schedule a recipe for a date and meal type.
+    source_operation: openapi/tandoor-api-openapi.yml#apiMealPlanCreate
+  - name: auto_plan_meals
+    description: Automatically fill a meal plan from recipe books and keywords.
+    source_operation: openapi/tandoor-api-openapi.yml#apiAutoPlanCreate
+  - name: export_meal_plan_ical
+    description: Export the meal plan as an iCalendar feed.
+    source_operation: openapi/tandoor-api-openapi.yml#apiMealPlanIcalRetrieve
+  - name: get_shopping_list
+    description: List shopping list entries with their food, unit, amount and checked state.
+    source_operation: openapi/tandoor-api-openapi.yml#apiShoppingListEntryList
+  - name: add_recipe_to_shopping_list
+    description: Put a recipe's ingredients onto the shopping list.
+    source_operation: openapi/tandoor-api-openapi.yml#apiRecipeShoppingUpdate
+  - name: add_shopping_entries_bulk
+    description: Add several shopping list entries in one call.
+    source_operation: openapi/tandoor-api-openapi.yml#apiShoppingListEntryBulkCreate
+  - name: check_shopping_entry
+    description: Mark a shopping list entry checked or unchecked.
+    source_operation: openapi/tandoor-api-openapi.yml#apiShoppingListEntryPartialUpdate
+  - name: search_foods
+    description: Search the food database.
+    source_operation: openapi/tandoor-api-openapi.yml#apiFoodList
+  - name: merge_foods
+    description: Merge one food into another, repointing every reference.
+    source_operation: openapi/tandoor-api-openapi.yml#apiFoodMergeUpdate
+  - name: list_keywords
+    description: List the keyword tree.
+    source_operation: openapi/tandoor-api-openapi.yml#apiKeywordList
+  - name: list_units
+    description: List units and their conversions.
+    source_operation: openapi/tandoor-api-openapi.yml#apiUnitList
+  - name: parse_ingredient
+    description: Parse a free-text ingredient line into amount, unit, food and note.
+    source_operation: openapi/tandoor-api-openapi.yml#apiIngredientParserPostCreate
+  - name: preview_delete_impact
+    description: >-
+      Before deleting anything, list what would be cascaded, nulled or protected. The safety tool an
+      agent should be required to call first.
+    source_operation: >-
+      openapi/tandoor-api-openapi.yml#apiRecipeCascadingList,
+      openapi/tandoor-api-openapi.yml#apiRecipeNullingList,
+      openapi/tandoor-api-openapi.yml#apiRecipeProtectingList
+  - name: list_pantry_inventory
+    description: List what is on hand in the pantry, by location.
+    source_operation: openapi/tandoor-api-openapi.yml#apiInventoryEntryList
+  - name: export_space
+    description: Export the whole space for backup before any destructive operation.
+    source_operation: openapi/tandoor-api-openapi.yml#apiExportCreate
+tool_crosswalk:
+  applicable: false
+  reason: >-
+    A crosswalk binds a real MCP tool set to backing REST operations. Tandoor has no MCP server and no
+    GraphQL endpoint, so there is nothing to bind — the list above IS the REST surface, restated. A
+    crosswalk here would be a self-referential file with no divergence to record.

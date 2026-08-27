@@ -1,0 +1,140 @@
+generated: '2026-08-27'
+method: derived
+source: openapi/tandoor-api-openapi.yml (components.schemas $ref graph)
+summary: >-
+  244 component schemas describe one relational core. Everything hangs off Space — Tandoor's tenant
+  boundary — and inside a space the spine is Recipe -> Step -> Ingredient -> (Food, Unit), with
+  ShoppingList, MealPlan, RecipeBook and InventoryEntry all pointing back at Recipe or Food. Foods,
+  keywords and supermarket categories are TREE structures (django-treebeard), which is why every one
+  of them carries move/{parent} and merge/{target} operations.
+identifiers:
+  style: integer-autoincrement
+  detail: >-
+    Every resource is keyed by a plain database integer `id`. There are no prefixed or globally unique
+    ids, so an id is only meaningful relative to one instance AND one space. Share links and invite
+    links use opaque UUID slugs instead.
+  generic_reference:
+    schema: GenericModelReference
+    fields: [id, model, name]
+    used_by: the cascading/nulling/protecting delete-impact endpoints
+tenancy:
+  root: Space
+  detail: >-
+    A Space is the container every other object belongs to; Household groups users within a space and
+    UserSpace carries per-user membership and group permissions. GET /api/switch-active-space/{spaceId}/
+    changes which space subsequent calls operate on. Cross-space reads are the origin of six of the
+    ten published security advisories.
+entities:
+  - name: Recipe
+    description: The central object — name, description, servings, working/waiting time, image, source url, internal flag, rating.
+    relationships:
+      - {type: has_many, target: Step, via: steps}
+      - {type: has_many, target: Keyword, via: keywords}
+      - {type: has_many, target: Property, via: properties}
+      - {type: has_one, target: NutritionInformation, via: nutrition}
+      - {type: belongs_to, target: User, via: created_by}
+      - {type: has_many, target: User, via: shared}
+  - name: Step
+    description: An ordered instruction block; may carry its own ingredient list, a time, and an attached file.
+    relationships:
+      - {type: has_many, target: Ingredient, via: ingredients}
+      - {type: has_one, target: UserFileView, via: file}
+      - {type: belongs_to, target: Recipe, via: recipe (inverse of Recipe.steps)}
+  - name: Ingredient
+    description: An amount + unit + food line inside a step, optionally with a note and a linked sub-recipe.
+    relationships:
+      - {type: has_one, target: Food, via: food}
+      - {type: has_one, target: Unit, via: unit}
+  - name: Food
+    description: A tree-structured ingredient entity with inheritance, substitutes, supermarket category and nutritional properties.
+    tree: true
+    relationships:
+      - {type: has_one, target: RecipeSimple, via: recipe}
+      - {type: has_many, target: Property, via: properties}
+      - {type: has_one, target: Unit, via: properties_food_unit}
+      - {type: has_one, target: SupermarketCategory, via: supermarket_category}
+      - {type: has_many, target: FoodInheritField, via: inherit_fields}
+      - {type: has_many, target: FoodSimple, via: substitute}
+      - {type: has_many, target: ShoppingList, via: shopping_lists}
+  - name: Unit
+    description: A measurement unit; base_unit/open_data_slug allow conversion.
+    relationships: []
+  - name: UnitConversion
+    description: A per-food or global conversion factor between two units.
+    relationships:
+      - {type: has_one, target: Unit, via: base_unit}
+      - {type: has_one, target: Unit, via: converted_unit}
+      - {type: has_one, target: Food, via: food}
+  - name: Keyword
+    description: Tree-structured recipe tag.
+    tree: true
+    relationships: []
+  - name: Property / PropertyType
+    description: Arbitrary numeric properties (calories, protein, price, diet points) attached to foods and recipes.
+    relationships:
+      - {type: has_one, target: PropertyType, via: property_type}
+  - name: MealPlan
+    description: A recipe (or a free-form title) scheduled for a date range and a meal type.
+    relationships:
+      - {type: has_one, target: RecipeOverview, via: recipe}
+      - {type: has_one, target: MealType, via: meal_type}
+  - name: ShoppingList / ShoppingListEntry / ShoppingListRecipe
+    description: Shopping list entries carry amount, unit, food, checked state and a link back to the recipe or meal plan that put them there.
+    relationships:
+      - {type: has_many, target: ShoppingList, via: shopping_lists}
+      - {type: has_one, target: FoodShopping, via: food}
+      - {type: has_one, target: Unit, via: unit}
+      - {type: has_one, target: ShoppingListRecipe, via: list_recipe_data}
+      - {type: has_one, target: RecipeOverview, via: ShoppingListRecipe.recipe_data}
+      - {type: has_one, target: MealPlan, via: ShoppingListRecipe.meal_plan_data}
+  - name: Supermarket / SupermarketCategory / SupermarketCategoryRelation
+    description: Per-supermarket ordering of food categories so a shopping list can be sorted to the aisle layout.
+    relationships:
+      - {type: has_many, target: SupermarketCategoryRelation, via: category_to_supermarket}
+      - {type: has_many, target: ShoppingList, via: shopping_lists}
+  - name: RecipeBook / RecipeBookEntry
+    description: A named collection of recipes, optionally driven by a saved CustomFilter, shareable with other users.
+    relationships:
+      - {type: has_one, target: CustomFilter, via: filter}
+      - {type: has_many, target: User, via: shared}
+      - {type: has_one, target: RecipeBook, via: RecipeBookEntry.book_content}
+      - {type: has_one, target: RecipeOverview, via: RecipeBookEntry.recipe_content}
+  - name: InventoryEntry / InventoryLocation
+    description: Pantry tracking — how much of a food is on hand, in which location, in which household.
+    relationships:
+      - {type: has_one, target: InventoryLocation, via: inventory_location}
+      - {type: has_one, target: Food, via: food}
+      - {type: has_one, target: Unit, via: unit}
+      - {type: has_one, target: Household, via: InventoryLocation.household}
+  - name: Space / Household / UserSpace
+    description: Tenancy, branding and membership.
+    relationships:
+      - {type: belongs_to, target: User, via: created_by}
+      - {type: has_one, target: AiProvider, via: ai_default_provider}
+      - {type: has_one, target: User, via: UserSpace.user}
+      - {type: has_one, target: Household, via: UserSpace.household}
+      - {type: has_many, target: Group, via: UserSpace.groups}
+  - name: Storage / Sync / SyncLog
+    description: External recipe storage backends (Dropbox, Nextcloud, local) and the sync jobs that scan them.
+    relationships:
+      - {type: has_one, target: Storage, via: Sync.storage}
+  - name: OpenData*
+    description: >-
+      A parallel reference database — OpenDataFood, OpenDataUnit, OpenDataStore, OpenDataCategory,
+      OpenDataProperty, OpenDataConversion, OpenDataVersion — imported from the community-curated
+      TandoorRecipes/open-tandoor-data repository to seed a space with real foods, units, conversions
+      and supermarket layouts.
+    relationships: []
+  - name: Automation / CustomFilter / ConnectorConfig / AiProvider
+    description: Rule engine, saved searches, outbound integrations and per-space AI provider configuration.
+    relationships: []
+  - name: ShareLink / InviteLink / AccessToken
+    description: Opaque-token grants — a public read link to one recipe, an invite into a space/household/group, and API access tokens.
+    relationships:
+      - {type: has_one, target: Group, via: InviteLink.group}
+      - {type: has_one, target: Household, via: InviteLink.household}
+counts:
+  schemas: 244
+  paths: 244
+  operations: 462
+  resources: 84

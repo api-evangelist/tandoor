@@ -1,0 +1,54 @@
+generated: '2026-08-27'
+method: probed
+source: >-
+  openapi/tandoor-api-openapi.yml (negative finding) + live probe of
+  https://app.tandoor.dev/api-token-auth/ on 2026-08-27
+format: drf-field-errors
+rfc9457: false
+summary: >-
+  Tandoor documents NO error responses at all. Across all 462 operations the contract declares only
+  200, 201 and 204 — there is not one 4xx or 5xx response object, no application/problem+json, and no
+  error reference page in the documentation. Everything below was established by reading the source
+  and by one live probe, and is labelled with which. This is the biggest single gap in an otherwise
+  complete contract: an agent calling Tandoor cannot learn from the spec what failure looks like.
+contract_finding:
+  operations: 462
+  documented_response_codes: [200, 201, 204]
+  documented_4xx: 0
+  documented_5xx: 0
+  problem_json_responses: 0
+envelope:
+  validation:
+    shape: '{"<field>": ["<message>", ...]}'
+    content_type: application/json
+    note: django-rest-framework serializer validation errors, keyed by field name.
+  non_field:
+    shape: '{"detail": "<message>"}'
+    note: DRF's APIException envelope — authentication, permission and 404 errors.
+observed:
+  - request: POST https://app.tandoor.dev/api-token-auth/  body {}
+    status: 400
+    content_type: application/json
+    body: '{"username":["This field is required."],"password":["This field is required."]}'
+    observed_at: '2026-08-27'
+    method: probed
+  - request: GET https://app.tandoor.dev/api/server-settings/  (unauthenticated)
+    status: 302
+    location: /accounts/login/?next=/api/server-settings/
+    observed_at: '2026-08-27'
+    method: probed
+    note: >-
+      Unauthenticated browser-style requests to /api/ are REDIRECTED to the login page rather than
+      answered 401/403. An agent that follows redirects will receive an HTTP 200 HTML login form for
+      what is actually an authentication failure. This is the most important operational error
+      behaviour in the profile and it is documented nowhere.
+problem_types: []
+problem_types_note: >-
+  No catalogue is derived. Inventing RFC 9457 problem types for an API that declares none — or
+  transcribing django-rest-framework's generic exception list as if Tandoor published it — would
+  produce an artifact indistinguishable from a real error reference. The two entries under `observed`
+  are the only error shapes anyone has actually seen from this API without credentials.
+recommendation_for_provider: >-
+  drf-spectacular can emit 400/401/403/404 responses for every operation from the existing serializers
+  with a single settings change plus a shared error component. That one change would take the contract
+  from documenting zero failure modes to documenting all of them.

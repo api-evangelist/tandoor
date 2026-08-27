@@ -1,0 +1,94 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  openapi/tandoor-api-openapi.yml,
+  https://docs.tandoor.dev/features/authentication/,
+  https://github.com/TandoorRecipes/recipes/blob/develop/recipes/settings.py,
+  live probe of https://app.tandoor.dev/_allauth/app/v1/config and /api-token-auth/
+docs: https://docs.tandoor.dev/features/authentication/
+summary: >-
+  One scheme is declared in the contract — an access token in the `Authorization` header — and two
+  more work in practice: Django session cookies for browser clients, and the django-allauth headless
+  API for login flows. django-oauth-toolkit is installed and OAuth2Authentication is a default
+  authentication class with four scopes defined in settings, but the oauth2_provider URLs are not
+  routed, so there is no reachable authorize or token endpoint. Treat Tandoor as key-auth.
+summary_structured:
+  types:
+    - apiKey
+  api_key_in:
+    - header
+schemes:
+  - name: ApiKeyAuth
+    type: apiKey
+    in: header
+    parameter: Authorization
+    sources:
+      - openapi/tandoor-api-openapi.yml
+    detail: >-
+      Declared globally via SPECTACULAR_SETTINGS.APPEND_COMPONENTS and applied to every operation via
+      SPECTACULAR_SETTINGS.SECURITY. The contract does not state the token format or where to get one.
+    token_sources:
+      - operation: apiAccessTokenList / apiAccessTokenCreate (/api/access-token/)
+        detail: Long-lived access tokens managed by the user in the application UI.
+      - operation: apiTokenAuthCreate (POST /api-token-auth/)
+        detail: >-
+          Exchanges {username, password} for a DRF auth token. Probed 2026-08-27 with an empty body:
+          HTTP 400 {"username":["This field is required."],"password":["This field is required."]}.
+          Subject to the login rate limiting added in 2.6.1.
+  - name: SessionAuth
+    type: cookie
+    in: cookie
+    declared_in_contract: false
+    detail: >-
+      rest_framework.authentication.SessionAuthentication is the first DEFAULT_AUTHENTICATION_CLASS.
+      The Vue 3 frontend uses it. Requires CSRF handling and is not appropriate for an agent.
+    source: recipes/settings.py REST_FRAMEWORK.DEFAULT_AUTHENTICATION_CLASSES
+  - name: OAuth2
+    type: oauth2
+    declared_in_contract: false
+    reachable: false
+    detail: >-
+      django-oauth-toolkit is in INSTALLED_APPS and oauth2_provider.contrib.rest_framework.
+      OAuth2Authentication is a DEFAULT_AUTHENTICATION_CLASS. settings.py defines
+      OAUTH2_PROVIDER.SCOPES = {read, write, bookmarklet, mealplan}. But oauth2_provider.urls is not
+      included in recipes/urls.py or cookbook/urls.py, so no endpoint is served: probes of
+      https://app.tandoor.dev/o/authorize/ and https://app.tandoor.dev/o/token/ both returned 302 to
+      /accounts/login/ (the Django catch-all) on 2026-08-27. No scopes/ artifact is written and no
+      OAuthScopes pointer is emitted, because the scopes are not obtainable over HTTP.
+    scopes_in_code:
+      read: Read scope
+      write: Write scope
+      bookmarklet: only access to bookmarklet
+      mealplan: only access to mealplan
+default_permission: rest_framework.permissions.IsAuthenticated
+unauthenticated_behaviour:
+  status: 302
+  detail: >-
+    An unauthenticated request to an /api/ path is REDIRECTED to /accounts/login/?next=<path> rather
+    than answered 401 or 403. Clients that follow redirects receive HTTP 200 and an HTML login form.
+    Disable redirect following. Observed 2026-08-27 on GET https://app.tandoor.dev/api/server-settings/.
+  exception: >-
+    GET /openapi/ is served WITHOUT authentication (HTTP 200, application/vnd.oai.openapi). It is the
+    only /-level API surface an anonymous caller can read.
+end_user_login:
+  framework: django-allauth (account, socialaccount, headless, mfa, usersessions)
+  headless_api:
+    base: /_allauth/
+    config: /_allauth/app/v1/config
+    probed: '2026-08-27'
+    status: 200
+    observed:
+      login_methods: [username]
+      open_for_signup: true
+      mfa_supported: [recovery_codes, totp]
+      passkey_login: false
+      social_providers_on_hosted_instance: [facebook, google]
+  social_providers:
+    detail: >-
+      Operators enable providers with the SOCIAL_PROVIDERS environment variable and configure them
+      through SOCIALACCOUNT_PROVIDERS. Any allauth provider works, including a generic
+      openid_connect provider with PKCE against the operator's own IdP. This is INBOUND identity for
+      end users — it does not make Tandoor an OIDC provider and does not affect API authorization.
+    docs: https://docs.tandoor.dev/features/authentication/
+mtls: false
+openid_connect_provider: false

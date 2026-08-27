@@ -1,0 +1,95 @@
+generated: '2026-08-27'
+method: searched
+source: https://tandoor.dev/#pricing
+checked: '2026-08-27'
+currency: EUR
+billing_period: month
+plan_count: 5
+summary: >-
+  Tandoor sells a hosted subscription in four public tiers plus a free tier, and gives the software
+  away for unlimited self-hosting. Limits are on MEMBERS, RECIPES, AI CREDITS and UPLOAD STORAGE —
+  there is no API-call quota on any plan, and no plan mentions the API at all. The self-hosted build
+  is the same code with the same API and no limits; the paid plans are explicitly framed as a way to
+  fund development.
+plans:
+  - name: Free
+    price: 0
+    currency: EUR
+    period: month
+    limits:
+      members: 1
+      recipes: 10
+      file_upload: false
+    api_access: full
+    note: 'No credit card required. "Add some of your recipes and try Tandoor."'
+  - name: Basic
+    price: 1.99
+    currency: EUR
+    period: month
+    limits:
+      members: 1
+      recipes: 1000
+      ai_credits_initial: 5
+      file_upload: false
+    support: Email support
+    api_access: full
+  - name: Standard
+    price: 4.49
+    sale_price: 3.49
+    sale_note: 'Discount is permanent (-22%), shown as a sale on the pricing page 2026-08-27.'
+    currency: EUR
+    period: month
+    featured: true
+    limits:
+      members: 3
+      recipes: unlimited
+      ai_credits_initial: 5
+      upload_storage_gb: 1
+    support: Email support
+    api_access: full
+  - name: Premium AI
+    price: 6.49
+    sale_price: 4.99
+    sale_note: 'Discount is permanent (-23%), shown as a sale on the pricing page 2026-08-27.'
+    currency: EUR
+    period: month
+    limits:
+      members: 10
+      recipes: unlimited
+      ai_credits_monthly: 100
+      upload_storage_gb: 3
+    support: Email support
+    api_access: full
+  - name: Self-host
+    price: 0
+    currency: EUR
+    period: perpetual
+    limits:
+      members: unlimited
+      recipes: unlimited
+      upload_storage_gb: unlimited
+    api_access: full
+    deployment: [Docker, Docker Compose, Kubernetes, Unraid, Synology, TrueNAS, Arch Linux, Home Assistant, manual]
+    docs: https://docs.tandoor.dev/install/docker/
+    note: >-
+      "Tandoor is completely Open Source and always will be." Operator-configurable space limits
+      (SPACE_DEFAULT_MAX_RECIPES, SPACE_DEFAULT_MAX_USERS, SPACE_DEFAULT_MAX_FILES) default to
+      unlimited.
+api_metering:
+  metered: false
+  detail: >-
+    No plan attaches an API request quota, rate tier or overage price. The only metered resource is
+    AI credits, consumed by the AI import and property-extraction features
+    (POST /api/ai-import/, POST /api/recipe/{id}/aiproperties/, POST /api/ai-step-sort/) and readable
+    through /api/ai-log/. On self-hosted instances AI spend is capped by the operator instead
+    (default ~1 USD per space per month, AI_RATELIMIT default 60/hour).
+billing:
+  processor: Stripe
+  evidence: >-
+    /api/enterprise-billing-stripe/, /api/enterprise-billing-invoice/, /api/enterprise-billing-plan/,
+    /api/enterprise-billing-product/ and StripeCheckoutSessionRequest / StripePortal schemas in the
+    OpenAPI. These endpoints back the hosted product's own subscription UI.
+  self_serve: true
+  contact_sales_only: false
+terms: https://tandoor.dev/terms/
+withdrawal: https://tandoor.dev/recall/

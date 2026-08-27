@@ -1,0 +1,76 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://github.com/TandoorRecipes/recipes/releases,
+  https://github.com/TandoorRecipes/recipes/blob/develop/SECURITY.md,
+  https://status.tandoor.dev/status/tandoor,
+  https://docs.tandoor.dev/system/updating/
+summary: >-
+  Tandoor versions the APPLICATION, not the API. Releases are semver-ish tags on GitHub (2.6.13 is
+  current, released 2026-07-05) and the OpenAPI document reports the running build in info.version.
+  There is no API version segment, no deprecation policy, no Sunset/Deprecation header support and no
+  SLA. Support is latest-version-only by written policy.
+versioning:
+  scheme: application-semver
+  current_version: 2.6.13
+  released: '2026-07-05'
+  api_version_in_path: false
+  api_version_header: false
+  contract_version_field: 'info.version — observed "0.0.0 (2.6.13)" on app.tandoor.dev'
+  note: >-
+    Because Tandoor is self-hosted first, "the API version" is whatever the instance operator deployed.
+    An integrator must read /openapi/ from the target instance to know what it supports.
+release_channel:
+  url: https://github.com/TandoorRecipes/recipes/releases
+  cadence: >-
+    Frequent patch releases — 30 tagged releases between 2025-09-25 (2.2.5) and 2026-07-05 (2.6.13).
+  docker_tags:
+    registry: docker.io
+    image: vabene1111/recipes
+    tags: [latest, '2', '2.6', develop]
+    latest_pushed: '2026-07-05'
+    develop_pushed: '2026-08-25'
+  update_docs: https://docs.tandoor.dev/system/updating/
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  detail: >-
+    No deprecation policy exists. Nothing in the OpenAPI is marked `deprecated: true`. The nearest
+    thing to a support statement is SECURITY.md: "Since this software is still considered beta/WIP
+    support is always only given for the latest version. There are no backports of security or any
+    other fixes." Breaking changes reach integrators through release notes only. No `Deprecation`
+    pointer is emitted, because none is published.
+support_policy:
+  supported_versions: latest only
+  backports: false
+  source: https://github.com/TandoorRecipes/recipes/blob/develop/SECURITY.md
+status_page:
+  url: https://status.tandoor.dev/status/tandoor
+  http_status: 200
+  software: Uptime Kuma
+  machine_readable: https://status.tandoor.dev/api/status-page/tandoor
+  monitors:
+    - group: Services
+      items: [App, Website]
+    - group: Development
+      items: [Weblate, Docs]
+  incidents_open: 0
+  note: >-
+    Covers the HOSTED service only (app.tandoor.dev and tandoor.dev) plus the translation and docs
+    infrastructure. A self-hosted instance has no status surface by definition.
+sla:
+  published: false
+  detail: >-
+    No uptime commitment, credit scheme or support-response SLA is published on any plan. Paid plans
+    list "Email support" as the only support term.
+maintenance:
+  model: single-maintainer-plus-community
+  detail: >-
+    The project is operated by Benedikt Sienz (Falkensee, Germany) as a sole trader, with community
+    contributors. 8,562 GitHub stars, 850 forks and 422 open issues as of 2026-08-27; the repository
+    has been active continuously since 2019-11-13 and the develop branch was pushed 2026-08-25.
+  license: >-
+    Custom licence (LICENSE.md in the repository); GitHub classifies it as NOASSERTION rather than a
+    recognised OSI identifier.

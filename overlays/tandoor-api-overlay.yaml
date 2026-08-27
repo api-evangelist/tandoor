@@ -1,0 +1,97 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Tandoor API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-27'
+  method: generated
+  source: openapi/tandoor-api-openapi.yml
+  extends: openapi/tandoor-api-openapi.yml
+  note: >-
+    This overlay carries API Evangelist's additions ONLY. It never mutates Tandoor's own contract on
+    disk. Every value below is either an observed fact (the server host, the media type, the live
+    document URL) or a label for behaviour already described in Tandoor's own operation descriptions
+    (the delete-impact endpoints). No error responses, examples or schemas are invented — the fact
+    that the contract declares none is recorded as a finding in errors/tandoor-problem-types.yml, not
+    papered over here.
+actions:
+  - target: $.info
+    description: >-
+      Record where this document was actually fetched from and what it describes, since Tandoor's own
+      info block carries only a title and the running build number.
+    update:
+      x-api-evangelist:
+        harvested_from: https://app.tandoor.dev/openapi/
+        harvested_at: '2026-08-27'
+        harvest_status: 200
+        content_type: application/vnd.oai.openapi
+        product: Tandoor Recipes
+        vendor: Tandoor Recipes (Benedikt Sienz, Falkensee, Germany)
+        deployment_model: self-hosted-first-with-hosted-option
+        documentation: https://docs.tandoor.dev/
+        source_code: https://github.com/TandoorRecipes/recipes
+        operations: 462
+        paths: 244
+        schemas: 244
+  - target: $
+    description: >-
+      The published document declares no servers[]. Tandoor is deployed per-instance, so the correct
+      server list is a template plus the vendor's own hosted instance. Both entries below are
+      observed, not guessed: app.tandoor.dev is where this document was fetched, and the {instance}
+      form is how every self-hosted deployment is addressed.
+    update:
+      servers:
+        - url: https://app.tandoor.dev
+          description: Tandoor's hosted service. Requires an account; the OpenAPI document itself is public.
+        - url: https://{instance}
+          description: Any self-hosted Tandoor instance. The API lives under /api/ and the contract under /openapi/.
+          variables:
+            instance:
+              default: tandoor.example.com
+              description: Hostname of the Tandoor instance you are integrating with.
+  - target: $.components.securitySchemes.ApiKeyAuth
+    description: >-
+      Tandoor declares the scheme but not how to obtain or format the credential. Both facts come from
+      the contract itself (/api/access-token/, POST /api-token-auth/).
+    update:
+      description: >-
+        An access token sent in the Authorization request header. Tokens are created through
+        /api/access-token/ in the application, or minted by POSTing {username, password} to
+        /api-token-auth/. Session-cookie authentication also works for browser clients.
+      x-token-endpoints:
+        - POST /api-token-auth/
+        - POST /api/access-token/
+  - target: $.paths['/api/recipe/{id}/cascading/'].get
+    description: Label Tandoor's delete-impact preview as a dry run so agent tooling can find it.
+    update:
+      x-dry-run-for: DELETE /api/recipe/{id}/
+      x-agent-safety: >-
+        Read-only preview of what a delete would destroy. Call this before apiRecipeDestroy.
+  - target: $.paths['/api/recipe/{id}/protecting/'].get
+    description: Label the delete-blocking preview.
+    update:
+      x-dry-run-for: DELETE /api/recipe/{id}/
+      x-agent-safety: >-
+        Lists the objects that will make the delete FAIL. A non-empty result means the delete is
+        refused, not that it is dangerous.
+  - target: $.paths['/api/recipe/{id}/nulling/'].get
+    description: Label the reference-nulling preview.
+    update:
+      x-dry-run-for: DELETE /api/recipe/{id}/
+      x-agent-safety: >-
+        Lists the objects that will keep existing but lose their reference to this one.
+  - target: $.paths['/api/recipe/'].get
+    description: >-
+      drf-spectacular generates no summary for any operation in this contract. Adding one to the most
+      used operation makes the entry point legible without touching Tandoor's own document.
+    update:
+      summary: Search and list recipes
+      x-api-evangelist-note: >-
+        The richest filter surface in the API — free-text `query`, plus five-way keyword and food
+        modifiers (or/and/or_not/and_not), books, rating, timescooked, makenow, new and random.
+        Paginated with page/page_size.
+  - target: $.paths['/api/meal-plan/ical/'].get
+    description: Flag the only non-JSON response in the contract.
+    update:
+      x-media-type: text/calendar
+      x-standard: RFC 5545 (iCalendar)

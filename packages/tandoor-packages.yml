@@ -1,0 +1,83 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://hub.docker.com/r/vabene1111/recipes, registry.npmjs.org, pypi.org, github.com/TandoorRecipes
+checked: '2026-08-27'
+summary: >-
+  Tandoor publishes NO client SDK in any language. It distributes the SERVER as a container image, and
+  that is the whole of its first-party package footprint. The one generated API client that exists —
+  a full TypeScript client under vue3/src/openapi/ produced by openapi-generator 7.19.0 from the
+  live /openapi/ document — is vendored into the application repository for the Vue 3 frontend and is
+  not published to npm. Because there is no official client library, NO `SDKs` pointer is emitted in
+  apis.yml; emitting one would credit Tandoor with an SDK programme it does not run.
+sdk_count: 0
+packages:
+  - name: vabene1111/recipes
+    kind: server-image
+    language: python
+    registry: dockerhub
+    url: https://hub.docker.com/r/vabene1111/recipes
+    install: docker pull vabene1111/recipes
+    official: true
+    version: 2.6.13
+    published: '2026-07-05'
+    tags: [latest, '2', '2.6', '2.6.13', develop, master]
+    pull_count: 13255990
+    note: >-
+      The primary distribution channel for the whole product. `latest` and `2.6.13` were both pushed
+      2026-07-05; the `develop` tag tracks the default branch and was pushed 2026-08-25. This is the
+      server, not a client library.
+  - name: TandoorRecipes/recipes
+    kind: source
+    language: python
+    registry: github
+    url: https://github.com/TandoorRecipes/recipes
+    install: git clone https://github.com/TandoorRecipes/recipes
+    official: true
+    version: 2.6.13
+    published: '2026-07-05'
+    note: >-
+      Django + django-rest-framework application source. 8,562 stars, 850 forks. Default branch
+      `develop`. Licence is a custom file (GitHub reports NOASSERTION), not a recognised OSI id.
+  - name: TandoorRecipes/open-tandoor-data
+    kind: dataset
+    language: python
+    registry: github
+    url: https://github.com/TandoorRecipes/open-tandoor-data
+    official: true
+    version: null
+    published: null
+    note: >-
+      The community-curated reference database of foods, units, conversions, properties and store
+      categories that backs the /api/open-data-*/ and /api/import-open-data/ endpoints. Distributed as
+      JSON in the repository — no tagged release and no package-registry entry, so version and
+      published are recorded null rather than guessed.
+  - name: vue3/src/openapi
+    kind: generated-client
+    language: typescript
+    registry: none
+    url: https://github.com/TandoorRecipes/recipes/tree/develop/vue3/src/openapi
+    official: true
+    published_to_registry: false
+    version: null
+    published: null
+    generator: '@openapitools/openapi-generator-cli 7.19.0'
+    note: >-
+      A complete, current TypeScript client for the whole API — 244 model files plus ApiApi.ts and
+      ApiTokenAuthApi.ts — regenerated from /openapi/ whenever the API changes, and vendored into the
+      frontend. It is not published to npm and carries no version of its own, so a third party can
+      only use it by copying it out of the repository. Recorded here because it is the strongest
+      evidence that the OpenAPI document is accurate and actively used, not because it is consumable.
+registries_probed:
+  - registry: npm
+    queries: [tandoor, tandoor-recipes, '@tandoor/open-data-plugin']
+    result: no first-party package (all 404)
+  - registry: pypi
+    queries: [tandoor, tandoor-recipes, tandoor-api]
+    result: no first-party package (all 404)
+  - registry: dockerhub
+    queries: [vabene1111/recipes]
+    result: hit
+community_note: >-
+  Third-party client libraries and integrations exist (Home Assistant components, Python wrappers, a
+  dozen MCP servers) but none is published or endorsed by Tandoor, so none is listed here as official.

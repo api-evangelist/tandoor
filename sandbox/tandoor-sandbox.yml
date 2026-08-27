@@ -1,0 +1,41 @@
+generated: '2026-08-27'
+method: probed
+source: https://app.tandoor.dev/e/demo-auto-login/
+summary: >-
+  Tandoor advertises a zero-signup public demo from its marketing site and its documentation home
+  page, but the demo link no longer works: as probed on 2026-08-27 it 302s to the login page instead
+  of auto-provisioning a demo space. Because the advertised sandbox does not currently function, NO
+  `Sandbox` pointer is emitted in apis.yml. The practical way to exercise the API without an account
+  is to self-host — `docker compose up` from the published compose file gives a full instance with the
+  same 462-operation API and the same unauthenticated /openapi/ document.
+demo:
+  advertised: true
+  advertised_from:
+    - https://tandoor.dev/
+    - https://docs.tandoor.dev/
+  url: https://app.tandoor.dev/e/demo-auto-login/
+  working: false
+  observed:
+    http_status: 200
+    final_url: https://app.tandoor.dev/accounts/login/?next=/
+    note: >-
+      Followed redirects land on the Tandoor login form. No demo session is created and no demo
+      credentials are published anywhere on the site or in the docs.
+  checked: '2026-08-27'
+test_data:
+  test_mode_keys: false
+  test_cards: false
+  fixtures: false
+  note: >-
+    Tandoor publishes no test/live key split, no test card numbers and no magic identifiers. Billing
+    on the hosted service runs through Stripe (see /api/enterprise-billing-stripe/ in the OpenAPI),
+    but no Stripe test-mode guidance is published for third parties — the billing endpoints are
+    internal to the hosted product.
+self_host_alternative:
+  method: docker-compose
+  docs: https://docs.tandoor.dev/install/docker/
+  image: docker.io/vabene1111/recipes
+  note: >-
+    A local instance is the provider-sanctioned way to develop against the API. The OpenAPI document
+    is served at <instance>/openapi/ with no authentication, and Redoc/Swagger UI at /docs/api/ and
+    /docs/swagger/ once logged in.

@@ -1,0 +1,108 @@
+generated: '2026-08-27'
+method: searched
+source: https://github.com/TandoorRecipes/recipes/releases
+summary: >-
+  Tandoor's changelog IS its GitHub release feed — every tag carries a hand-written, categorised note
+  (**added** / **improved** / **fixed** / **updated**), links each security fix to its GHSA advisory,
+  and flags breaking operator actions with a ⚠️ marker. There is no separate changelog page, no RSS
+  feed of API changes, and no distinction drawn between API-affecting and UI-only changes.
+scheme: application-semver
+current_version: 2.6.13
+current_released: '2026-07-05'
+feed:
+  html: https://github.com/TandoorRecipes/recipes/releases
+  atom: https://github.com/TandoorRecipes/recipes/releases.atom
+  api: https://api.github.com/repos/TandoorRecipes/recipes/releases
+window:
+  from: '2026-03-27'
+  to: '2026-07-05'
+  releases_in_window: 12
+breaking_change_convention:
+  marker: '⚠️'
+  detail: >-
+    Operator-breaking changes are called out inline with a ⚠️ line in the release body — e.g. 2.6.10
+    requiring AI_ALLOWED_URLS for custom AI backends, and 2.6.1 requiring ALLOWED_HOSTS to be set.
+    There is no machine-readable breaking-change flag and no semver major bump for them.
+entries:
+  - version: 2.6.13
+    date: '2026-07-05'
+    breaking: false
+    highlights: [updated translations]
+  - version: 2.6.12
+    date: '2026-06-30'
+    breaking: false
+    security: true
+    highlights:
+      - 'fixed: private recipes could be manipulated by space users through the steps API (GHSA-wjf3-fq5w-7j7w)'
+  - version: 2.6.11
+    date: '2026-06-21'
+    breaking: false
+    highlights: [improved pantry booking dialog and table, fixed an order parameter]
+  - version: 2.6.10
+    date: '2026-06-21'
+    breaking: true
+    security: true
+    highlights:
+      - 'fixed: private recipes viewable through API utility endpoints (GHSA-cqj3-64qw-4w52)'
+      - 'fixed: recipe search and recipe book endpoints accepted any order-by attribute (GHSA-4x57-2q4q-xwpp)'
+      - 'fixed: ReDoS in the automation engine (GHSA-f2gw-c2c7-59v7)'
+      - 'fixed: AI providers could be configured with malicious URLs allowing SSRF (GHSA-wq4h-2r8x-cv65)'
+      - 'fixed: other users'' bookmarklets in your space could be accessed/deleted (GHSA-4vw7-c646-g23w)'
+    breaking_note: >-
+      ⚠️ operators using custom AI backends must add them to the new AI_ALLOWED_URLS setting.
+  - version: 2.6.9
+    date: '2026-04-16'
+    breaking: false
+    security: true
+    highlights: ['fixed: another stored XSS in recipe instructions (GHSA-89pw-5qxc-7v86)', pillow security update]
+  - version: 2.6.8
+    date: '2026-04-15'
+    breaking: false
+    highlights: ['fixed: broken markdown rendering in recipes']
+  - version: 2.6.7
+    date: '2026-04-14'
+    breaking: false
+    security: true
+    highlights: [improved app importer error messages, 'fixed: stored XSS in the templating engine']
+  - version: 2.6.6
+    date: '2026-04-11'
+    breaking: false
+    highlights: ['fixed: household setup not skippable']
+  - version: 2.6.5
+    date: '2026-04-10'
+    breaking: false
+    security: true
+    highlights:
+      - 'fixed: shopping list error when an item has no amount'
+      - 'fixed: move ingredient dialog not working'
+      - 'fixed: potential DDoS by limiting uploaded zip file sizes (GHSA-w8pq-4pwf-r2m8)'
+  - version: 2.6.4
+    date: '2026-04-03'
+    breaking: false
+    security: true
+    highlights:
+      - 'added: household setup page and default creation in the welcome stepper'
+      - 'fixed: food shopping sub-endpoint not validating amount and unit inputs (GHSA-8w8h-3pv2-3554)'
+      - 'fixed: a shared user could change a recipe book through the API (GHSA-xvmf-cfrq-4j8f)'
+      - 'fixed: style tags in rendered markdown allowed CSS injection in third-party clients (GHSA-9hhh-g2fc-r8x2)'
+      - 'fixed: the recipe batch-update endpoint could update other members'' private recipes by id'
+  - version: 2.6.3
+    date: '2026-04-02'
+    breaking: false
+    data_loss_notice: true
+    highlights:
+      - 'fixed: a migration bug in 2.6.0/2.6.1 deleted meal plan entries; two documented recovery paths from backup'
+  - version: 2.6.1
+    date: '2026-03-27'
+    breaking: true
+    security: true
+    highlights:
+      - 'fixed: insecure default for ALLOWED_HOSTS (GHSA-x636-4jx6-xc4w)'
+      - 'added: login rate limiting, which requires a correct X-Forwarded-For from the reverse proxy'
+    breaking_note: >-
+      ⚠️ instances that never set ALLOWED_HOSTS stop working after this update until it is set.
+observation: >-
+  Nine of the twelve most recent releases carry at least one security fix, and eight of those are
+  authorization or injection defects on named /api/ endpoints. Read together with the
+  latest-version-only support policy, the changelog is the strongest argument in this profile for
+  tracking releases rather than pinning.

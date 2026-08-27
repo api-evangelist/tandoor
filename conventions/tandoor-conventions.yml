@@ -1,0 +1,190 @@
+generated: '2026-08-27'
+method: derived
+source: >-
+  openapi/tandoor-api-openapi.yml,
+  https://github.com/TandoorRecipes/recipes/blob/develop/recipes/settings.py,
+  https://docs.tandoor.dev/system/configuration/,
+  live probe of https://app.tandoor.dev/api-token-auth/
+summary: >-
+  Tandoor is a django-rest-framework API and follows DRF conventions throughout: ViewSet-per-resource
+  routing under /api/, trailing slashes on every path, page-number pagination, PUT/PATCH split for
+  full and partial update, and DRF's field-error envelope. It adds one convention that is genuinely
+  unusual and worth calling out for agents: every deletable resource exposes three read-only
+  impact-preview endpoints (cascading, nulling, protecting) that let a caller see exactly what a
+  DELETE would destroy before issuing it.
+authentication:
+  style: api-key-header
+  header: 'Authorization'
+  scheme_name: ApiKeyAuth
+  token_source: >-
+    Access tokens are managed through /api/access-token/ (AccessToken model) in the application UI;
+    POST /api-token-auth/ with {username, password} also mints a DRF auth token.
+  session_auth: true
+  detail: authentication/tandoor-authentication.yml
+versioning:
+  style: none-in-path
+  detail: >-
+    There is no version segment in any path and no version header. The contract's info.version carries
+    the running application build — observed "0.0.0 (2.6.13)" on app.tandoor.dev — which means the API
+    version an agent gets is whatever version the instance operator has deployed. For a self-hosted
+    product this is the load-bearing fact: capability discovery must come from GET /openapi/ on the
+    target instance, not from a version number.
+  discovery:
+    - GET /openapi/ (unauthenticated, application/vnd.oai.openapi)
+    - GET /api/server-settings/current/ (authenticated)
+pagination:
+  style: page-number
+  params:
+    - name: page
+      in: query
+      description: A page number within the paginated result set.
+    - name: page_size
+      in: query
+      description: Number of results to return per page.
+  response_fields:
+    count: total number of matching objects
+    next: absolute URL of the next page, null on the last page
+    previous: absolute URL of the previous page, null on the first page
+    results: array of objects
+  coverage: 113 operations accept page/page_size; 44 Paginated*List envelope schemas in the contract.
+filtering:
+  detail: >-
+    Resource-specific query parameters rather than a generic filter language. /api/recipe/ carries the
+    richest set — query, keywords/keywords_or/keywords_and/keywords_or_not/keywords_and_not, foods and
+    the same five-way modifier family, books and its modifiers, rating, timescooked, makenow, new,
+    random, _sort. A `query` parameter appears on 16 list operations.
+  caching:
+    param: cache
+    detail: >-
+      57 operations accept a `cache` query parameter. It is Tandoor's own client-side cache-busting
+      flag, not an HTTP cache directive.
+expansion:
+  supported: false
+  detail: >-
+    No expand/fields/include parameter. Related objects are either inlined by the serializer (a Recipe
+    always carries its steps, each step its ingredients, each ingredient its food and unit) or exposed
+    as a bare integer id. What you get is fixed by the serializer, not selectable by the caller.
+metadata:
+  supported: false
+  detail: No free-form metadata bag on any resource.
+request_id:
+  supported: false
+  detail: No X-Request-Id / traceparent convention is documented or present in the contract.
+errors:
+  envelope: drf-field-errors
+  shape: '{"<field_name>": ["<message>", ...]}  or  {"detail": "<message>"}'
+  documented_in_contract: false
+  detail: >-
+    Zero 4xx or 5xx responses are declared across all 462 operations — the contract documents only
+    200, 201 and 204. The envelope above is the django-rest-framework default and was confirmed by
+    live probe, not by documentation.
+  observed:
+    - request: POST https://app.tandoor.dev/api-token-auth/ with body {}
+      status: 400
+      body: '{"username":["This field is required."],"password":["This field is required."]}'
+      observed_at: '2026-08-27'
+  detail_file: errors/tandoor-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  detail: >-
+    No X-RateLimit-* / RateLimit-* headers and no documented Retry-After. Throttling exists but is
+    operator-configured and silent at the protocol level — see rate-limits/tandoor-rate-limits.yml.
+idempotency:
+  supported: false
+  header: null
+  grade: na
+  detail: >-
+    No Idempotency-Key header is defined or documented. PUT and PATCH are idempotent by HTTP
+    semantics; POST creates (including /api/recipe/, /api/shopping-list-entry/, /api/import/ and the
+    AI import endpoints) are not replay-protected, so a retried create makes a second object. Agents
+    must dedupe client-side.
+dry_run_mode:
+  supported: true
+  grade: verified
+  detail: >-
+    Tandoor ships a real pre-flight for its destructive operation. Every resource with dependants
+    exposes three GET endpoints that report the exact blast radius of a DELETE before it is issued,
+    each returning a paginated list of GenericModelReference {id, model, name}:
+  operations:
+    - pattern: GET /api/{resource}/{id}/cascading/
+      description: objects that will be CASCADE-deleted along with this object
+      examples: [apiRecipeCascadingList, apiFoodCascadingList, apiKeywordCascadingList,
+                 apiUnitCascadingList, apiRecipeBookCascadingList, apiShoppingListCascadingList,
+                 apiSupermarketCascadingList, apiSupermarketCategoryCascadingList]
+    - pattern: GET /api/{resource}/{id}/nulling/
+      description: objects whose reference to this object will be set to null when it is deleted
+      examples: [apiRecipeNullingList, apiFoodNullingList, apiKeywordNullingList, apiUnitNullingList]
+    - pattern: GET /api/{resource}/{id}/protecting/
+      description: objects that PROTECT this object — their existence will make the DELETE fail
+      examples: [apiRecipeProtectingList, apiFoodProtectingList, apiKeywordProtectingList,
+                 apiUnitProtectingList]
+  note: >-
+    This is the single strongest agent-safety feature in the Tandoor contract and it is undocumented
+    outside the OpenAPI descriptions. An agent asked to "clean up unused ingredients" can call
+    cascading/nulling/protecting first and refuse a delete that would take recipes with it.
+reversibility:
+  grade: documented
+  applicable: true
+  detail: >-
+    Tandoor's write surface is a CRUD API over a relational database with no soft-delete, no trash and
+    no undo. DELETE is final: there is no restore endpoint, no deleted_at field on any schema, and no
+    documented retention window anywhere in the docs or the contract. What Tandoor gives instead is
+    the PRE-flight above (cascading/nulling/protecting) plus a whole-space export — reverse by
+    restoring from a backup you took, not by calling an undo. No window is asserted here because the
+    provider states none.
+  write_surfaces:
+    - surface: Recipes and their steps/ingredients
+      write_ops: [apiRecipeCreate, apiRecipeUpdate, apiRecipePartialUpdate, apiRecipeDestroy,
+                  apiStepDestroy, apiIngredientDestroy]
+      reversal: none
+      window: null
+      mitigation: >-
+        Preview with apiRecipeCascadingList / apiRecipeProtectingList before DELETE. Restore only from
+        a space export (POST /api/export/, operationId apiExportCreate) taken beforehand.
+    - surface: Foods, units, keywords, supermarket categories
+      write_ops: [apiFoodDestroy, apiUnitDestroy, apiKeywordDestroy, apiSupermarketCategoryDestroy]
+      reversal: partial
+      reversal_ops: [apiFoodMergeUpdate, apiUnitMergeUpdate, apiKeywordMergeUpdate,
+                     apiSupermarketCategoryMergeUpdate]
+      window: null
+      note: >-
+        MERGE (PUT /api/{resource}/{id}/merge/{target}/) is the non-destructive alternative to delete —
+        it repoints every reference at the target and removes the source. The merge itself is NOT
+        reversible; there is no unmerge.
+    - surface: Shopping list entries
+      write_ops: [apiShoppingListEntryCreate, apiShoppingListEntryBulkCreate,
+                  apiShoppingListEntryDestroy, apiShoppingListEntryPartialUpdate]
+      reversal: field-level
+      window: null
+      note: >-
+        A checked entry can be unchecked by PATCHing `checked` back to false — the entry is not
+        removed when checked. A DELETEd entry is gone.
+    - surface: Recipe import from URL / AI import
+      write_ops: [apiRecipeFromSourceCreate, apiImportCreate, apiRecipeImportImportRecipeCreate,
+                  apiAiImportCreate]
+      reversal: delete-the-result
+      window: null
+      note: >-
+        Import is additive; reverse it by deleting the recipe it created. AI imports also consume
+        credits on the hosted plans, and credit spend is not reversed by deleting the recipe.
+    - surface: External storage sync
+      write_ops: [apiRecipeDeleteExternalPartialUpdate]
+      reversal: none
+      window: null
+      note: >-
+        PATCH /api/recipe/{id}/delete_external/ deletes the recipe's file on the configured external
+        storage backend (Dropbox/Nextcloud/local). That is a delete outside Tandoor's database and
+        outside its backup.
+  backup:
+    export_op: apiExportCreate
+    import_op: apiImportCreate
+    docs: https://docs.tandoor.dev/system/backup/
+    note: >-
+      Full-space export/import in Tandoor's own format plus a dozen third-party recipe formats is the
+      documented recovery path. It is a backup mechanism, not a reversal window.
+cross_links:
+  errors: errors/tandoor-problem-types.yml
+  lifecycle: lifecycle/tandoor-lifecycle.yml
+  authentication: authentication/tandoor-authentication.yml
+  rate_limits: rate-limits/tandoor-rate-limits.yml
+  data_model: data-model/tandoor-data-model.yml
