@@ -15,6 +15,17 @@ description: >-
   covering 244 paths and 462 operations across 244 component schemas, and it is the same contract the
   official Vue 3 frontend is generated against.
 url: https://raw.githubusercontent.com/api-evangelist/tandoor/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://raw.githubusercontent.com/TandoorRecipes/recipes/develop/docs/logo_color.svg
 x-type: company
 x-source: harvest:health-device-stack
