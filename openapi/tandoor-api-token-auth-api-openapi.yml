@@ -1,0 +1,62 @@
+openapi: 3.2.0
+info:
+  title: Tandoor API Token Auth API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: api-token-auth
+paths:
+  /api-token-auth/:
+    post:
+      operationId: apiTokenAuthCreate
+      tags:
+      - api-token-auth
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
