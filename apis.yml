@@ -33,15 +33,15 @@ specificationVersion: '0.20'
 created: '2026-08-27'
 modified: '2026-08-27'
 tags:
-  - recipes
-  - meal-planning
-  - food
-  - nutrition
-  - shopping-lists
+  - Recipes
+  - Meal Planning
+  - Food
+  - Nutrition
+  - Shopping Lists
   - Open-Source
-  - self-hosted
-  - home-automation
-  - django
+  - Self-Hosted
+  - Home Automation
+  - Django
   - Open Data
 tags_raw:
   - recipes
