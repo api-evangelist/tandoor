@@ -37,6 +37,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthToken'
           description: ''
+      summary: Api token auth create
+      x-summary-source: derived
 components:
   schemas:
     AuthToken:
