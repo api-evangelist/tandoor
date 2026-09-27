@@ -1,0 +1,283 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Bookmarklet Import API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Bookmarklet Import
+paths:
+  /api/bookmarklet-import/:
+    get:
+      operationId: apiBookmarkletImportList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Bookmarklet Import
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBookmarkletImportListList'
+          description: ''
+      summary: Api bookmarklet import list
+      x-summary-source: derived
+    post:
+      operationId: apiBookmarkletImportCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Bookmarklet Import
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookmarkletImport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookmarkletImport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BookmarkletImport'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkletImport'
+          description: ''
+      summary: Api bookmarklet import create
+      x-summary-source: derived
+  /api/bookmarklet-import/{id}/:
+    get:
+      operationId: apiBookmarkletImportRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this bookmarklet import.
+        required: true
+      tags:
+      - Bookmarklet Import
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkletImport'
+          description: ''
+      summary: Api bookmarklet import retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiBookmarkletImportUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this bookmarklet import.
+        required: true
+      tags:
+      - Bookmarklet Import
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookmarkletImport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookmarkletImport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BookmarkletImport'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkletImport'
+          description: ''
+      summary: Api bookmarklet import update
+      x-summary-source: derived
+    patch:
+      operationId: apiBookmarkletImportPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this bookmarklet import.
+        required: true
+      tags:
+      - Bookmarklet Import
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBookmarkletImport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBookmarkletImport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBookmarkletImport'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkletImport'
+          description: ''
+      summary: Api bookmarklet import partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiBookmarkletImportDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this bookmarklet import.
+        required: true
+      tags:
+      - Bookmarklet Import
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api bookmarklet import destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedBookmarkletImport:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        html:
+          type: string
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    BookmarkletImportList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+    PaginatedBookmarkletImportListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookmarkletImportList'
+        timestamp:
+          type: string
+          format: date-time
+    BookmarkletImport:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        html:
+          type: string
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - html
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

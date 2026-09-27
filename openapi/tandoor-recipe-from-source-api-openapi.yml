@@ -1,0 +1,245 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Recipe From Source API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Recipe From Source
+paths:
+  /api/recipe-from-source/:
+    post:
+      operationId: apiRecipeFromSourceCreate
+      description: 'function to retrieve a recipe from a given url or source string
+
+        :param request: standard request with additional post parameters
+
+        - url: url to use for importing recipe
+
+        - data: if no url is given recipe is imported from provided source data
+
+        - (optional) bookmarklet: id of bookmarklet import to use, overrides URL and data attributes
+
+        :return: JsonResponse containing the parsed json and images'
+      tags:
+      - Recipe From Source
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeFromSource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeFromSource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeFromSource'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeFromSourceResponse'
+          description: ''
+      summary: Api recipe from source create
+      x-summary-source: derived
+components:
+  schemas:
+    SourceImportRecipe:
+      type: object
+      properties:
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceImportStep'
+        internal:
+          type: boolean
+          default: true
+        source_url:
+          type: string
+          format: uri
+        name:
+          type: string
+        description:
+          type: string
+        servings:
+          type: integer
+          default: 1
+        servings_text:
+          type: string
+          default: ''
+        working_time:
+          type: integer
+          default: 0
+        waiting_time:
+          type: integer
+          default: 0
+        image_url:
+          type: string
+          format: uri
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceImportKeyword'
+          default: []
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceImportProperty'
+          default: []
+      required:
+      - name
+      - source_url
+      - steps
+    SourceImportIngredient:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        food:
+          $ref: '#/components/schemas/SourceImportFood'
+        unit:
+          $ref: '#/components/schemas/SourceImportUnit'
+        note:
+          type: string
+        order:
+          type:
+          - integer
+          - 'null'
+        original_text:
+          type: string
+      required:
+      - amount
+      - food
+      - original_text
+      - unit
+    SourceImportUnit:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    SourceImportKeyword:
+      type: object
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          readOnly: false
+        label:
+          type: string
+        name:
+          type: string
+        import_keyword:
+          type: boolean
+          default: true
+      required:
+      - label
+      - name
+    SourceImportDuplicate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+      required:
+      - name
+    RecipeFromSourceResponse:
+      type: object
+      properties:
+        recipe:
+          $ref: '#/components/schemas/SourceImportRecipe'
+        recipe_id:
+          type: integer
+        images:
+          type: array
+          items:
+            type: string
+          default: []
+        error:
+          type: boolean
+          default: false
+        msg:
+          type: string
+          default: ''
+          maxLength: 1024
+        duplicates:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceImportDuplicate'
+          default: []
+    SourceImportFood:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    SourceImportPropertyType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+      required:
+      - name
+    RecipeFromSource:
+      type: object
+      properties:
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 4096
+        data:
+          type:
+          - string
+          - 'null'
+        bookmarklet:
+          type:
+          - integer
+          - 'null'
+    SourceImportStep:
+      type: object
+      properties:
+        instruction:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceImportIngredient'
+        show_ingredients_table:
+          type: boolean
+          default: true
+      required:
+      - ingredients
+      - instruction
+    SourceImportProperty:
+      type: object
+      properties:
+        property_type:
+          $ref: '#/components/schemas/SourceImportPropertyType'
+        property_amount:
+          type: number
+          format: double
+      required:
+      - property_amount
+      - property_type
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

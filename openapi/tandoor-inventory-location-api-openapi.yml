@@ -1,0 +1,438 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Inventory Location API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Inventory Location
+paths:
+  /api/inventory-location/:
+    get:
+      operationId: apiInventoryLocationList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Inventory Location
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInventoryLocationList'
+          description: ''
+      summary: Api inventory location list
+      x-summary-source: derived
+    post:
+      operationId: apiInventoryLocationCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Inventory Location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryLocation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InventoryLocation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InventoryLocation'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryLocation'
+          description: ''
+      summary: Api inventory location create
+      x-summary-source: derived
+  /api/inventory-location/{id}/:
+    get:
+      operationId: apiInventoryLocationRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inventory location.
+        required: true
+      tags:
+      - Inventory Location
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryLocation'
+          description: ''
+      summary: Api inventory location retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiInventoryLocationUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inventory location.
+        required: true
+      tags:
+      - Inventory Location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryLocation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InventoryLocation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InventoryLocation'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryLocation'
+          description: ''
+      summary: Api inventory location update
+      x-summary-source: derived
+    patch:
+      operationId: apiInventoryLocationPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inventory location.
+        required: true
+      tags:
+      - Inventory Location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInventoryLocation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInventoryLocation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInventoryLocation'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryLocation'
+          description: ''
+      summary: Api inventory location partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiInventoryLocationDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inventory location.
+        required: true
+      tags:
+      - Inventory Location
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api inventory location destroy
+      x-summary-source: derived
+  /api/inventory-location/{id}/cascading/:
+    get:
+      operationId: apiInventoryLocationCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inventory location.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Inventory Location
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api inventory location cascading list
+      x-summary-source: derived
+  /api/inventory-location/{id}/nulling/:
+    get:
+      operationId: apiInventoryLocationNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inventory location.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Inventory Location
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api inventory location nulling list
+      x-summary-source: derived
+  /api/inventory-location/{id}/protecting/:
+    get:
+      operationId: apiInventoryLocationProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inventory location.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Inventory Location
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api inventory location protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    Household:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
+    InventoryLocation:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 64
+        is_freezer:
+          type: boolean
+        household:
+          $ref: '#/components/schemas/Household'
+      required:
+      - household
+      - name
+    PaginatedInventoryLocationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryLocation'
+        timestamp:
+          type: string
+          format: date-time
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+    PatchedInventoryLocation:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 64
+        is_freezer:
+          type: boolean
+        household:
+          $ref: '#/components/schemas/Household'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

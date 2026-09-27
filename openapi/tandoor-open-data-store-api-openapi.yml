@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Open Data Store API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Open Data Store
+paths:
+  /api/open-data-store/:
+    get:
+      operationId: apiOpenDataStoreList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Open Data Store
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOpenDataStoreList'
+          description: ''
+      summary: Api open data store list
+      x-summary-source: derived
+    post:
+      operationId: apiOpenDataStoreCreate
+      tags:
+      - Open Data Store
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenDataStore'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpenDataStore'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpenDataStore'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataStore'
+          description: ''
+      summary: Api open data store create
+      x-summary-source: derived
+  /api/open-data-store/{id}/:
+    get:
+      operationId: apiOpenDataStoreRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data store.
+        required: true
+      tags:
+      - Open Data Store
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataStore'
+          description: ''
+      summary: Api open data store retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiOpenDataStoreUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data store.
+        required: true
+      tags:
+      - Open Data Store
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenDataStore'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpenDataStore'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpenDataStore'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataStore'
+          description: ''
+      summary: Api open data store update
+      x-summary-source: derived
+    patch:
+      operationId: apiOpenDataStorePartialUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data store.
+        required: true
+      tags:
+      - Open Data Store
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOpenDataStore'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOpenDataStore'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOpenDataStore'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataStore'
+          description: ''
+      summary: Api open data store partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiOpenDataStoreDestroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data store.
+        required: true
+      tags:
+      - Open Data Store
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api open data store destroy
+      x-summary-source: derived
+components:
+  schemas:
+    OpenDataVersion:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        code:
+          type: string
+          maxLength: 16
+        comment:
+          type: string
+      required:
+      - code
+      - name
+    PatchedOpenDataStore:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        category_to_store:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/OpenDataStoreCategory'
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+    OpenDataCategory:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+          maxLength: 512
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - slug
+      - version
+    PaginatedOpenDataStoreList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenDataStore'
+        timestamp:
+          type: string
+          format: date-time
+    OpenDataStore:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        category_to_store:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/OpenDataStoreCategory'
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - category_to_store
+      - created_by
+      - name
+      - slug
+      - version
+    OpenDataStoreCategory:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        category:
+          $ref: '#/components/schemas/OpenDataCategory'
+        store:
+          type: integer
+        order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+      required:
+      - category
+      - store
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

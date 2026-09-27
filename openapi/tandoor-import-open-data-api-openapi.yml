@@ -1,0 +1,201 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Import Open Data API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Import Open Data
+paths:
+  /api/import-open-data/:
+    get:
+      operationId: apiImportOpenDataRetrieve
+      tags:
+      - Import Open Data
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportOpenDataMetaData'
+          description: ''
+      summary: Api import open data retrieve
+      x-summary-source: derived
+    post:
+      operationId: apiImportOpenDataCreate
+      tags:
+      - Import Open Data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportOpenData'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ImportOpenData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImportOpenData'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportOpenDataResponse'
+          description: ''
+      summary: Api import open data create
+      x-summary-source: derived
+components:
+  schemas:
+    ImportOpenDataResponse:
+      type: object
+      properties:
+        food:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        unit:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        category:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        property:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        store:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        conversion:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+    ImportOpenDataVersionMetaData:
+      type: object
+      properties:
+        food:
+          type: integer
+        unit:
+          type: integer
+        category:
+          type: integer
+        property:
+          type: integer
+        store:
+          type: integer
+        conversion:
+          type: integer
+      required:
+      - category
+      - conversion
+      - food
+      - property
+      - store
+      - unit
+    ImportOpenDataMetaData:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            type: string
+        datatypes:
+          type: array
+          items:
+            type: string
+        base:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        cs:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        da:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        de:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        el:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        en:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        es:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        fr:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        hu:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        it:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        nb_NO:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        nl:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        pl:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        pt:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        pt_BR:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        sk:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        sl:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+        zh_Hans:
+          $ref: '#/components/schemas/ImportOpenDataVersionMetaData'
+      required:
+      - base
+      - cs
+      - da
+      - datatypes
+      - de
+      - el
+      - en
+      - es
+      - fr
+      - hu
+      - it
+      - nb_NO
+      - nl
+      - pl
+      - pt
+      - pt_BR
+      - sk
+      - sl
+      - versions
+      - zh_Hans
+    ImportOpenData:
+      type: object
+      properties:
+        selected_version:
+          type: string
+        selected_datatypes:
+          type: array
+          items:
+            type: string
+        update_existing:
+          type: boolean
+          default: true
+        use_metric:
+          type: boolean
+          default: true
+      required:
+      - selected_datatypes
+      - selected_version
+    ImportOpenDataResponseDetail:
+      type: object
+      properties:
+        total_created:
+          type: integer
+          default: 0
+        total_updated:
+          type: integer
+          default: 0
+        total_untouched:
+          type: integer
+          default: 0
+        total_errored:
+          type: integer
+          default: 0
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

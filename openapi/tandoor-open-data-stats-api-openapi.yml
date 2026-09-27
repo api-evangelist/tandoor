@@ -1,0 +1,31 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Open Data Stats API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Open Data Stats
+paths:
+  /api/open-data-stats/:
+    get:
+      operationId: apiOpenDataStatsRetrieve
+      tags:
+      - Open Data Stats
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: No response body
+      summary: Api open data stats retrieve
+      x-summary-source: derived
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

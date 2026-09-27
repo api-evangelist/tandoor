@@ -1,0 +1,468 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Property Type API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Property Type
+paths:
+  /api/property-type/:
+    get:
+      operationId: apiPropertyTypeList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ALLERGEN
+            - GOAL
+            - NUTRITION
+            - OTHER
+            - PRICE
+        description: Return the PropertyTypes matching the property category.  Repeat for multiple.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Property Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPropertyTypeList'
+          description: ''
+      summary: Api property type list
+      x-summary-source: derived
+    post:
+      operationId: apiPropertyTypeCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Property Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PropertyType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PropertyType'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyType'
+          description: ''
+      summary: Api property type create
+      x-summary-source: derived
+  /api/property-type/{id}/:
+    get:
+      operationId: apiPropertyTypeRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this property type.
+        required: true
+      tags:
+      - Property Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyType'
+          description: ''
+      summary: Api property type retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiPropertyTypeUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this property type.
+        required: true
+      tags:
+      - Property Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PropertyType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PropertyType'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyType'
+          description: ''
+      summary: Api property type update
+      x-summary-source: derived
+    patch:
+      operationId: apiPropertyTypePartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this property type.
+        required: true
+      tags:
+      - Property Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPropertyType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPropertyType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPropertyType'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyType'
+          description: ''
+      summary: Api property type partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiPropertyTypeDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this property type.
+        required: true
+      tags:
+      - Property Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api property type destroy
+      x-summary-source: derived
+  /api/property-type/{id}/cascading/:
+    get:
+      operationId: apiPropertyTypeCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this property type.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Property Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api property type cascading list
+      x-summary-source: derived
+  /api/property-type/{id}/nulling/:
+    get:
+      operationId: apiPropertyTypeNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this property type.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Property Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api property type nulling list
+      x-summary-source: derived
+  /api/property-type/{id}/protecting/:
+    get:
+      operationId: apiPropertyTypeProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this property type.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Property Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api property type protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedPropertyTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyType'
+        timestamp:
+          type: string
+          format: date-time
+    PropertyType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        unit:
+          type:
+          - string
+          - 'null'
+          maxLength: 64
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        order:
+          type: integer
+          default: 0
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        fdc_id:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - name
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PatchedPropertyType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        unit:
+          type:
+          - string
+          - 'null'
+          maxLength: 64
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        order:
+          type: integer
+          default: 0
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        fdc_id:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

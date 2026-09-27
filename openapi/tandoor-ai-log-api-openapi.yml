@@ -1,0 +1,199 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Ai Log API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Ai Log
+paths:
+  /api/ai-log/:
+    get:
+      operationId: apiAiLogList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Ai Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAiLogList'
+          description: ''
+      summary: Api ai log list
+      x-summary-source: derived
+  /api/ai-log/{id}/:
+    get:
+      operationId: apiAiLogRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai log.
+        required: true
+      tags:
+      - Ai Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiLog'
+          description: ''
+      summary: Api ai log retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    AiLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        ai_provider:
+          allOf:
+          - $ref: '#/components/schemas/AiProvider'
+          readOnly: true
+        function:
+          type: string
+          maxLength: 64
+        credit_cost:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        credits_from_balance:
+          type: boolean
+        input_tokens:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        output_tokens:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_by:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - ai_provider
+      - created_at
+      - credit_cost
+      - function
+      - updated_at
+    AiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - model_name
+      - name
+      - updated_at
+    PaginatedAiLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiLog'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

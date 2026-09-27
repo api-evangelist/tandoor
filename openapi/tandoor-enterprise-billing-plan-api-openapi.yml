@@ -1,0 +1,364 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Enterprise Billing Plan API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Enterprise Billing Plan
+paths:
+  /api/enterprise-billing-plan/:
+    get:
+      operationId: apiEnterpriseBillingPlanList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Enterprise Billing Plan
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEnterpriseBillingPlanList'
+          description: ''
+      summary: Api enterprise billing plan list
+      x-summary-source: derived
+    post:
+      operationId: apiEnterpriseBillingPlanCreate
+      tags:
+      - Enterprise Billing Plan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingPlan'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingPlan'
+          description: ''
+      summary: Api enterprise billing plan create
+      x-summary-source: derived
+  /api/enterprise-billing-plan/{id}/:
+    get:
+      operationId: apiEnterpriseBillingPlanRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing plan.
+        required: true
+      tags:
+      - Enterprise Billing Plan
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingPlan'
+          description: ''
+      summary: Api enterprise billing plan retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiEnterpriseBillingPlanUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing plan.
+        required: true
+      tags:
+      - Enterprise Billing Plan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingPlan'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingPlan'
+          description: ''
+      summary: Api enterprise billing plan update
+      x-summary-source: derived
+    patch:
+      operationId: apiEnterpriseBillingPlanPartialUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing plan.
+        required: true
+      tags:
+      - Enterprise Billing Plan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingPlan'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingPlan'
+          description: ''
+      summary: Api enterprise billing plan partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiEnterpriseBillingPlanDestroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing plan.
+        required: true
+      tags:
+      - Enterprise Billing Plan
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api enterprise billing plan destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedEnterpriseBillingPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 256
+        max_users:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        max_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        max_file_storage_mb:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Maximum file storage for space in MB. 0 for unlimited, -1 to disable file upload.
+        ai_enabled:
+          type: boolean
+        ai_credits_monthly:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_initial_credit_balance:
+          type: number
+          format: double
+          description: number of credits to set the balance to for new subscriptions.
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        price:
+          type: number
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        price_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Discounted price to show, update price_id from Stripe to use, null to disable discount.
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        discount_reason:
+          type:
+          - string
+          - 'null'
+          description: Text to show as reason for the discount
+          maxLength: 256
+        months:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        price_id:
+          type: string
+          maxLength: 256
+        product_id:
+          type: string
+          maxLength: 256
+        managed:
+          type: boolean
+        featured:
+          type: boolean
+        disabled:
+          type: boolean
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+    PaginatedEnterpriseBillingPlanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseBillingPlan'
+        timestamp:
+          type: string
+          format: date-time
+    EnterpriseBillingPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 256
+        max_users:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        max_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        max_file_storage_mb:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Maximum file storage for space in MB. 0 for unlimited, -1 to disable file upload.
+        ai_enabled:
+          type: boolean
+        ai_credits_monthly:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_initial_credit_balance:
+          type: number
+          format: double
+          description: number of credits to set the balance to for new subscriptions.
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        price:
+          type: number
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        price_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Discounted price to show, update price_id from Stripe to use, null to disable discount.
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        discount_reason:
+          type:
+          - string
+          - 'null'
+          description: Text to show as reason for the discount
+          maxLength: 256
+        months:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        price_id:
+          type: string
+          maxLength: 256
+        product_id:
+          type: string
+          maxLength: 256
+        managed:
+          type: boolean
+        featured:
+          type: boolean
+        disabled:
+          type: boolean
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - max_users
+      - name
+      - price
+      - price_id
+      - product_id
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

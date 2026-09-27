@@ -1,0 +1,228 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Access Token API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Access Token
+paths:
+  /api/access-token/:
+    get:
+      operationId: apiAccessTokenList
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Access Token
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccessToken'
+          description: ''
+      summary: Api access token list
+      x-summary-source: derived
+    post:
+      operationId: apiAccessTokenCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Access Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AccessToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AccessToken'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+          description: ''
+      summary: Api access token create
+      x-summary-source: derived
+  /api/access-token/{id}/:
+    get:
+      operationId: apiAccessTokenRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Access Token
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+          description: ''
+      summary: Api access token retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiAccessTokenUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Access Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AccessToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AccessToken'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+          description: ''
+      summary: Api access token update
+      x-summary-source: derived
+    patch:
+      operationId: apiAccessTokenPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Access Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAccessToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAccessToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAccessToken'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+          description: ''
+      summary: Api access token partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiAccessTokenDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Access Token
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api access token destroy
+      x-summary-source: derived
+components:
+  schemas:
+    AccessToken:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        token:
+          type: string
+          readOnly: true
+        expires:
+          type: string
+          format: date-time
+        scope:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - expires
+      - token
+      - updated
+    PatchedAccessToken:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        token:
+          type: string
+          readOnly: true
+        expires:
+          type: string
+          format: date-time
+        scope:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

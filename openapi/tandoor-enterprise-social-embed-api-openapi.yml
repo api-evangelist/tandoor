@@ -1,0 +1,354 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Enterprise Social Embed API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Enterprise Social Embed
+paths:
+  /api/enterprise-social-embed/:
+    get:
+      operationId: apiEnterpriseSocialEmbedList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: token
+        schema:
+          type: string
+        description: Embed share token for public retrieval.
+      tags:
+      - Enterprise Social Embed
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEnterpriseSocialEmbedList'
+          description: ''
+      summary: Api enterprise social embed list
+      x-summary-source: derived
+    post:
+      operationId: apiEnterpriseSocialEmbedCreate
+      tags:
+      - Enterprise Social Embed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSocialEmbed'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          description: ''
+      summary: Api enterprise social embed create
+      x-summary-source: derived
+  /api/enterprise-social-embed/{id}/:
+    get:
+      operationId: apiEnterpriseSocialEmbedRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise social embed.
+        required: true
+      tags:
+      - Enterprise Social Embed
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          description: ''
+      summary: Api enterprise social embed retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiEnterpriseSocialEmbedUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise social embed.
+        required: true
+      tags:
+      - Enterprise Social Embed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSocialEmbed'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          description: ''
+      summary: Api enterprise social embed update
+      x-summary-source: derived
+    patch:
+      operationId: apiEnterpriseSocialEmbedPartialUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise social embed.
+        required: true
+      tags:
+      - Enterprise Social Embed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseSocialEmbed'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseSocialEmbed'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseSocialEmbed'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSocialEmbed'
+          description: ''
+      summary: Api enterprise social embed partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiEnterpriseSocialEmbedDestroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise social embed.
+        required: true
+      tags:
+      - Enterprise Social Embed
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api enterprise social embed destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedEnterpriseSocialEmbed:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        type:
+          $ref: '#/components/schemas/EnterpriseSocialEmbedTypeEnum'
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/Keyword'
+        alignment:
+          $ref: '#/components/schemas/AlignmentEnum'
+        background_color:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        accent_color:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        uuid:
+          type: string
+          format: uuid
+    EnterpriseSocialEmbed:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        type:
+          $ref: '#/components/schemas/EnterpriseSocialEmbedTypeEnum'
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/Keyword'
+        alignment:
+          $ref: '#/components/schemas/AlignmentEnum'
+        background_color:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        accent_color:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - keywords
+      - name
+      - type
+    EnterpriseSocialEmbedTypeEnum:
+      enum:
+      - RECIPE
+      - RECIPE_KEYWORD
+      - MEAL_PLAN
+      - SHOPPING
+      - BOOK
+      type: string
+      description: '* `RECIPE` - Recipe
+
+        * `RECIPE_KEYWORD` - Recipe Keyword
+
+        * `MEAL_PLAN` - Meal Plan
+
+        * `SHOPPING` - Shopping
+
+        * `BOOK` - Book'
+    Keyword:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 64
+        label:
+          type: string
+          readOnly: true
+        description:
+          type: string
+        parent:
+          type: integer
+          readOnly: true
+        numchild:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        full_name:
+          type: string
+          description: 'Returns a string representation of a tree node and it''s ancestors,
+
+            e.g. ''Cuisine > Asian > Chinese > Catonese''.'
+          readOnly: true
+      required:
+      - created_at
+      - full_name
+      - label
+      - name
+      - numchild
+      - parent
+      - updated_at
+    PaginatedEnterpriseSocialEmbedList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseSocialEmbed'
+        timestamp:
+          type: string
+          format: date-time
+    AlignmentEnum:
+      enum:
+      - start
+      - center
+      - end
+      type: string
+      description: '* `start` - start
+
+        * `center` - center
+
+        * `end` - end'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

@@ -1,0 +1,548 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Open Data Conversion API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Open Data Conversion
+paths:
+  /api/open-data-conversion/:
+    get:
+      operationId: apiOpenDataConversionList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Open Data Conversion
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOpenDataConversionList'
+          description: ''
+      summary: Api open data conversion list
+      x-summary-source: derived
+    post:
+      operationId: apiOpenDataConversionCreate
+      tags:
+      - Open Data Conversion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenDataConversion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpenDataConversion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpenDataConversion'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataConversion'
+          description: ''
+      summary: Api open data conversion create
+      x-summary-source: derived
+  /api/open-data-conversion/{id}/:
+    get:
+      operationId: apiOpenDataConversionRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data conversion.
+        required: true
+      tags:
+      - Open Data Conversion
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataConversion'
+          description: ''
+      summary: Api open data conversion retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiOpenDataConversionUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data conversion.
+        required: true
+      tags:
+      - Open Data Conversion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenDataConversion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpenDataConversion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpenDataConversion'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataConversion'
+          description: ''
+      summary: Api open data conversion update
+      x-summary-source: derived
+    patch:
+      operationId: apiOpenDataConversionPartialUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data conversion.
+        required: true
+      tags:
+      - Open Data Conversion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOpenDataConversion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOpenDataConversion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOpenDataConversion'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenDataConversion'
+          description: ''
+      summary: Api open data conversion partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiOpenDataConversionDestroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this open data conversion.
+        required: true
+      tags:
+      - Open Data Conversion
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api open data conversion destroy
+      x-summary-source: derived
+components:
+  schemas:
+    OpenDataVersion:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        code:
+          type: string
+          maxLength: 16
+        comment:
+          type: string
+      required:
+      - code
+      - name
+    BaseUnitEnum:
+      enum:
+      - g
+      - kg
+      - ounce
+      - pound
+      - ml
+      - l
+      - fluid_ounce
+      - pint
+      - quart
+      - gallon
+      - tbsp
+      - tsp
+      - us_cup
+      - imperial_fluid_ounce
+      - imperial_pint
+      - imperial_quart
+      - imperial_gallon
+      - imperial_tbsp
+      - imperial_tsp
+      type: string
+      description: '* `g` - g
+
+        * `kg` - kg
+
+        * `ounce` - ounce
+
+        * `pound` - pound
+
+        * `ml` - ml
+
+        * `l` - l
+
+        * `fluid_ounce` - fluid_ounce
+
+        * `pint` - pint
+
+        * `quart` - quart
+
+        * `gallon` - gallon
+
+        * `tbsp` - tbsp
+
+        * `tsp` - tsp
+
+        * `us_cup` - US Cup
+
+        * `imperial_fluid_ounce` - imperial fluid ounce
+
+        * `imperial_pint` - imperial pint
+
+        * `imperial_quart` - imperial quart
+
+        * `imperial_gallon` - imperial gallon
+
+        * `imperial_tbsp` - imperial tbsp
+
+        * `imperial_tsp` - imperial tsp'
+    OpenDataUnitTypeEnum:
+      enum:
+      - WEIGHT
+      - VOLUME
+      - OTHER
+      type: string
+      description: '* `WEIGHT` - weight
+
+        * `VOLUME` - volume
+
+        * `OTHER` - other'
+    OpenDataProperty:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        unit:
+          type: string
+          maxLength: 16
+        fdc_id:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - slug
+      - version
+    OpenDataConversion:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        food:
+          $ref: '#/components/schemas/OpenDataFood'
+        base_amount:
+          type: number
+          format: double
+        base_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        converted_amount:
+          type: number
+          format: double
+        converted_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        source:
+          type: string
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - base_amount
+      - base_unit
+      - converted_amount
+      - converted_unit
+      - created_by
+      - food
+      - slug
+      - source
+      - version
+    OpenDataCategory:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+          maxLength: 512
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - slug
+      - version
+    PaginatedOpenDataConversionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenDataConversion'
+        timestamp:
+          type: string
+          format: date-time
+    OpenDataUnit:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        plural_name:
+          type: string
+          maxLength: 128
+        base_unit:
+          $ref: '#/components/schemas/BaseUnitEnum'
+        type:
+          $ref: '#/components/schemas/OpenDataUnitTypeEnum'
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - slug
+      - type
+      - version
+    OpenDataFood:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        plural_name:
+          type: string
+          maxLength: 128
+        store_category:
+          $ref: '#/components/schemas/OpenDataCategory'
+        preferred_unit_metric:
+          allOf:
+          - $ref: '#/components/schemas/OpenDataUnit'
+        preferred_shopping_unit_metric:
+          allOf:
+          - $ref: '#/components/schemas/OpenDataUnit'
+        preferred_unit_imperial:
+          allOf:
+          - $ref: '#/components/schemas/OpenDataUnit'
+        preferred_shopping_unit_imperial:
+          allOf:
+          - $ref: '#/components/schemas/OpenDataUnit'
+        properties:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/OpenDataFoodProperty'
+        properties_food_amount:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        properties_food_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        properties_source:
+          type: string
+        fdc_id:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - plural_name
+      - properties
+      - properties_food_unit
+      - slug
+      - store_category
+      - version
+    OpenDataFoodProperty:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        property:
+          $ref: '#/components/schemas/OpenDataProperty'
+        property_amount:
+          type: number
+          format: double
+      required:
+      - property
+      - property_amount
+    PatchedOpenDataConversion:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        food:
+          $ref: '#/components/schemas/OpenDataFood'
+        base_amount:
+          type: number
+          format: double
+        base_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        converted_amount:
+          type: number
+          format: double
+        converted_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        source:
+          type: string
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

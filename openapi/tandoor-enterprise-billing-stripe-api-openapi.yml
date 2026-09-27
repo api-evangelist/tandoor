@@ -1,0 +1,94 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Enterprise Billing Stripe API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Enterprise Billing Stripe
+paths:
+  /api/enterprise-billing-stripe/checkout_session/:
+    post:
+      operationId: apiEnterpriseBillingStripeCheckoutSessionCreate
+      tags:
+      - Enterprise Billing Stripe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StripeCheckoutSessionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StripeCheckoutSessionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StripeCheckoutSessionRequest'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripeCheckoutSessionResponse'
+          description: ''
+      summary: Api enterprise billing stripe checkout session create
+      x-summary-source: derived
+  /api/enterprise-billing-stripe/portal/:
+    get:
+      operationId: apiEnterpriseBillingStripePortalRetrieve
+      tags:
+      - Enterprise Billing Stripe
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripePortal'
+          description: ''
+      summary: Api enterprise billing stripe portal retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    StripePortal:
+      type: object
+      properties:
+        portal_url:
+          type: string
+        stripe_public_key:
+          type: string
+      required:
+      - portal_url
+      - stripe_public_key
+    StripeCheckoutSessionResponse:
+      type: object
+      properties:
+        session_id:
+          type: string
+        stripe_public_key:
+          type: string
+        url:
+          type: string
+          format: uri
+      required:
+      - session_id
+      - stripe_public_key
+      - url
+    StripeCheckoutSessionRequest:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        plan_id:
+          type: integer
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

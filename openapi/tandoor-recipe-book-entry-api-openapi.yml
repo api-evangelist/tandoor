@@ -1,0 +1,464 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Recipe Book Entry API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Recipe Book Entry
+paths:
+  /api/recipe-book-entry/:
+    get:
+      operationId: apiRecipeBookEntryList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: query
+        name: book
+        schema:
+          type: integer
+        description: id of book - only return recipes in that book
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: recipe
+        schema:
+          type: integer
+        description: id of recipe - only return books for that recipe
+      tags:
+      - Recipe Book Entry
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRecipeBookEntryList'
+          description: ''
+      summary: Api recipe book entry list
+      x-summary-source: derived
+    post:
+      operationId: apiRecipeBookEntryCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Recipe Book Entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeBookEntry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeBookEntry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeBookEntry'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeBookEntry'
+          description: ''
+      summary: Api recipe book entry create
+      x-summary-source: derived
+  /api/recipe-book-entry/{id}/:
+    get:
+      operationId: apiRecipeBookEntryRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe book entry.
+        required: true
+      tags:
+      - Recipe Book Entry
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeBookEntry'
+          description: ''
+      summary: Api recipe book entry retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiRecipeBookEntryUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe book entry.
+        required: true
+      tags:
+      - Recipe Book Entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeBookEntry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeBookEntry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeBookEntry'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeBookEntry'
+          description: ''
+      summary: Api recipe book entry update
+      x-summary-source: derived
+    patch:
+      operationId: apiRecipeBookEntryPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe book entry.
+        required: true
+      tags:
+      - Recipe Book Entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeBookEntry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeBookEntry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeBookEntry'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeBookEntry'
+          description: ''
+      summary: Api recipe book entry partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiRecipeBookEntryDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe book entry.
+        required: true
+      tags:
+      - Recipe Book Entry
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api recipe book entry destroy
+      x-summary-source: derived
+components:
+  schemas:
+    RecipeBook:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        filter:
+          allOf:
+          - $ref: '#/components/schemas/CustomFilter'
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - created_by
+      - name
+      - shared
+    CustomFilter:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        search:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - search
+    RecipeOverview:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          readOnly: true
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordLabel'
+          readOnly: true
+        working_time:
+          type: integer
+          readOnly: true
+        waiting_time:
+          type: integer
+          readOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        internal:
+          type: boolean
+          readOnly: true
+        private:
+          type: boolean
+        servings:
+          type: integer
+          readOnly: true
+        servings_text:
+          type: string
+          readOnly: true
+        rating:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
+        last_cooked:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        new:
+          type: boolean
+          readOnly: true
+        recent:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - image
+      - internal
+      - keywords
+      - last_cooked
+      - name
+      - new
+      - rating
+      - recent
+      - servings
+      - servings_text
+      - updated_at
+      - waiting_time
+      - working_time
+    PatchedRecipeBookEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        book:
+          type: integer
+        book_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeBook'
+          readOnly: true
+        recipe:
+          type: integer
+        recipe_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+          readOnly: true
+    PaginatedRecipeBookEntryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeBookEntry'
+        timestamp:
+          type: string
+          format: date-time
+    KeywordLabel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        label:
+          type: string
+          readOnly: true
+      required:
+      - label
+    RecipeBookEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        book:
+          type: integer
+        book_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeBook'
+          readOnly: true
+        recipe:
+          type: integer
+        recipe_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+          readOnly: true
+      required:
+      - book
+      - book_content
+      - recipe
+      - recipe_content
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

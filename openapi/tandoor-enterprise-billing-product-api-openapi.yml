@@ -1,0 +1,309 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Enterprise Billing Product API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Enterprise Billing Product
+paths:
+  /api/enterprise-billing-product/:
+    get:
+      operationId: apiEnterpriseBillingProductList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Enterprise Billing Product
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEnterpriseBillingProductList'
+          description: ''
+      summary: Api enterprise billing product list
+      x-summary-source: derived
+    post:
+      operationId: apiEnterpriseBillingProductCreate
+      tags:
+      - Enterprise Billing Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingProduct'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingProduct'
+          description: ''
+      summary: Api enterprise billing product create
+      x-summary-source: derived
+  /api/enterprise-billing-product/{id}/:
+    get:
+      operationId: apiEnterpriseBillingProductRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing product.
+        required: true
+      tags:
+      - Enterprise Billing Product
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingProduct'
+          description: ''
+      summary: Api enterprise billing product retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiEnterpriseBillingProductUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing product.
+        required: true
+      tags:
+      - Enterprise Billing Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingProduct'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingProduct'
+          description: ''
+      summary: Api enterprise billing product update
+      x-summary-source: derived
+    patch:
+      operationId: apiEnterpriseBillingProductPartialUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing product.
+        required: true
+      tags:
+      - Enterprise Billing Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingProduct'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingProduct'
+          description: ''
+      summary: Api enterprise billing product partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiEnterpriseBillingProductDestroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing product.
+        required: true
+      tags:
+      - Enterprise Billing Product
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api enterprise billing product destroy
+      x-summary-source: derived
+components:
+  schemas:
+    EnterpriseBillingProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        price:
+          type: number
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        price_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Discounted price to show, update price_id from Stripe to use, null to disable discount.
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        discount_reason:
+          type:
+          - string
+          - 'null'
+          description: Text to show as reason for the discount
+          maxLength: 256
+        price_id:
+          type: string
+          maxLength: 256
+        product_id:
+          type: string
+          maxLength: 256
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_credits:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        disabled:
+          type: boolean
+      required:
+      - name
+      - price
+      - price_id
+      - product_id
+    PaginatedEnterpriseBillingProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseBillingProduct'
+        timestamp:
+          type: string
+          format: date-time
+    PatchedEnterpriseBillingProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        price:
+          type: number
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        price_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Discounted price to show, update price_id from Stripe to use, null to disable discount.
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        discount_reason:
+          type:
+          - string
+          - 'null'
+          description: Text to show as reason for the discount
+          maxLength: 256
+        price_id:
+          type: string
+          maxLength: 256
+        product_id:
+          type: string
+          maxLength: 256
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_credits:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        disabled:
+          type: boolean
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

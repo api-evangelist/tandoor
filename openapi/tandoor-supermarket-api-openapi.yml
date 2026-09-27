@@ -1,0 +1,528 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Supermarket API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Supermarket
+paths:
+  /api/supermarket/:
+    get:
+      operationId: apiSupermarketList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          type: string
+        description: limit number of entries to return
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: query
+        schema:
+          type: string
+        description: lookup if query string is contained within the name, case insensitive
+      - in: query
+        name: random
+        schema:
+          type: string
+        description: randomly orders entries (only works together with limit)
+      - in: query
+        name: updated_at
+        schema:
+          type: string
+        description: if model has an updated_at timestamp, filter only models updated at or after datetime
+        examples:
+          DateFormat:
+            value: '1972-12-05'
+            summary: Date Format
+      tags:
+      - Supermarket
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupermarketList'
+          description: ''
+      summary: Api supermarket list
+      x-summary-source: derived
+    post:
+      operationId: apiSupermarketCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Supermarket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supermarket'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Supermarket'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Supermarket'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supermarket'
+          description: ''
+      summary: Api supermarket create
+      x-summary-source: derived
+  /api/supermarket/{id}/:
+    get:
+      operationId: apiSupermarketRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this supermarket.
+        required: true
+      tags:
+      - Supermarket
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supermarket'
+          description: ''
+      summary: Api supermarket retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiSupermarketUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this supermarket.
+        required: true
+      tags:
+      - Supermarket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supermarket'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Supermarket'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Supermarket'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supermarket'
+          description: ''
+      summary: Api supermarket update
+      x-summary-source: derived
+    patch:
+      operationId: apiSupermarketPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this supermarket.
+        required: true
+      tags:
+      - Supermarket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupermarket'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupermarket'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupermarket'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supermarket'
+          description: ''
+      summary: Api supermarket partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiSupermarketDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this supermarket.
+        required: true
+      tags:
+      - Supermarket
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api supermarket destroy
+      x-summary-source: derived
+  /api/supermarket/{id}/cascading/:
+    get:
+      operationId: apiSupermarketCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this supermarket.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Supermarket
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api supermarket cascading list
+      x-summary-source: derived
+  /api/supermarket/{id}/nulling/:
+    get:
+      operationId: apiSupermarketNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this supermarket.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Supermarket
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api supermarket nulling list
+      x-summary-source: derived
+  /api/supermarket/{id}/protecting/:
+    get:
+      operationId: apiSupermarketProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this supermarket.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Supermarket
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api supermarket protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedSupermarket:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+        shopping_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShoppingList'
+        category_to_supermarket:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupermarketCategoryRelation'
+          readOnly: true
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+    PaginatedSupermarketList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Supermarket'
+        timestamp:
+          type: string
+          format: date-time
+    Supermarket:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+        shopping_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShoppingList'
+        category_to_supermarket:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupermarketCategoryRelation'
+          readOnly: true
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+      required:
+      - category_to_supermarket
+      - name
+    SupermarketCategory:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+      required:
+      - name
+    ShoppingList:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 32
+        description:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+      required: []
+    SupermarketCategoryRelation:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        category:
+          $ref: '#/components/schemas/SupermarketCategory'
+        supermarket:
+          type: integer
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - category
+      - supermarket
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

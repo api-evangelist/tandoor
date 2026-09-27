@@ -1,0 +1,269 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Enterprise Billing Referral Link API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Enterprise Billing Referral Link
+paths:
+  /api/enterprise-billing-referral-link/:
+    get:
+      operationId: apiEnterpriseBillingReferralLinkList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Enterprise Billing Referral Link
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEnterpriseBillingReferralLinkList'
+          description: ''
+      summary: Api enterprise billing referral link list
+      x-summary-source: derived
+    post:
+      operationId: apiEnterpriseBillingReferralLinkCreate
+      tags:
+      - Enterprise Billing Referral Link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          description: ''
+      summary: Api enterprise billing referral link create
+      x-summary-source: derived
+  /api/enterprise-billing-referral-link/{id}/:
+    get:
+      operationId: apiEnterpriseBillingReferralLinkRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing referral link.
+        required: true
+      tags:
+      - Enterprise Billing Referral Link
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          description: ''
+      summary: Api enterprise billing referral link retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiEnterpriseBillingReferralLinkUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing referral link.
+        required: true
+      tags:
+      - Enterprise Billing Referral Link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          description: ''
+      summary: Api enterprise billing referral link update
+      x-summary-source: derived
+    patch:
+      operationId: apiEnterpriseBillingReferralLinkPartialUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing referral link.
+        required: true
+      tags:
+      - Enterprise Billing Referral Link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingReferralLink'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingReferralLink'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingReferralLink'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          description: ''
+      summary: Api enterprise billing referral link partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiEnterpriseBillingReferralLinkDestroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing referral link.
+        required: true
+      tags:
+      - Enterprise Billing Referral Link
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api enterprise billing referral link destroy
+      x-summary-source: derived
+  /api/enterprise-billing-referral-link/get_link/:
+    get:
+      operationId: apiEnterpriseBillingReferralLinkGetLinkRetrieve
+      tags:
+      - Enterprise Billing Referral Link
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+          description: ''
+      summary: Api enterprise billing referral link get link retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    EnterpriseBillingReferralLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        created_by:
+          type:
+          - integer
+          - 'null'
+        space:
+          type: integer
+        token:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - space
+    PatchedEnterpriseBillingReferralLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        created_by:
+          type:
+          - integer
+          - 'null'
+        space:
+          type: integer
+        token:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedEnterpriseBillingReferralLinkList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseBillingReferralLink'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

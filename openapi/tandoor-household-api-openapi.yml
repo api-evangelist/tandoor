@@ -1,0 +1,258 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Household API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Household
+paths:
+  /api/household/:
+    get:
+      operationId: apiHouseholdList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Household
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedHouseholdList'
+          description: ''
+      summary: Api household list
+      x-summary-source: derived
+    post:
+      operationId: apiHouseholdCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Household
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Household'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Household'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Household'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Household'
+          description: ''
+      summary: Api household create
+      x-summary-source: derived
+  /api/household/{id}/:
+    get:
+      operationId: apiHouseholdRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this household.
+        required: true
+      tags:
+      - Household
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Household'
+          description: ''
+      summary: Api household retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiHouseholdUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this household.
+        required: true
+      tags:
+      - Household
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Household'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Household'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Household'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Household'
+          description: ''
+      summary: Api household update
+      x-summary-source: derived
+    patch:
+      operationId: apiHouseholdPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this household.
+        required: true
+      tags:
+      - Household
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedHousehold'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedHousehold'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedHousehold'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Household'
+          description: ''
+      summary: Api household partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiHouseholdDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this household.
+        required: true
+      tags:
+      - Household
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api household destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedHousehold:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    Household:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
+    PaginatedHouseholdList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Household'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

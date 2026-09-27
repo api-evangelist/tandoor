@@ -1,0 +1,290 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Export Log API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Export Log
+paths:
+  /api/export-log/:
+    get:
+      operationId: apiExportLogList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Export Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExportLogList'
+          description: ''
+      summary: Api export log list
+      x-summary-source: derived
+    post:
+      operationId: apiExportLogCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Export Log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportLog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExportLog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExportLog'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportLog'
+          description: ''
+      summary: Api export log create
+      x-summary-source: derived
+  /api/export-log/{id}/:
+    get:
+      operationId: apiExportLogRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this export log.
+        required: true
+      tags:
+      - Export Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportLog'
+          description: ''
+      summary: Api export log retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiExportLogUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this export log.
+        required: true
+      tags:
+      - Export Log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportLog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExportLog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExportLog'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportLog'
+          description: ''
+      summary: Api export log update
+      x-summary-source: derived
+    patch:
+      operationId: apiExportLogPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this export log.
+        required: true
+      tags:
+      - Export Log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExportLog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExportLog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExportLog'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportLog'
+          description: ''
+      summary: Api export log partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiExportLogDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this export log.
+        required: true
+      tags:
+      - Export Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api export log destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedExportLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        running:
+          type: boolean
+        total_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        exported_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        cache_duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        possibly_not_expired:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedExportLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExportLog'
+        timestamp:
+          type: string
+          format: date-time
+    ExportLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        running:
+          type: boolean
+        total_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        exported_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        cache_duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        possibly_not_expired:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - type
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

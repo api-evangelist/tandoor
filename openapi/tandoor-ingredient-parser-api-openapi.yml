@@ -1,0 +1,162 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Ingredient Parser API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Ingredient Parser
+paths:
+  /api/ingredient-parser/post/:
+    post:
+      operationId: apiIngredientParserPostCreate
+      tags:
+      - Ingredient Parser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientParserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IngredientParserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IngredientParserRequest'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientParserResponse'
+          description: ''
+      summary: Api ingredient parser post create
+      x-summary-source: derived
+components:
+  schemas:
+    IngredientSimple:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        food:
+          allOf:
+          - $ref: '#/components/schemas/FoodSimple'
+        unit:
+          allOf:
+          - $ref: '#/components/schemas/Unit'
+        amount:
+          type: number
+          format: double
+        note:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        is_header:
+          type: boolean
+        no_amount:
+          type: boolean
+        original_text:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        checked:
+          type: boolean
+          readOnly: true
+          default: false
+          description: Just laziness to have a checked field on the frontend API client
+      required:
+      - amount
+      - checked
+      - food
+      - unit
+    FoodSimple:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        plural_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+      required:
+      - name
+    Unit:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        plural_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        description:
+          type:
+          - string
+          - 'null'
+        base_unit:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+      required:
+      - name
+    IngredientParserResponse:
+      type: object
+      properties:
+        ingredient:
+          allOf:
+          - $ref: '#/components/schemas/IngredientSimple'
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientSimple'
+      required:
+      - ingredient
+      - ingredients
+    IngredientParserRequest:
+      type: object
+      properties:
+        ingredient:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

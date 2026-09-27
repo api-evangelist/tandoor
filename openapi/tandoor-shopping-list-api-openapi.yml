@@ -1,0 +1,418 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Shopping List API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Shopping List
+paths:
+  /api/shopping-list/:
+    get:
+      operationId: apiShoppingListList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Shopping List
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedShoppingListList'
+          description: ''
+      summary: Api shopping list list
+      x-summary-source: derived
+    post:
+      operationId: apiShoppingListCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Shopping List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShoppingList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShoppingList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShoppingList'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppingList'
+          description: ''
+      summary: Api shopping list create
+      x-summary-source: derived
+  /api/shopping-list/{id}/:
+    get:
+      operationId: apiShoppingListRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shopping list.
+        required: true
+      tags:
+      - Shopping List
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppingList'
+          description: ''
+      summary: Api shopping list retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiShoppingListUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shopping list.
+        required: true
+      tags:
+      - Shopping List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShoppingList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShoppingList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShoppingList'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppingList'
+          description: ''
+      summary: Api shopping list update
+      x-summary-source: derived
+    patch:
+      operationId: apiShoppingListPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shopping list.
+        required: true
+      tags:
+      - Shopping List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedShoppingList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedShoppingList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedShoppingList'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppingList'
+          description: ''
+      summary: Api shopping list partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiShoppingListDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shopping list.
+        required: true
+      tags:
+      - Shopping List
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api shopping list destroy
+      x-summary-source: derived
+  /api/shopping-list/{id}/cascading/:
+    get:
+      operationId: apiShoppingListCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shopping list.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Shopping List
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api shopping list cascading list
+      x-summary-source: derived
+  /api/shopping-list/{id}/nulling/:
+    get:
+      operationId: apiShoppingListNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shopping list.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Shopping List
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api shopping list nulling list
+      x-summary-source: derived
+  /api/shopping-list/{id}/protecting/:
+    get:
+      operationId: apiShoppingListProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shopping list.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Shopping List
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api shopping list protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    ShoppingList:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 32
+        description:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+      required: []
+    PaginatedShoppingListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShoppingList'
+        timestamp:
+          type: string
+          format: date-time
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+    PatchedShoppingList:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 32
+        description:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

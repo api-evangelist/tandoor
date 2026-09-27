@@ -17,14 +17,19 @@ description: >-
 url: https://raw.githubusercontent.com/api-evangelist/tandoor/refs/heads/main/apis.yml
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - tandoorrecipes/recipes
+  open_source: unknown
   commercial: true
   callable_host: false
   label: Hosted service · you call their endpoint
-  confidence: medium
+  confidence: low
   source:
+  - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -54,7 +59,7 @@ tags:
   - Food
   - Nutrition
   - Shopping Lists
-  - Open-Source
+  - Open Source
   - Self-Hosted
   - Home Automation
   - Django
@@ -70,26 +75,8 @@ tags_raw:
   - home-automation
   - django
   - open-data
+  - Open-Source
 apis:
-- aid: tandoor:tandoor-api-api
-  name: Tandoor Recipes API
-  description: The api API from Tandoor Recipes — 243 operation(s) for api.
-  humanURL: https://docs.tandoor.dev/
-  baseURL: https://app.tandoor.dev/api/
-  tags: []
-  tags_raw:
-  - api
-  properties:
-  - type: OpenAPI
-    url: openapi/tandoor-api-api-openapi.yml
-  - type: Documentation
-    url: https://docs.tandoor.dev/
-  - type: Authentication
-    url: authentication/tandoor-authentication.yml
-  - type: Conventions
-    url: conventions/tandoor-conventions.yml
-  - type: DataModel
-    url: data-model/tandoor-data-model.yml
 - aid: tandoor:tandoor-api-token-auth-api
   name: Tandoor Recipes API Token Auth API
   description: The api-token-auth API from Tandoor Recipes — 1 operation(s) for api-token-auth.
@@ -100,6 +87,1518 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/tandoor-api-token-auth-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-access-token-api
+  name: Tandoor Recipes Access Token API
+  description: The Access Token API from Tandoor Recipes — 2 operation(s) for access token.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Access Token
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-access-token-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-ai-import-api
+  name: Tandoor Recipes Ai Import API
+  description: The Ai Import API from Tandoor Recipes — 1 operation(s) for ai import.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Ai Import
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-ai-import-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-ai-log-api
+  name: Tandoor Recipes Ai Log API
+  description: The Ai Log API from Tandoor Recipes — 2 operation(s) for ai log.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Ai Log
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-ai-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-ai-provider-api
+  name: Tandoor Recipes Ai Provider API
+  description: The Ai Provider API from Tandoor Recipes — 5 operation(s) for ai provider.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Ai Provider
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-ai-provider-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-ai-step-sort-api
+  name: Tandoor Recipes Ai Step Sort API
+  description: The Ai Step Sort API from Tandoor Recipes — 1 operation(s) for ai step sort.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Ai Step Sort
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-ai-step-sort-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-auto-plan-api
+  name: Tandoor Recipes Auto Plan API
+  description: The Auto Plan API from Tandoor Recipes — 1 operation(s) for auto plan.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Auto Plan
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-auto-plan-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-automation-api
+  name: Tandoor Recipes Automation API
+  description: The Automation API from Tandoor Recipes — 2 operation(s) for automation.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Automation
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-automation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-bookmarklet-import-api
+  name: Tandoor Recipes Bookmarklet Import API
+  description: The Bookmarklet Import API from Tandoor Recipes — 2 operation(s) for bookmarklet import.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Bookmarklet Import
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-bookmarklet-import-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-connector-config-api
+  name: Tandoor Recipes Connector Config API
+  description: The Connector Config API from Tandoor Recipes — 5 operation(s) for connector config.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Connector Config
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-connector-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-cook-log-api
+  name: Tandoor Recipes Cook Log API
+  description: The Cook Log API from Tandoor Recipes — 2 operation(s) for cook log.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Cook Log
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-cook-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-custom-filter-api
+  name: Tandoor Recipes Custom Filter API
+  description: The Custom Filter API from Tandoor Recipes — 2 operation(s) for custom filter.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Custom Filter
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-custom-filter-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-download-file-api
+  name: Tandoor Recipes Download File API
+  description: The Download File API from Tandoor Recipes — 1 operation(s) for download file.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Download File
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-download-file-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-billing-invoice-api
+  name: Tandoor Recipes Enterprise Billing Invoice API
+  description: >-
+    The Enterprise Billing Invoice API from Tandoor Recipes — 3 operation(s) for enterprise billing invoice.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Billing Invoice
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-billing-invoice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-billing-plan-api
+  name: Tandoor Recipes Enterprise Billing Plan API
+  description: >-
+    The Enterprise Billing Plan API from Tandoor Recipes — 2 operation(s) for enterprise billing plan.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Billing Plan
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-billing-plan-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-billing-product-api
+  name: Tandoor Recipes Enterprise Billing Product API
+  description: >-
+    The Enterprise Billing Product API from Tandoor Recipes — 2 operation(s) for enterprise billing product.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Billing Product
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-billing-product-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-billing-referral-link-api
+  name: Tandoor Recipes Enterprise Billing Referral Link API
+  description: >-
+    The Enterprise Billing Referral Link API from Tandoor Recipes — 3 operation(s) for enterprise billing
+    referral link.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Billing Referral Link
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-billing-referral-link-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-billing-stripe-api
+  name: Tandoor Recipes Enterprise Billing Stripe API
+  description: >-
+    The Enterprise Billing Stripe API from Tandoor Recipes — 2 operation(s) for enterprise billing stripe.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Billing Stripe
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-billing-stripe-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-social-embed-api
+  name: Tandoor Recipes Enterprise Social Embed API
+  description: >-
+    The Enterprise Social Embed API from Tandoor Recipes — 2 operation(s) for enterprise social embed.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Social Embed
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-social-embed-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-social-keyword-api
+  name: Tandoor Recipes Enterprise Social Keyword API
+  description: >-
+    The Enterprise Social Keyword API from Tandoor Recipes — 7 operation(s) for enterprise social keyword.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Social Keyword
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-social-keyword-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-social-recipe-api
+  name: Tandoor Recipes Enterprise Social Recipe API
+  description: >-
+    The Enterprise Social Recipe API from Tandoor Recipes — 12 operation(s) for enterprise social recipe.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Social Recipe
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-social-recipe-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-enterprise-space-api
+  name: Tandoor Recipes Enterprise Space API
+  description: The Enterprise Space API from Tandoor Recipes — 3 operation(s) for enterprise space.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Enterprise Space
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-enterprise-space-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-export-api
+  name: Tandoor Recipes Export API
+  description: The Export API from Tandoor Recipes — 1 operation(s) for export.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Export
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-export-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-export-log-api
+  name: Tandoor Recipes Export Log API
+  description: The Export Log API from Tandoor Recipes — 2 operation(s) for export log.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Export Log
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-export-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-fdc-search-api
+  name: Tandoor Recipes Fdc Search API
+  description: The Fdc Search API from Tandoor Recipes — 1 operation(s) for fdc search.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Fdc Search
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-fdc-search-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-food-api
+  name: Tandoor Recipes Food API
+  description: The Food API from Tandoor Recipes — 11 operation(s) for food.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Food
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-food-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-food-inherit-field-api
+  name: Tandoor Recipes Food Inherit Field API
+  description: The Food Inherit Field API from Tandoor Recipes — 2 operation(s) for food inherit field.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Food Inherit Field
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-food-inherit-field-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-get-external-file-link-api
+  name: Tandoor Recipes Get External File Link API
+  description: >-
+    The Get External File Link API from Tandoor Recipes — 1 operation(s) for get external file link.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Get External File Link
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-get-external-file-link-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-get-recipe-file-api
+  name: Tandoor Recipes Get Recipe File API
+  description: The Get Recipe File API from Tandoor Recipes — 1 operation(s) for get recipe file.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Get Recipe File
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-get-recipe-file-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-group-api
+  name: Tandoor Recipes Group API
+  description: The Group API from Tandoor Recipes — 2 operation(s) for group.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Group
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-group-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-household-api
+  name: Tandoor Recipes Household API
+  description: The Household API from Tandoor Recipes — 2 operation(s) for household.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Household
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-household-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-import-api
+  name: Tandoor Recipes Import API
+  description: The Import API from Tandoor Recipes — 1 operation(s) for import.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Import
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-import-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-import-log-api
+  name: Tandoor Recipes Import Log API
+  description: The Import Log API from Tandoor Recipes — 2 operation(s) for import log.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Import Log
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-import-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-import-open-data-api
+  name: Tandoor Recipes Import Open Data API
+  description: The Import Open Data API from Tandoor Recipes — 1 operation(s) for import open data.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Import Open Data
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-import-open-data-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-ingredient-api
+  name: Tandoor Recipes Ingredient API
+  description: The Ingredient API from Tandoor Recipes — 2 operation(s) for ingredient.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Ingredient
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-ingredient-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-ingredient-parser-api
+  name: Tandoor Recipes Ingredient Parser API
+  description: The Ingredient Parser API from Tandoor Recipes — 1 operation(s) for ingredient parser.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Ingredient Parser
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-ingredient-parser-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-inventory-entry-api
+  name: Tandoor Recipes Inventory Entry API
+  description: The Inventory Entry API from Tandoor Recipes — 5 operation(s) for inventory entry.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Inventory Entry
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-inventory-entry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-inventory-location-api
+  name: Tandoor Recipes Inventory Location API
+  description: The Inventory Location API from Tandoor Recipes — 5 operation(s) for inventory location.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Inventory Location
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-inventory-location-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-inventory-log-api
+  name: Tandoor Recipes Inventory Log API
+  description: The Inventory Log API from Tandoor Recipes — 2 operation(s) for inventory log.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Inventory Log
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-inventory-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-invite-link-api
+  name: Tandoor Recipes Invite Link API
+  description: The Invite Link API from Tandoor Recipes — 2 operation(s) for invite link.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Invite Link
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-invite-link-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-keyword-api
+  name: Tandoor Recipes Keyword API
+  description: The Keyword API from Tandoor Recipes — 7 operation(s) for keyword.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Keyword
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-keyword-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-localization-api
+  name: Tandoor Recipes Localization API
+  description: The Localization API from Tandoor Recipes — 1 operation(s) for localization.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Localization
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-localization-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-meal-plan-api
+  name: Tandoor Recipes Meal Plan API
+  description: The Meal Plan API from Tandoor Recipes — 3 operation(s) for meal plan.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Meal Plan
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-meal-plan-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-meal-type-api
+  name: Tandoor Recipes Meal Type API
+  description: The Meal Type API from Tandoor Recipes — 5 operation(s) for meal type.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Meal Type
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-meal-type-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-category-api
+  name: Tandoor Recipes Open Data Category API
+  description: The Open Data Category API from Tandoor Recipes — 2 operation(s) for open data category.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Category
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-category-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-conversion-api
+  name: Tandoor Recipes Open Data Conversion API
+  description: >-
+    The Open Data Conversion API from Tandoor Recipes — 2 operation(s) for open data conversion.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Conversion
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-conversion-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-fdc-api
+  name: Tandoor Recipes Open Data FDC API
+  description: The Open Data FDC API from Tandoor Recipes — 1 operation(s) for open data fdc.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data FDC
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-fdc-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-food-api
+  name: Tandoor Recipes Open Data Food API
+  description: The Open Data Food API from Tandoor Recipes — 3 operation(s) for open data food.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Food
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-food-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-property-api
+  name: Tandoor Recipes Open Data Property API
+  description: The Open Data Property API from Tandoor Recipes — 2 operation(s) for open data property.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Property
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-property-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-stats-api
+  name: Tandoor Recipes Open Data Stats API
+  description: The Open Data Stats API from Tandoor Recipes — 1 operation(s) for open data stats.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Stats
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-stats-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-store-api
+  name: Tandoor Recipes Open Data Store API
+  description: The Open Data Store API from Tandoor Recipes — 2 operation(s) for open data store.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Store
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-store-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-unit-api
+  name: Tandoor Recipes Open Data Unit API
+  description: The Open Data Unit API from Tandoor Recipes — 2 operation(s) for open data unit.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Unit
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-unit-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-open-data-version-api
+  name: Tandoor Recipes Open Data Version API
+  description: The Open Data Version API from Tandoor Recipes — 2 operation(s) for open data version.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Open Data Version
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-open-data-version-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-property-api
+  name: Tandoor Recipes Property API
+  description: The Property API from Tandoor Recipes — 2 operation(s) for property.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Property
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-property-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-property-type-api
+  name: Tandoor Recipes Property Type API
+  description: The Property Type API from Tandoor Recipes — 5 operation(s) for property type.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Property Type
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-property-type-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-recipe-api
+  name: Tandoor Recipes Recipe API
+  description: The Recipe API from Tandoor Recipes — 12 operation(s) for recipe.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Recipe
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-recipe-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-recipe-book-api
+  name: Tandoor Recipes Recipe Book API
+  description: The Recipe Book API from Tandoor Recipes — 5 operation(s) for recipe book.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Recipe Book
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-recipe-book-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-recipe-book-entry-api
+  name: Tandoor Recipes Recipe Book Entry API
+  description: The Recipe Book Entry API from Tandoor Recipes — 2 operation(s) for recipe book entry.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Recipe Book Entry
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-recipe-book-entry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-recipe-from-source-api
+  name: Tandoor Recipes Recipe From Source API
+  description: The Recipe From Source API from Tandoor Recipes — 1 operation(s) for recipe from source.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Recipe From Source
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-recipe-from-source-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-recipe-import-api
+  name: Tandoor Recipes Recipe Import API
+  description: The Recipe Import API from Tandoor Recipes — 4 operation(s) for recipe import.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Recipe Import
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-recipe-import-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-reset-food-inheritance-api
+  name: Tandoor Recipes Reset Food Inheritance API
+  description: >-
+    The Reset Food Inheritance API from Tandoor Recipes — 1 operation(s) for reset food inheritance.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Reset Food Inheritance
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-reset-food-inheritance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-search-fields-api
+  name: Tandoor Recipes Search Fields API
+  description: The Search Fields API from Tandoor Recipes — 2 operation(s) for search fields.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Search Fields
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-search-fields-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-search-preference-api
+  name: Tandoor Recipes Search Preference API
+  description: The Search Preference API from Tandoor Recipes — 2 operation(s) for search preference.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Search Preference
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-search-preference-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-server-settings-api
+  name: Tandoor Recipes Server Settings API
+  description: The Server Settings API from Tandoor Recipes — 1 operation(s) for server settings.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Server Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-server-settings-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-share-link-api
+  name: Tandoor Recipes Share Link API
+  description: The Share Link API from Tandoor Recipes — 1 operation(s) for share link.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Share Link
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-share-link-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-shopping-list-api
+  name: Tandoor Recipes Shopping List API
+  description: The Shopping List API from Tandoor Recipes — 5 operation(s) for shopping list.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Shopping List
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-shopping-list-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-shopping-list-entry-api
+  name: Tandoor Recipes Shopping List Entry API
+  description: >-
+    The Shopping List Entry API from Tandoor Recipes — 3 operation(s) for shopping list entry.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Shopping List Entry
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-shopping-list-entry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-shopping-list-recipe-api
+  name: Tandoor Recipes Shopping List Recipe API
+  description: >-
+    The Shopping List Recipe API from Tandoor Recipes — 3 operation(s) for shopping list recipe.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Shopping List Recipe
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-shopping-list-recipe-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-space-api
+  name: Tandoor Recipes Space API
+  description: The Space API from Tandoor Recipes — 3 operation(s) for space.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Space
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-space-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-step-api
+  name: Tandoor Recipes Step API
+  description: The Step API from Tandoor Recipes — 2 operation(s) for step.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Step
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-step-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-storage-api
+  name: Tandoor Recipes Storage API
+  description: The Storage API from Tandoor Recipes — 5 operation(s) for storage.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-storage-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-supermarket-api
+  name: Tandoor Recipes Supermarket API
+  description: The Supermarket API from Tandoor Recipes — 5 operation(s) for supermarket.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Supermarket
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-supermarket-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-supermarket-category-api
+  name: Tandoor Recipes Supermarket Category API
+  description: >-
+    The Supermarket Category API from Tandoor Recipes — 6 operation(s) for supermarket category.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Supermarket Category
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-supermarket-category-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-supermarket-category-relation-api
+  name: Tandoor Recipes Supermarket Category Relation API
+  description: >-
+    The Supermarket Category Relation API from Tandoor Recipes — 2 operation(s) for supermarket category
+    relation.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Supermarket Category Relation
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-supermarket-category-relation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-switch-active-space-api
+  name: Tandoor Recipes Switch Active Space API
+  description: >-
+    The Switch Active Space API from Tandoor Recipes — 1 operation(s) for switch active space.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Switch Active Space
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-switch-active-space-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-sync-api
+  name: Tandoor Recipes Sync API
+  description: The Sync API from Tandoor Recipes — 6 operation(s) for sync.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Sync
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-sync-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-sync-log-api
+  name: Tandoor Recipes Sync Log API
+  description: The Sync Log API from Tandoor Recipes — 2 operation(s) for sync log.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Sync Log
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-sync-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-unit-api
+  name: Tandoor Recipes Unit API
+  description: The Unit API from Tandoor Recipes — 6 operation(s) for unit.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Unit
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-unit-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-unit-conversion-api
+  name: Tandoor Recipes Unit Conversion API
+  description: The Unit Conversion API from Tandoor Recipes — 2 operation(s) for unit conversion.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - Unit Conversion
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-unit-conversion-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-user-api
+  name: Tandoor Recipes User API
+  description: The User API from Tandoor Recipes — 2 operation(s) for user.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-user-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-user-file-api
+  name: Tandoor Recipes User File API
+  description: The User File API from Tandoor Recipes — 5 operation(s) for user file.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - User File
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-user-file-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-user-preference-api
+  name: Tandoor Recipes User Preference API
+  description: The User Preference API from Tandoor Recipes — 2 operation(s) for user preference.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - User Preference
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-user-preference-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-user-space-api
+  name: Tandoor Recipes User Space API
+  description: The User Space API from Tandoor Recipes — 4 operation(s) for user space.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - User Space
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-user-space-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tandoor.dev/
+  - type: Authentication
+    url: authentication/tandoor-authentication.yml
+  - type: Conventions
+    url: conventions/tandoor-conventions.yml
+  - type: DataModel
+    url: data-model/tandoor-data-model.yml
+- aid: tandoor:tandoor-view-log-api
+  name: Tandoor Recipes View Log API
+  description: The View Log API from Tandoor Recipes — 2 operation(s) for view log.
+  humanURL: https://docs.tandoor.dev/
+  baseURL: https://app.tandoor.dev/api/
+  tags:
+  - View Log
+  properties:
+  - type: OpenAPI
+    url: openapi/tandoor-view-log-api-openapi.yml
   - type: Documentation
     url: https://docs.tandoor.dev/
   - type: Authentication

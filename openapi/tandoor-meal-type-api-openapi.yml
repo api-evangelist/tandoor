@@ -1,0 +1,454 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Meal Type API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Meal Type
+paths:
+  /api/meal-type/:
+    get:
+      operationId: apiMealTypeList
+      description: 'returns list of meal types created by the
+
+        requesting user ordered by the order field.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Meal Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMealTypeList'
+          description: ''
+      summary: Api meal type list
+      x-summary-source: derived
+    post:
+      operationId: apiMealTypeCreate
+      description: 'returns list of meal types created by the
+
+        requesting user ordered by the order field.'
+      tags:
+      - Meal Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MealType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MealType'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealType'
+          description: ''
+      summary: Api meal type create
+      x-summary-source: derived
+  /api/meal-type/{id}/:
+    get:
+      operationId: apiMealTypeRetrieve
+      description: 'returns list of meal types created by the
+
+        requesting user ordered by the order field.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meal type.
+        required: true
+      tags:
+      - Meal Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealType'
+          description: ''
+      summary: Api meal type retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiMealTypeUpdate
+      description: 'returns list of meal types created by the
+
+        requesting user ordered by the order field.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meal type.
+        required: true
+      tags:
+      - Meal Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MealType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MealType'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealType'
+          description: ''
+      summary: Api meal type update
+      x-summary-source: derived
+    patch:
+      operationId: apiMealTypePartialUpdate
+      description: 'returns list of meal types created by the
+
+        requesting user ordered by the order field.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meal type.
+        required: true
+      tags:
+      - Meal Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMealType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMealType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMealType'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealType'
+          description: ''
+      summary: Api meal type partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiMealTypeDestroy
+      description: 'returns list of meal types created by the
+
+        requesting user ordered by the order field.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meal type.
+        required: true
+      tags:
+      - Meal Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api meal type destroy
+      x-summary-source: derived
+  /api/meal-type/{id}/cascading/:
+    get:
+      operationId: apiMealTypeCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meal type.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Meal Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api meal type cascading list
+      x-summary-source: derived
+  /api/meal-type/{id}/nulling/:
+    get:
+      operationId: apiMealTypeNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meal type.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Meal Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api meal type nulling list
+      x-summary-source: derived
+  /api/meal-type/{id}/protecting/:
+    get:
+      operationId: apiMealTypeProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meal type.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Meal Type
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api meal type protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    MealType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedMealTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealType'
+        timestamp:
+          type: string
+          format: date-time
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+    PatchedMealType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+        created_by:
+          type: integer
+          readOnly: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

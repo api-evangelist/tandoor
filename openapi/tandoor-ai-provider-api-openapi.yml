@@ -1,0 +1,462 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Ai Provider API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Ai Provider
+paths:
+  /api/ai-provider/:
+    get:
+      operationId: apiAiProviderList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Ai Provider
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAiProviderList'
+          description: ''
+      summary: Api ai provider list
+      x-summary-source: derived
+    post:
+      operationId: apiAiProviderCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Ai Provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiProvider'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AiProvider'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AiProvider'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiProvider'
+          description: ''
+      summary: Api ai provider create
+      x-summary-source: derived
+  /api/ai-provider/{id}/:
+    get:
+      operationId: apiAiProviderRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai provider.
+        required: true
+      tags:
+      - Ai Provider
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiProvider'
+          description: ''
+      summary: Api ai provider retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiAiProviderUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai provider.
+        required: true
+      tags:
+      - Ai Provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiProvider'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AiProvider'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AiProvider'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiProvider'
+          description: ''
+      summary: Api ai provider update
+      x-summary-source: derived
+    patch:
+      operationId: apiAiProviderPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai provider.
+        required: true
+      tags:
+      - Ai Provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAiProvider'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAiProvider'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAiProvider'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiProvider'
+          description: ''
+      summary: Api ai provider partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiAiProviderDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai provider.
+        required: true
+      tags:
+      - Ai Provider
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api ai provider destroy
+      x-summary-source: derived
+  /api/ai-provider/{id}/cascading/:
+    get:
+      operationId: apiAiProviderCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai provider.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Ai Provider
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api ai provider cascading list
+      x-summary-source: derived
+  /api/ai-provider/{id}/nulling/:
+    get:
+      operationId: apiAiProviderNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai provider.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Ai Provider
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api ai provider nulling list
+      x-summary-source: derived
+  /api/ai-provider/{id}/protecting/:
+    get:
+      operationId: apiAiProviderProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ai provider.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Ai Provider
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api ai provider protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedAiProviderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiProvider'
+        timestamp:
+          type: string
+          format: date-time
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+    AiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - model_name
+      - name
+      - updated_at
+    PatchedAiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

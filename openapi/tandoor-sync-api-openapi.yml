@@ -1,0 +1,557 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Sync API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Sync
+paths:
+  /api/sync/:
+    get:
+      operationId: apiSyncList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Sync
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSyncList'
+          description: ''
+      summary: Api sync list
+      x-summary-source: derived
+    post:
+      operationId: apiSyncCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Sync
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sync'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Sync'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Sync'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sync'
+          description: ''
+      summary: Api sync create
+      x-summary-source: derived
+  /api/sync/{id}/:
+    get:
+      operationId: apiSyncRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      tags:
+      - Sync
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sync'
+          description: ''
+      summary: Api sync retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiSyncUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      tags:
+      - Sync
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sync'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Sync'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Sync'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sync'
+          description: ''
+      summary: Api sync update
+      x-summary-source: derived
+    patch:
+      operationId: apiSyncPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      tags:
+      - Sync
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSync'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSync'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSync'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sync'
+          description: ''
+      summary: Api sync partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiSyncDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      tags:
+      - Sync
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api sync destroy
+      x-summary-source: derived
+  /api/sync/{id}/cascading/:
+    get:
+      operationId: apiSyncCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Sync
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api sync cascading list
+      x-summary-source: derived
+  /api/sync/{id}/nulling/:
+    get:
+      operationId: apiSyncNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Sync
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api sync nulling list
+      x-summary-source: derived
+  /api/sync/{id}/protecting/:
+    get:
+      operationId: apiSyncProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Sync
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api sync protecting list
+      x-summary-source: derived
+  /api/sync/{id}/query_synced_folder/:
+    post:
+      operationId: apiSyncQuerySyncedFolderCreate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync.
+        required: true
+      tags:
+      - Sync
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sync'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Sync'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Sync'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncLog'
+          description: ''
+      summary: Api sync query synced folder create
+      x-summary-source: derived
+components:
+  schemas:
+    MethodEnum:
+      enum:
+      - DB
+      - NEXTCLOUD
+      - LOCAL
+      type: string
+      description: '* `DB` - Dropbox
+
+        * `NEXTCLOUD` - Nextcloud
+
+        * `LOCAL` - Local'
+    Storage:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        username:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 128
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 4098
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        path:
+          type: string
+          maxLength: 256
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+    PatchedSync:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        storage:
+          $ref: '#/components/schemas/Storage'
+        path:
+          type: string
+          maxLength: 512
+        active:
+          type: boolean
+        last_checked:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    SyncLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        sync:
+          allOf:
+          - $ref: '#/components/schemas/Sync'
+          readOnly: true
+        status:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - status
+      - sync
+    Sync:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        storage:
+          $ref: '#/components/schemas/Storage'
+        path:
+          type: string
+          maxLength: 512
+        active:
+          type: boolean
+        last_checked:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - storage
+      - updated_at
+    PaginatedSyncList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sync'
+        timestamp:
+          type: string
+          format: date-time
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

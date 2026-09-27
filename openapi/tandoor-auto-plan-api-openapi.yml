@@ -1,0 +1,135 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Auto Plan API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Auto Plan
+paths:
+  /api/auto-plan/:
+    post:
+      operationId: apiAutoPlanCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Auto Plan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutoMealPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AutoMealPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AutoMealPlan'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoMealPlan'
+          description: ''
+      summary: Api auto plan create
+      x-summary-source: derived
+components:
+  schemas:
+    AutoMealPlan:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        meal_type_id:
+          type: integer
+        keywords:
+          type: array
+          items:
+            type: integer
+          default: []
+        keyword_mode:
+          allOf:
+          - $ref: '#/components/schemas/KeywordModeEnum'
+          default: and
+        servings:
+          type: number
+          format: double
+        shared:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/User'
+        addshopping:
+          type: boolean
+      required:
+      - addshopping
+      - end_date
+      - meal_type_id
+      - servings
+      - start_date
+    KeywordModeEnum:
+      enum:
+      - or
+      - and
+      type: string
+      description: '* `or` - or
+
+        * `and` - and'
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

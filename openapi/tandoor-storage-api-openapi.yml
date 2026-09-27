@@ -1,0 +1,481 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Storage API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Storage
+paths:
+  /api/storage/:
+    get:
+      operationId: apiStorageList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Storage
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStorageList'
+          description: ''
+      summary: Api storage list
+      x-summary-source: derived
+    post:
+      operationId: apiStorageCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Storage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Storage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Storage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Storage'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Storage'
+          description: ''
+      summary: Api storage create
+      x-summary-source: derived
+  /api/storage/{id}/:
+    get:
+      operationId: apiStorageRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this storage.
+        required: true
+      tags:
+      - Storage
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Storage'
+          description: ''
+      summary: Api storage retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiStorageUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this storage.
+        required: true
+      tags:
+      - Storage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Storage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Storage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Storage'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Storage'
+          description: ''
+      summary: Api storage update
+      x-summary-source: derived
+    patch:
+      operationId: apiStoragePartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this storage.
+        required: true
+      tags:
+      - Storage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStorage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStorage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStorage'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Storage'
+          description: ''
+      summary: Api storage partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiStorageDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this storage.
+        required: true
+      tags:
+      - Storage
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api storage destroy
+      x-summary-source: derived
+  /api/storage/{id}/cascading/:
+    get:
+      operationId: apiStorageCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this storage.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Storage
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api storage cascading list
+      x-summary-source: derived
+  /api/storage/{id}/nulling/:
+    get:
+      operationId: apiStorageNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this storage.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Storage
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api storage nulling list
+      x-summary-source: derived
+  /api/storage/{id}/protecting/:
+    get:
+      operationId: apiStorageProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this storage.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Storage
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api storage protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedStorage:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        username:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 128
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 4098
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        path:
+          type: string
+          maxLength: 256
+        created_by:
+          type: integer
+          readOnly: true
+    MethodEnum:
+      enum:
+      - DB
+      - NEXTCLOUD
+      - LOCAL
+      type: string
+      description: '* `DB` - Dropbox
+
+        * `NEXTCLOUD` - Nextcloud
+
+        * `LOCAL` - Local'
+    Storage:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        username:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 128
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 4098
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        path:
+          type: string
+          maxLength: 256
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedStorageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Storage'
+        timestamp:
+          type: string
+          format: date-time
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

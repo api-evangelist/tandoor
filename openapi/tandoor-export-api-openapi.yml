@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Export API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Export
+paths:
+  /api/export/:
+    post:
+      operationId: apiExportCreate
+      tags:
+      - Export
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportLog'
+          description: ''
+      summary: Api export create
+      x-summary-source: derived
+components:
+  schemas:
+    CustomFilter:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        search:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - search
+    RecipeSimple:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        url:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - url
+    ExportRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        all:
+          type: boolean
+          default: false
+        recipes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeSimple'
+          default: []
+        custom_filter:
+          allOf:
+          - $ref: '#/components/schemas/CustomFilter'
+      required:
+      - type
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+    ExportLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        running:
+          type: boolean
+        total_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        exported_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        cache_duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        possibly_not_expired:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - type
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

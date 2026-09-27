@@ -1,0 +1,32 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Reset Food Inheritance API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Reset Food Inheritance
+paths:
+  /api/reset-food-inheritance/:
+    post:
+      operationId: apiResetFoodInheritanceCreate
+      description: function to reset inheritance from api, see food method for docs
+      tags:
+      - Reset Food Inheritance
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: No response body
+      summary: Api reset food inheritance create
+      x-summary-source: derived
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

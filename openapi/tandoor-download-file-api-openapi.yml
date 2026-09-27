@@ -1,0 +1,40 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Download File API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Download File
+paths:
+  /api/download-file/{fileId}/:
+    get:
+      operationId: apiDownloadFileRetrieve
+      description: 'function to download a user file securely (wrapping as zip to prevent any context based XSS problems)
+
+        temporary solution until a real file manager is implemented'
+      parameters:
+      - in: path
+        name: fileId
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Download File
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: No response body
+      summary: Api download file retrieve
+      x-summary-source: derived
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

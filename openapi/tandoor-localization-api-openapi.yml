@@ -1,0 +1,51 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Localization API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Localization
+paths:
+  /api/localization/:
+    get:
+      operationId: apiLocalizationList
+      tags:
+      - Localization
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Localization'
+          description: ''
+      summary: Api localization list
+      x-summary-source: derived
+components:
+  schemas:
+    Localization:
+      type: object
+      properties:
+        code:
+          type: string
+          readOnly: true
+          maxLength: 8
+        language:
+          type: string
+          readOnly: true
+      required:
+      - code
+      - language
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

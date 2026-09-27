@@ -1,0 +1,395 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Enterprise Space API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Enterprise Space
+paths:
+  /api/enterprise-space/:
+    get:
+      operationId: apiEnterpriseSpaceList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Enterprise Space
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEnterpriseSpaceList'
+          description: ''
+      summary: Api enterprise space list
+      x-summary-source: derived
+    post:
+      operationId: apiEnterpriseSpaceCreate
+      tags:
+      - Enterprise Space
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSpace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSpace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSpace'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSpace'
+          description: ''
+      summary: Api enterprise space create
+      x-summary-source: derived
+  /api/enterprise-space/{space}/:
+    get:
+      operationId: apiEnterpriseSpaceRetrieve
+      parameters:
+      - in: path
+        name: space
+        schema:
+          type: integer
+        description: A unique value identifying this enterprise space.
+        required: true
+      tags:
+      - Enterprise Space
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSpace'
+          description: ''
+      summary: Api enterprise space retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiEnterpriseSpaceUpdate
+      parameters:
+      - in: path
+        name: space
+        schema:
+          type: integer
+        description: A unique value identifying this enterprise space.
+        required: true
+      tags:
+      - Enterprise Space
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSpace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSpace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSpace'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSpace'
+          description: ''
+      summary: Api enterprise space update
+      x-summary-source: derived
+    patch:
+      operationId: apiEnterpriseSpacePartialUpdate
+      parameters:
+      - in: path
+        name: space
+        schema:
+          type: integer
+        description: A unique value identifying this enterprise space.
+        required: true
+      tags:
+      - Enterprise Space
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseSpace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseSpace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseSpace'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSpace'
+          description: ''
+      summary: Api enterprise space partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiEnterpriseSpaceDestroy
+      parameters:
+      - in: path
+        name: space
+        schema:
+          type: integer
+        description: A unique value identifying this enterprise space.
+        required: true
+      tags:
+      - Enterprise Space
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api enterprise space destroy
+      x-summary-source: derived
+  /api/enterprise-space/current/:
+    get:
+      operationId: apiEnterpriseSpaceCurrentRetrieve
+      tags:
+      - Enterprise Space
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseSpace'
+          description: ''
+      summary: Api enterprise space current retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedEnterpriseSpace:
+      type: object
+      properties:
+        space:
+          type: integer
+          readOnly: true
+        billing_licensed_modules:
+          type: string
+          readOnly: true
+        billing_customer_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_plan:
+          allOf:
+          - $ref: '#/components/schemas/EnterpriseBillingPlan'
+          readOnly: true
+        billing_subscription_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_subscription_status:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_monthly_price:
+          type: number
+          format: double
+          readOnly: true
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        billing_region:
+          allOf:
+          - $ref: '#/components/schemas/BillingRegionEnum'
+    EnterpriseSpace:
+      type: object
+      properties:
+        space:
+          type: integer
+          readOnly: true
+        billing_licensed_modules:
+          type: string
+          readOnly: true
+        billing_customer_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_plan:
+          allOf:
+          - $ref: '#/components/schemas/EnterpriseBillingPlan'
+          readOnly: true
+        billing_subscription_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_subscription_status:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_monthly_price:
+          type: number
+          format: double
+          readOnly: true
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        billing_region:
+          allOf:
+          - $ref: '#/components/schemas/BillingRegionEnum'
+      required:
+      - billing_customer_id
+      - billing_licensed_modules
+      - billing_monthly_price
+      - billing_plan
+      - billing_subscription_id
+      - billing_subscription_status
+      - space
+    EnterpriseBillingPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 256
+        max_users:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        max_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        max_file_storage_mb:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Maximum file storage for space in MB. 0 for unlimited, -1 to disable file upload.
+        ai_enabled:
+          type: boolean
+        ai_credits_monthly:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_initial_credit_balance:
+          type: number
+          format: double
+          description: number of credits to set the balance to for new subscriptions.
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        price:
+          type: number
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        price_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Discounted price to show, update price_id from Stripe to use, null to disable discount.
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        discount_reason:
+          type:
+          - string
+          - 'null'
+          description: Text to show as reason for the discount
+          maxLength: 256
+        months:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        price_id:
+          type: string
+          maxLength: 256
+        product_id:
+          type: string
+          maxLength: 256
+        managed:
+          type: boolean
+        featured:
+          type: boolean
+        disabled:
+          type: boolean
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - max_users
+      - name
+      - price
+      - price_id
+      - product_id
+    PaginatedEnterpriseSpaceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseSpace'
+        timestamp:
+          type: string
+          format: date-time
+    BillingRegionEnum:
+      enum:
+      - EWR
+      - WORLD
+      type: string
+      description: '* `EWR` - EWR
+
+        * `WORLD` - World'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

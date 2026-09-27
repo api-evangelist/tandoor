@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Fdc Search API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Fdc Search
+paths:
+  /api/fdc-search/:
+    get:
+      operationId: apiFdcSearchRetrieve
+      parameters:
+      - in: query
+        name: dataType
+        schema:
+          type: array
+          items:
+            type: string
+        description: 'options: Branded,Foundation,Survey (FNDDS),SR Legacy'
+      - in: query
+        name: query
+        schema:
+          type: string
+      tags:
+      - Fdc Search
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FdcQuery'
+          description: ''
+      summary: Api fdc search retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    FdcQueryFoods:
+      type: object
+      properties:
+        fdcId:
+          type: integer
+        description:
+          type: string
+        dataType:
+          type: string
+      required:
+      - dataType
+      - description
+      - fdcId
+    FdcQuery:
+      type: object
+      properties:
+        totalHits:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+        foods:
+          type: array
+          items:
+            $ref: '#/components/schemas/FdcQueryFoods'
+      required:
+      - currentPage
+      - foods
+      - totalHits
+      - totalPages
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

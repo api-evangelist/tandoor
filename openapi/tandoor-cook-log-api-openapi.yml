@@ -1,0 +1,338 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Cook Log API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Cook Log
+paths:
+  /api/cook-log/:
+    get:
+      operationId: apiCookLogList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: recipe
+        schema:
+          type: integer
+        description: Filter for entries with the given recipe
+      tags:
+      - Cook Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCookLogList'
+          description: ''
+      summary: Api cook log list
+      x-summary-source: derived
+    post:
+      operationId: apiCookLogCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Cook Log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CookLog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CookLog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CookLog'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CookLog'
+          description: ''
+      summary: Api cook log create
+      x-summary-source: derived
+  /api/cook-log/{id}/:
+    get:
+      operationId: apiCookLogRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cook log.
+        required: true
+      tags:
+      - Cook Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CookLog'
+          description: ''
+      summary: Api cook log retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiCookLogUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cook log.
+        required: true
+      tags:
+      - Cook Log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CookLog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CookLog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CookLog'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CookLog'
+          description: ''
+      summary: Api cook log update
+      x-summary-source: derived
+    patch:
+      operationId: apiCookLogPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cook log.
+        required: true
+      tags:
+      - Cook Log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCookLog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCookLog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCookLog'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CookLog'
+          description: ''
+      summary: Api cook log partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiCookLogDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cook log.
+        required: true
+      tags:
+      - Cook Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api cook log destroy
+      x-summary-source: derived
+components:
+  schemas:
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+    PatchedCookLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        recipe:
+          type: integer
+        servings:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        rating:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        comment:
+          type:
+          - string
+          - 'null'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedCookLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CookLog'
+        timestamp:
+          type: string
+          format: date-time
+    CookLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        recipe:
+          type: integer
+        servings:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        rating:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        comment:
+          type:
+          - string
+          - 'null'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_by
+      - recipe
+      - updated_at
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

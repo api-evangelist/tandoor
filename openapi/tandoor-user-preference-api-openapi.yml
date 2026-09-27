@@ -1,0 +1,427 @@
+openapi: 3.2.0
+info:
+  title: Tandoor User Preference API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: User Preference
+paths:
+  /api/user-preference/:
+    get:
+      operationId: apiUserPreferenceList
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - User Preference
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPreference'
+          description: ''
+      summary: Api user preference list
+      x-summary-source: derived
+  /api/user-preference/{user}/:
+    get:
+      operationId: apiUserPreferenceRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: user
+        schema:
+          type: integer
+        description: A unique value identifying this user preference.
+        required: true
+      tags:
+      - User Preference
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreference'
+          description: ''
+      summary: Api user preference retrieve
+      x-summary-source: derived
+    patch:
+      operationId: apiUserPreferencePartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: user
+        schema:
+          type: integer
+        description: A unique value identifying this user preference.
+        required: true
+      tags:
+      - User Preference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPreference'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPreference'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPreference'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreference'
+          description: ''
+      summary: Api user preference partial update
+      x-summary-source: derived
+components:
+  schemas:
+    MealType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+    FoodInheritField:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type:
+          - string
+          - 'null'
+        field:
+          type:
+          - string
+          - 'null'
+      required: []
+    DefaultPageEnum:
+      enum:
+      - SEARCH
+      - PLAN
+      - BOOKS
+      - SHOPPING
+      type: string
+      description: '* `SEARCH` - Search
+
+        * `PLAN` - Meal-Plan
+
+        * `BOOKS` - Books
+
+        * `SHOPPING` - Shopping'
+    UserPreferenceNavTextColorEnum:
+      enum:
+      - LIGHT
+      - DARK
+      type: string
+      description: '* `LIGHT` - Light
+
+        * `DARK` - Dark'
+    UserFileView:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        file_download:
+          type: string
+          readOnly: true
+        preview:
+          type: string
+          readOnly: true
+        file_size_kb:
+          type: integer
+          readOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - file_download
+      - file_size_kb
+      - name
+      - preview
+    ThemeEnum:
+      enum:
+      - TANDOOR
+      - BOOTSTRAP
+      - DARKLY
+      - FLATLY
+      - SUPERHERO
+      - TANDOOR_DARK
+      type: string
+      description: '* `TANDOOR` - Tandoor
+
+        * `BOOTSTRAP` - Bootstrap
+
+        * `DARKLY` - Darkly
+
+        * `FLATLY` - Flatly
+
+        * `SUPERHERO` - Superhero
+
+        * `TANDOOR_DARK` - Tandoor Dark (INCOMPLETE)'
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+    UserPreference:
+      type: object
+      description: Adds nested create feature
+      properties:
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        image:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        theme:
+          $ref: '#/components/schemas/ThemeEnum'
+        nav_bg_color:
+          type: string
+          maxLength: 8
+        nav_text_color:
+          $ref: '#/components/schemas/UserPreferenceNavTextColorEnum'
+        nav_show_logo:
+          type: boolean
+        default_unit:
+          type: string
+          maxLength: 32
+        default_page:
+          $ref: '#/components/schemas/DefaultPageEnum'
+        use_fractions:
+          type: boolean
+        use_kj:
+          type: boolean
+        nav_sticky:
+          type: boolean
+        ingredient_decimals:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        comments:
+          type: boolean
+        shopping_auto_sync:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        mealplan_autoadd_shopping:
+          type: boolean
+        food_inherit_default:
+          allOf:
+          - $ref: '#/components/schemas/FoodInheritField'
+          readOnly: true
+        default_delay:
+          type: number
+          format: double
+          exclusiveMinimum: -10000
+          exclusiveMaximum: 10000
+        mealplan_autoinclude_related:
+          type: boolean
+        mealplan_autoexclude_onhand:
+          type: boolean
+        shopping_recent_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        csv_delim:
+          type: string
+          maxLength: 2
+        csv_prefix:
+          type: string
+          maxLength: 10
+        shopping_update_food_lists:
+          type: boolean
+        default_meal_type:
+          allOf:
+          - $ref: '#/components/schemas/MealType'
+        filter_to_supermarket:
+          type: boolean
+        shopping_add_onhand:
+          type: boolean
+        left_handed:
+          type: boolean
+        show_step_ingredients:
+          type: boolean
+        food_children_exist:
+          type: boolean
+          readOnly: true
+      required:
+      - food_children_exist
+      - food_inherit_default
+      - user
+    PatchedUserPreference:
+      type: object
+      description: Adds nested create feature
+      properties:
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        image:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        theme:
+          $ref: '#/components/schemas/ThemeEnum'
+        nav_bg_color:
+          type: string
+          maxLength: 8
+        nav_text_color:
+          $ref: '#/components/schemas/UserPreferenceNavTextColorEnum'
+        nav_show_logo:
+          type: boolean
+        default_unit:
+          type: string
+          maxLength: 32
+        default_page:
+          $ref: '#/components/schemas/DefaultPageEnum'
+        use_fractions:
+          type: boolean
+        use_kj:
+          type: boolean
+        nav_sticky:
+          type: boolean
+        ingredient_decimals:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        comments:
+          type: boolean
+        shopping_auto_sync:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        mealplan_autoadd_shopping:
+          type: boolean
+        food_inherit_default:
+          allOf:
+          - $ref: '#/components/schemas/FoodInheritField'
+          readOnly: true
+        default_delay:
+          type: number
+          format: double
+          exclusiveMinimum: -10000
+          exclusiveMaximum: 10000
+        mealplan_autoinclude_related:
+          type: boolean
+        mealplan_autoexclude_onhand:
+          type: boolean
+        shopping_recent_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        csv_delim:
+          type: string
+          maxLength: 2
+        csv_prefix:
+          type: string
+          maxLength: 10
+        shopping_update_food_lists:
+          type: boolean
+        default_meal_type:
+          allOf:
+          - $ref: '#/components/schemas/MealType'
+        filter_to_supermarket:
+          type: boolean
+        shopping_add_onhand:
+          type: boolean
+        left_handed:
+          type: boolean
+        show_step_ingredients:
+          type: boolean
+        food_children_exist:
+          type: boolean
+          readOnly: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

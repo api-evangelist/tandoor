@@ -1,0 +1,37 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Get Recipe File API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Get Recipe File
+paths:
+  /api/get_recipe_file/{id}/:
+    get:
+      operationId: apiGetRecipeFileRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Get Recipe File
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: No response body
+      summary: Api get recipe file retrieve
+      x-summary-source: derived
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

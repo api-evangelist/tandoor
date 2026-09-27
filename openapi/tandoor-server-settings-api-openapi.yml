@@ -1,0 +1,91 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Server Settings API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Server Settings
+paths:
+  /api/server-settings/current/:
+    get:
+      operationId: apiServerSettingsCurrentRetrieve
+      tags:
+      - Server Settings
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerSettings'
+          description: ''
+      summary: Api server settings current retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    ServerSettings:
+      type: object
+      properties:
+        shopping_min_autosync_interval:
+          type: string
+        disable_external_connectors:
+          type: boolean
+        terms_url:
+          type: string
+        privacy_url:
+          type: string
+        imprint_url:
+          type: string
+        hosted:
+          type: boolean
+        debug:
+          type: boolean
+        version:
+          type: string
+        unauthenticated_theme_from_space:
+          type: integer
+        force_theme_from_space:
+          type: integer
+        logo_color_32:
+          type: string
+          format: uri
+        logo_color_128:
+          type: string
+        logo_color_144:
+          type: string
+        logo_color_180:
+          type: string
+        logo_color_192:
+          type: string
+        logo_color_512:
+          type: string
+        logo_color_svg:
+          type: string
+        custom_space_theme:
+          type: string
+        nav_logo:
+          type: string
+        nav_bg_color:
+          type: string
+      required:
+      - debug
+      - disable_external_connectors
+      - force_theme_from_space
+      - hosted
+      - imprint_url
+      - privacy_url
+      - shopping_min_autosync_interval
+      - terms_url
+      - unauthenticated_theme_from_space
+      - version
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

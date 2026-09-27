@@ -1,0 +1,609 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Space API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Space
+paths:
+  /api/space/:
+    get:
+      operationId: apiSpaceList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Space
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSpaceList'
+          description: ''
+      summary: Api space list
+      x-summary-source: derived
+    post:
+      operationId: apiSpaceCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Space
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Space'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Space'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Space'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Space'
+          description: ''
+      summary: Api space create
+      x-summary-source: derived
+  /api/space/{id}/:
+    get:
+      operationId: apiSpaceRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this space.
+        required: true
+      tags:
+      - Space
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Space'
+          description: ''
+      summary: Api space retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiSpaceUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this space.
+        required: true
+      tags:
+      - Space
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Space'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Space'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Space'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Space'
+          description: ''
+      summary: Api space update
+      x-summary-source: derived
+    patch:
+      operationId: apiSpacePartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this space.
+        required: true
+      tags:
+      - Space
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSpace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSpace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSpace'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Space'
+          description: ''
+      summary: Api space partial update
+      x-summary-source: derived
+  /api/space/current/:
+    get:
+      operationId: apiSpaceCurrentRetrieve
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Space
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Space'
+          description: ''
+      summary: Api space current retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedSpace:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        message:
+          type: string
+          maxLength: 512
+        max_recipes:
+          type: integer
+          readOnly: true
+        max_file_storage_mb:
+          type: integer
+          readOnly: true
+          description: Maximum file storage for space in MB. 0 for unlimited, -1 to disable file upload.
+        max_users:
+          type: integer
+          readOnly: true
+        allow_sharing:
+          type: boolean
+          readOnly: true
+        demo:
+          type: boolean
+          readOnly: true
+        food_inherit:
+          type: array
+          items:
+            $ref: '#/components/schemas/FoodInheritField'
+        user_count:
+          type: integer
+          readOnly: true
+        recipe_count:
+          type: integer
+          readOnly: true
+        file_size_mb:
+          type: number
+          format: double
+          readOnly: true
+        image:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        nav_logo:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        space_theme:
+          $ref: '#/components/schemas/SpaceThemeEnum'
+        custom_space_theme:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        nav_bg_color:
+          type: string
+          maxLength: 8
+        nav_text_color:
+          $ref: '#/components/schemas/SpaceNavTextColorEnum'
+        logo_color_32:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_128:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_144:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_180:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_192:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_512:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_svg:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        ai_credits_monthly:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_credits_balance:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        ai_monthly_credits_used:
+          type: integer
+          readOnly: true
+        ai_enabled:
+          type: boolean
+        ai_default_provider:
+          allOf:
+          - $ref: '#/components/schemas/AiProvider'
+        space_setup_completed:
+          type: boolean
+        household_setup_completed:
+          type: boolean
+    FoodInheritField:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type:
+          - string
+          - 'null'
+        field:
+          type:
+          - string
+          - 'null'
+      required: []
+    Space:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        message:
+          type: string
+          maxLength: 512
+        max_recipes:
+          type: integer
+          readOnly: true
+        max_file_storage_mb:
+          type: integer
+          readOnly: true
+          description: Maximum file storage for space in MB. 0 for unlimited, -1 to disable file upload.
+        max_users:
+          type: integer
+          readOnly: true
+        allow_sharing:
+          type: boolean
+          readOnly: true
+        demo:
+          type: boolean
+          readOnly: true
+        food_inherit:
+          type: array
+          items:
+            $ref: '#/components/schemas/FoodInheritField'
+        user_count:
+          type: integer
+          readOnly: true
+        recipe_count:
+          type: integer
+          readOnly: true
+        file_size_mb:
+          type: number
+          format: double
+          readOnly: true
+        image:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        nav_logo:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        space_theme:
+          $ref: '#/components/schemas/SpaceThemeEnum'
+        custom_space_theme:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        nav_bg_color:
+          type: string
+          maxLength: 8
+        nav_text_color:
+          $ref: '#/components/schemas/SpaceNavTextColorEnum'
+        logo_color_32:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_128:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_144:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_180:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_192:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_512:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_svg:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        ai_credits_monthly:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_credits_balance:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        ai_monthly_credits_used:
+          type: integer
+          readOnly: true
+        ai_enabled:
+          type: boolean
+        ai_default_provider:
+          allOf:
+          - $ref: '#/components/schemas/AiProvider'
+        space_setup_completed:
+          type: boolean
+        household_setup_completed:
+          type: boolean
+      required:
+      - ai_monthly_credits_used
+      - allow_sharing
+      - created_at
+      - created_by
+      - demo
+      - file_size_mb
+      - max_file_storage_mb
+      - max_recipes
+      - max_users
+      - recipe_count
+      - user_count
+    PaginatedSpaceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Space'
+        timestamp:
+          type: string
+          format: date-time
+    SpaceThemeEnum:
+      enum:
+      - BLANK
+      - TANDOOR
+      - BOOTSTRAP
+      - DARKLY
+      - FLATLY
+      - SUPERHERO
+      - TANDOOR_DARK
+      type: string
+      description: '* `BLANK` - -------
+
+        * `TANDOOR` - Tandoor
+
+        * `BOOTSTRAP` - Bootstrap
+
+        * `DARKLY` - Darkly
+
+        * `FLATLY` - Flatly
+
+        * `SUPERHERO` - Superhero
+
+        * `TANDOOR_DARK` - Tandoor Dark (INCOMPLETE)'
+    UserFileView:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        file_download:
+          type: string
+          readOnly: true
+        preview:
+          type: string
+          readOnly: true
+        file_size_kb:
+          type: integer
+          readOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - file_download
+      - file_size_kb
+      - name
+      - preview
+    SpaceNavTextColorEnum:
+      enum:
+      - BLANK
+      - LIGHT
+      - DARK
+      type: string
+      description: '* `BLANK` - -------
+
+        * `LIGHT` - Light
+
+        * `DARK` - Dark'
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+    AiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - model_name
+      - name
+      - updated_at
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

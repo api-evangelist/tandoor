@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Enterprise Billing Invoice API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Enterprise Billing Invoice
+paths:
+  /api/enterprise-billing-invoice/:
+    get:
+      operationId: apiEnterpriseBillingInvoiceList
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Enterprise Billing Invoice
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEnterpriseBillingInvoiceList'
+          description: ''
+      summary: Api enterprise billing invoice list
+      x-summary-source: derived
+    post:
+      operationId: apiEnterpriseBillingInvoiceCreate
+      tags:
+      - Enterprise Billing Invoice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingInvoice'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          description: ''
+      summary: Api enterprise billing invoice create
+      x-summary-source: derived
+  /api/enterprise-billing-invoice/{id}/:
+    get:
+      operationId: apiEnterpriseBillingInvoiceRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing invoice.
+        required: true
+      tags:
+      - Enterprise Billing Invoice
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          description: ''
+      summary: Api enterprise billing invoice retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiEnterpriseBillingInvoiceUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing invoice.
+        required: true
+      tags:
+      - Enterprise Billing Invoice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnterpriseBillingInvoice'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          description: ''
+      summary: Api enterprise billing invoice update
+      x-summary-source: derived
+    patch:
+      operationId: apiEnterpriseBillingInvoicePartialUpdate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing invoice.
+        required: true
+      tags:
+      - Enterprise Billing Invoice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingInvoice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingInvoice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnterpriseBillingInvoice'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          description: ''
+      summary: Api enterprise billing invoice partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiEnterpriseBillingInvoiceDestroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing invoice.
+        required: true
+      tags:
+      - Enterprise Billing Invoice
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api enterprise billing invoice destroy
+      x-summary-source: derived
+  /api/enterprise-billing-invoice/{id}/download/:
+    get:
+      operationId: apiEnterpriseBillingInvoiceDownloadRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enterprise billing invoice.
+        required: true
+      tags:
+      - Enterprise Billing Invoice
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseBillingInvoice'
+          description: ''
+      summary: Api enterprise billing invoice download retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedEnterpriseBillingInvoiceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseBillingInvoice'
+        timestamp:
+          type: string
+          format: date-time
+    PatchedEnterpriseBillingInvoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        user:
+          type: integer
+        space:
+          type: integer
+        invoice_system:
+          $ref: '#/components/schemas/InvoiceSystemEnum'
+        invoice_id:
+          type: string
+          maxLength: 128
+        invoice_number:
+          type: string
+          maxLength: 128
+        language_code:
+          type: string
+          maxLength: 8
+        invoice_date:
+          type: string
+          format: date
+        price_net:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000000000000000000000
+          exclusiveMaximum: 1000000000000000000000000000000
+        price_gross:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000000000000000000000
+          exclusiveMaximum: 1000000000000000000000000000000
+        printed:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    EnterpriseBillingInvoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        user:
+          type: integer
+        space:
+          type: integer
+        invoice_system:
+          $ref: '#/components/schemas/InvoiceSystemEnum'
+        invoice_id:
+          type: string
+          maxLength: 128
+        invoice_number:
+          type: string
+          maxLength: 128
+        language_code:
+          type: string
+          maxLength: 8
+        invoice_date:
+          type: string
+          format: date
+        price_net:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000000000000000000000
+          exclusiveMaximum: 1000000000000000000000000000000
+        price_gross:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000000000000000000000
+          exclusiveMaximum: 1000000000000000000000000000000
+        printed:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - invoice_date
+      - invoice_id
+      - invoice_number
+      - price_gross
+      - price_net
+      - space
+      - user
+    InvoiceSystemEnum:
+      enum:
+      - ERPNEXT
+      - SEVDESK
+      - STRIPE
+      type: string
+      description: '* `ERPNEXT` - ErpNext
+
+        * `SEVDESK` - SevDesk
+
+        * `STRIPE` - Stripe'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

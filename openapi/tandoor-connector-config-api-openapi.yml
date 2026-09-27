@@ -1,0 +1,481 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Connector Config API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Connector Config
+paths:
+  /api/connector-config/:
+    get:
+      operationId: apiConnectorConfigList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Connector Config
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConnectorConfigList'
+          description: ''
+      summary: Api connector config list
+      x-summary-source: derived
+    post:
+      operationId: apiConnectorConfigCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Connector Config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorConfig'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConnectorConfig'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConnectorConfig'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorConfig'
+          description: ''
+      summary: Api connector config create
+      x-summary-source: derived
+  /api/connector-config/{id}/:
+    get:
+      operationId: apiConnectorConfigRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this connector config.
+        required: true
+      tags:
+      - Connector Config
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorConfig'
+          description: ''
+      summary: Api connector config retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiConnectorConfigUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this connector config.
+        required: true
+      tags:
+      - Connector Config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorConfig'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConnectorConfig'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConnectorConfig'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorConfig'
+          description: ''
+      summary: Api connector config update
+      x-summary-source: derived
+    patch:
+      operationId: apiConnectorConfigPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this connector config.
+        required: true
+      tags:
+      - Connector Config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConnectorConfig'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConnectorConfig'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConnectorConfig'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorConfig'
+          description: ''
+      summary: Api connector config partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiConnectorConfigDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this connector config.
+        required: true
+      tags:
+      - Connector Config
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api connector config destroy
+      x-summary-source: derived
+  /api/connector-config/{id}/cascading/:
+    get:
+      operationId: apiConnectorConfigCascadingList
+      description: get a paginated list of objects that will be cascaded (deleted) when deleting the selected object
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this connector config.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Connector Config
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api connector config cascading list
+      x-summary-source: derived
+  /api/connector-config/{id}/nulling/:
+    get:
+      operationId: apiConnectorConfigNullingList
+      description: get a paginated list of objects where the selected object will be removed whe its deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this connector config.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Connector Config
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api connector config nulling list
+      x-summary-source: derived
+  /api/connector-config/{id}/protecting/:
+    get:
+      operationId: apiConnectorConfigProtectingList
+      description: get a paginated list of objects that are protecting the selected object form being deleted
+      parameters:
+      - in: query
+        name: cache
+        schema:
+          type: boolean
+          default: true
+        description: If results can be cached or not
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this connector config.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Connector Config
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGenericModelReferenceList'
+          description: ''
+      summary: Api connector config protecting list
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedConnectorConfig:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        type:
+          $ref: '#/components/schemas/ConnectorConfigTypeEnum'
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 512
+        todo_entity:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        enabled:
+          type: boolean
+          description: Is Connector Enabled
+        on_shopping_list_entry_created_enabled:
+          type: boolean
+        on_shopping_list_entry_updated_enabled:
+          type: boolean
+        on_shopping_list_entry_deleted_enabled:
+          type: boolean
+        supports_description_field:
+          type: boolean
+          description: Does the todo entity support the description field
+        created_by:
+          type: integer
+          readOnly: true
+    ConnectorConfigTypeEnum:
+      enum:
+      - HomeAssistant
+      type: string
+      description: '* `HomeAssistant` - HomeAssistant'
+    PaginatedConnectorConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorConfig'
+        timestamp:
+          type: string
+          format: date-time
+    ConnectorConfig:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        type:
+          $ref: '#/components/schemas/ConnectorConfigTypeEnum'
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 512
+        todo_entity:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        enabled:
+          type: boolean
+          description: Is Connector Enabled
+        on_shopping_list_entry_created_enabled:
+          type: boolean
+        on_shopping_list_entry_updated_enabled:
+          type: boolean
+        on_shopping_list_entry_deleted_enabled:
+          type: boolean
+        supports_description_field:
+          type: boolean
+          description: Does the todo entity support the description field
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

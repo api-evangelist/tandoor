@@ -1,0 +1,56 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Share Link API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Share Link
+paths:
+  /api/share-link/{id}:
+    get:
+      operationId: apiShareLinkRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Share Link
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareLink'
+          description: ''
+      summary: Api share link retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    ShareLink:
+      type: object
+      properties:
+        pk:
+          type: integer
+        share:
+          type: string
+          format: uuid
+        link:
+          type: string
+      required:
+      - link
+      - pk
+      - share
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

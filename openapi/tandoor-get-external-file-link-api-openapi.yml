@@ -1,0 +1,37 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Get External File Link API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Get External File Link
+paths:
+  /api/get_external_file_link/{id}/:
+    get:
+      operationId: apiGetExternalFileLinkRetrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Get External File Link
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: No response body
+      summary: Api get external file link retrieve
+      x-summary-source: derived
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

@@ -1,0 +1,349 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Automation API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Automation
+paths:
+  /api/automation/:
+    get:
+      operationId: apiAutomationList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: type
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - DESCRIPTION_REPLACE
+            - FOOD_ALIAS
+            - FOOD_REPLACE
+            - INSTRUCTION_REPLACE
+            - KEYWORD_ALIAS
+            - NAME_REPLACE
+            - NEVER_UNIT
+            - TRANSPOSE_WORDS
+            - UNIT_ALIAS
+            - UNIT_REPLACE
+        description: Return the Automations matching the automation type.  Repeat for multiple.
+      tags:
+      - Automation
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAutomationList'
+          description: ''
+      summary: Api automation list
+      x-summary-source: derived
+    post:
+      operationId: apiAutomationCreate
+      description: logs request counts to redis cache total/per user/
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Automation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Automation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Automation'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Automation'
+          description: ''
+      summary: Api automation create
+      x-summary-source: derived
+  /api/automation/{id}/:
+    get:
+      operationId: apiAutomationRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this automation.
+        required: true
+      tags:
+      - Automation
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Automation'
+          description: ''
+      summary: Api automation retrieve
+      x-summary-source: derived
+    put:
+      operationId: apiAutomationUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this automation.
+        required: true
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Automation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Automation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Automation'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Automation'
+          description: ''
+      summary: Api automation update
+      x-summary-source: derived
+    patch:
+      operationId: apiAutomationPartialUpdate
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this automation.
+        required: true
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAutomation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAutomation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAutomation'
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Automation'
+          description: ''
+      summary: Api automation partial update
+      x-summary-source: derived
+    delete:
+      operationId: apiAutomationDestroy
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this automation.
+        required: true
+      tags:
+      - Automation
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api automation destroy
+      x-summary-source: derived
+components:
+  schemas:
+    Automation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          $ref: '#/components/schemas/AutomationTypeEnum'
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type:
+          - string
+          - 'null'
+        param_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_3:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        disabled:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - type
+    PaginatedAutomationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Automation'
+        timestamp:
+          type: string
+          format: date-time
+    PatchedAutomation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          $ref: '#/components/schemas/AutomationTypeEnum'
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type:
+          - string
+          - 'null'
+        param_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_3:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        disabled:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
+    AutomationTypeEnum:
+      enum:
+      - FOOD_ALIAS
+      - UNIT_ALIAS
+      - KEYWORD_ALIAS
+      - DESCRIPTION_REPLACE
+      - INSTRUCTION_REPLACE
+      - NEVER_UNIT
+      - TRANSPOSE_WORDS
+      - FOOD_REPLACE
+      - UNIT_REPLACE
+      - NAME_REPLACE
+      type: string
+      description: '* `FOOD_ALIAS` - Food Alias
+
+        * `UNIT_ALIAS` - Unit Alias
+
+        * `KEYWORD_ALIAS` - Keyword Alias
+
+        * `DESCRIPTION_REPLACE` - Description Replace
+
+        * `INSTRUCTION_REPLACE` - Instruction Replace
+
+        * `NEVER_UNIT` - Never Unit
+
+        * `TRANSPOSE_WORDS` - Transpose Words
+
+        * `FOOD_REPLACE` - Food Replace
+
+        * `UNIT_REPLACE` - Unit Replace
+
+        * `NAME_REPLACE` - Name Replace'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

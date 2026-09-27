@@ -1,0 +1,211 @@
+openapi: 3.2.0
+info:
+  title: Tandoor Sync Log API
+  version: 0.0.0 (2.6.13)
+  x-logo:
+    url: /static/assets/brand_logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: Tandoor logo
+    href: /
+  description: Tandoor API Docs
+tags:
+- name: Sync Log
+paths:
+  /api/sync-log/:
+    get:
+      operationId: apiSyncLogList
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Sync Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSyncLogList'
+          description: ''
+      summary: Api sync log list
+      x-summary-source: derived
+  /api/sync-log/{id}/:
+    get:
+      operationId: apiSyncLogRetrieve
+      description: logs request counts to redis cache total/per user/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sync log.
+        required: true
+      tags:
+      - Sync Log
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncLog'
+          description: ''
+      summary: Api sync log retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    MethodEnum:
+      enum:
+      - DB
+      - NEXTCLOUD
+      - LOCAL
+      type: string
+      description: '* `DB` - Dropbox
+
+        * `NEXTCLOUD` - Nextcloud
+
+        * `LOCAL` - Local'
+    PaginatedSyncLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncLog'
+        timestamp:
+          type: string
+          format: date-time
+    Storage:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        username:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 128
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 4098
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        path:
+          type: string
+          maxLength: 256
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+    SyncLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        sync:
+          allOf:
+          - $ref: '#/components/schemas/Sync'
+          readOnly: true
+        status:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - status
+      - sync
+    Sync:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        storage:
+          $ref: '#/components/schemas/Storage'
+        path:
+          type: string
+          maxLength: 512
+        active:
+          type: boolean
+        last_checked:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - storage
+      - updated_at
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
