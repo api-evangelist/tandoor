@@ -251,50 +251,116 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedMealPlan:
+    MealType:
       type: object
       description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        title:
+        name:
           type: string
-          maxLength: 64
-        recipe:
-          allOf:
-          - $ref: '#/components/schemas/RecipeOverview'
-        servings:
-          type: number
-          format: double
-        note:
-          type: string
-        note_markdown:
-          type: string
-          readOnly: true
-        from_date:
-          type: string
-          format: date-time
-        to_date:
-          type: string
-          format: date-time
-        meal_type:
-          $ref: '#/components/schemas/MealType'
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
         created_by:
           type: integer
           readOnly: true
-        recipe_name:
+      required:
+      - created_by
+      - name
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
           type: string
           readOnly: true
-        meal_type_name:
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
           type: string
           readOnly: true
-        shopping:
+        is_staff:
           type: boolean
           readOnly: true
-        addshopping:
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
           type: boolean
-          writeOnly: true
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+    KeywordLabel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        label:
+          type: string
+          readOnly: true
+      required:
+      - label
+    PaginatedMealPlanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealPlan'
+        timestamp:
+          type: string
+          format: date-time
     RecipeOverview:
       type: object
       description: Adds nested create feature
@@ -384,75 +450,50 @@ components:
       - updated_at
       - waiting_time
       - working_time
-    MealType:
+    PatchedMealPlan:
       type: object
       description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        name:
+        title:
           type: string
-          maxLength: 128
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        time:
-          type:
-          - string
-          - 'null'
-          format: time
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
+          maxLength: 64
+        recipe:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+        servings:
+          type: number
+          format: double
+        note:
+          type: string
+        note_markdown:
+          type: string
+          readOnly: true
+        from_date:
+          type: string
+          format: date-time
+        to_date:
+          type: string
+          format: date-time
+        meal_type:
+          $ref: '#/components/schemas/MealType'
         created_by:
           type: integer
           readOnly: true
-      required:
-      - created_by
-      - name
-    KeywordLabel:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        label:
+        recipe_name:
           type: string
           readOnly: true
-      required:
-      - label
-    PaginatedMealPlanList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MealPlan'
-        timestamp:
+        meal_type_name:
           type: string
-          format: date-time
+          readOnly: true
+        shopping:
+          type: boolean
+          readOnly: true
+        addshopping:
+          type: boolean
+          writeOnly: true
     MealPlan:
       type: object
       description: Adds nested create feature
@@ -506,47 +547,6 @@ components:
       - recipe_name
       - servings
       - shopping
-    User:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        username:
-          type: string
-          readOnly: true
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        display_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_superuser:
-          type: boolean
-          readOnly: true
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-      required:
-      - display_name
-      - is_active
-      - is_staff
-      - is_superuser
-      - username
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

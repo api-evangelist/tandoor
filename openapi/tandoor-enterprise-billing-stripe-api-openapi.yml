@@ -56,16 +56,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    StripePortal:
+    StripeCheckoutSessionRequest:
       type: object
       properties:
-        portal_url:
-          type: string
-        stripe_public_key:
-          type: string
-      required:
-      - portal_url
-      - stripe_public_key
+        product_id:
+          type: integer
+        plan_id:
+          type: integer
     StripeCheckoutSessionResponse:
       type: object
       properties:
@@ -80,13 +77,16 @@ components:
       - session_id
       - stripe_public_key
       - url
-    StripeCheckoutSessionRequest:
+    StripePortal:
       type: object
       properties:
-        product_id:
-          type: integer
-        plan_id:
-          type: integer
+        portal_url:
+          type: string
+        stripe_public_key:
+          type: string
+      required:
+      - portal_url
+      - stripe_public_key
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

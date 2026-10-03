@@ -64,22 +64,6 @@ components:
       - created_by
       - name
       - search
-    RecipeSimple:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        url:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - url
     ExportRequest:
       type: object
       properties:
@@ -98,6 +82,22 @@ components:
           - $ref: '#/components/schemas/CustomFilter'
       required:
       - type
+    RecipeSimple:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        url:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - url
     User:
       type: object
       description: Adds nested create feature

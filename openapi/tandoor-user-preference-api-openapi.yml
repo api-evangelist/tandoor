@@ -90,6 +90,14 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UserPreferenceNavTextColorEnum:
+      enum:
+      - LIGHT
+      - DARK
+      type: string
+      description: '* `LIGHT` - Light
+
+        * `DARK` - Dark'
     MealType:
       type: object
       description: Adds nested create feature
@@ -120,22 +128,6 @@ components:
       required:
       - created_by
       - name
-    FoodInheritField:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type:
-          - string
-          - 'null'
-        field:
-          type:
-          - string
-          - 'null'
-      required: []
     DefaultPageEnum:
       enum:
       - SEARCH
@@ -150,14 +142,6 @@ components:
         * `BOOKS` - Books
 
         * `SHOPPING` - Shopping'
-    UserPreferenceNavTextColorEnum:
-      enum:
-      - LIGHT
-      - DARK
-      type: string
-      description: '* `LIGHT` - Light
-
-        * `DARK` - Dark'
     UserFileView:
       type: object
       properties:
@@ -191,26 +175,88 @@ components:
       - file_size_kb
       - name
       - preview
-    ThemeEnum:
-      enum:
-      - TANDOOR
-      - BOOTSTRAP
-      - DARKLY
-      - FLATLY
-      - SUPERHERO
-      - TANDOOR_DARK
-      type: string
-      description: '* `TANDOOR` - Tandoor
-
-        * `BOOTSTRAP` - Bootstrap
-
-        * `DARKLY` - Darkly
-
-        * `FLATLY` - Flatly
-
-        * `SUPERHERO` - Superhero
-
-        * `TANDOOR_DARK` - Tandoor Dark (INCOMPLETE)'
+    PatchedUserPreference:
+      type: object
+      description: Adds nested create feature
+      properties:
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        image:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        theme:
+          $ref: '#/components/schemas/ThemeEnum'
+        nav_bg_color:
+          type: string
+          maxLength: 8
+        nav_text_color:
+          $ref: '#/components/schemas/UserPreferenceNavTextColorEnum'
+        nav_show_logo:
+          type: boolean
+        default_unit:
+          type: string
+          maxLength: 32
+        default_page:
+          $ref: '#/components/schemas/DefaultPageEnum'
+        use_fractions:
+          type: boolean
+        use_kj:
+          type: boolean
+        nav_sticky:
+          type: boolean
+        ingredient_decimals:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        comments:
+          type: boolean
+        shopping_auto_sync:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        mealplan_autoadd_shopping:
+          type: boolean
+        food_inherit_default:
+          allOf:
+          - $ref: '#/components/schemas/FoodInheritField'
+          readOnly: true
+        default_delay:
+          type: number
+          format: double
+          exclusiveMinimum: -10000
+          exclusiveMaximum: 10000
+        mealplan_autoinclude_related:
+          type: boolean
+        mealplan_autoexclude_onhand:
+          type: boolean
+        shopping_recent_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        csv_delim:
+          type: string
+          maxLength: 2
+        csv_prefix:
+          type: string
+          maxLength: 10
+        shopping_update_food_lists:
+          type: boolean
+        default_meal_type:
+          allOf:
+          - $ref: '#/components/schemas/MealType'
+        filter_to_supermarket:
+          type: boolean
+        shopping_add_onhand:
+          type: boolean
+        left_handed:
+          type: boolean
+        show_step_ingredients:
+          type: boolean
+        food_children_exist:
+          type: boolean
+          readOnly: true
     User:
       type: object
       description: Adds nested create feature
@@ -252,6 +298,42 @@ components:
       - is_staff
       - is_superuser
       - username
+    ThemeEnum:
+      enum:
+      - TANDOOR
+      - BOOTSTRAP
+      - DARKLY
+      - FLATLY
+      - SUPERHERO
+      - TANDOOR_DARK
+      type: string
+      description: '* `TANDOOR` - Tandoor
+
+        * `BOOTSTRAP` - Bootstrap
+
+        * `DARKLY` - Darkly
+
+        * `FLATLY` - Flatly
+
+        * `SUPERHERO` - Superhero
+
+        * `TANDOOR_DARK` - Tandoor Dark (INCOMPLETE)'
+    FoodInheritField:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type:
+          - string
+          - 'null'
+        field:
+          type:
+          - string
+          - 'null'
+      required: []
     UserPreference:
       type: object
       description: Adds nested create feature
@@ -338,88 +420,6 @@ components:
       - food_children_exist
       - food_inherit_default
       - user
-    PatchedUserPreference:
-      type: object
-      description: Adds nested create feature
-      properties:
-        user:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        image:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        theme:
-          $ref: '#/components/schemas/ThemeEnum'
-        nav_bg_color:
-          type: string
-          maxLength: 8
-        nav_text_color:
-          $ref: '#/components/schemas/UserPreferenceNavTextColorEnum'
-        nav_show_logo:
-          type: boolean
-        default_unit:
-          type: string
-          maxLength: 32
-        default_page:
-          $ref: '#/components/schemas/DefaultPageEnum'
-        use_fractions:
-          type: boolean
-        use_kj:
-          type: boolean
-        nav_sticky:
-          type: boolean
-        ingredient_decimals:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        comments:
-          type: boolean
-        shopping_auto_sync:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        mealplan_autoadd_shopping:
-          type: boolean
-        food_inherit_default:
-          allOf:
-          - $ref: '#/components/schemas/FoodInheritField'
-          readOnly: true
-        default_delay:
-          type: number
-          format: double
-          exclusiveMinimum: -10000
-          exclusiveMaximum: 10000
-        mealplan_autoinclude_related:
-          type: boolean
-        mealplan_autoexclude_onhand:
-          type: boolean
-        shopping_recent_days:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        csv_delim:
-          type: string
-          maxLength: 2
-        csv_prefix:
-          type: string
-          maxLength: 10
-        shopping_update_food_lists:
-          type: boolean
-        default_meal_type:
-          allOf:
-          - $ref: '#/components/schemas/MealType'
-        filter_to_supermarket:
-          type: boolean
-        shopping_add_onhand:
-          type: boolean
-        left_handed:
-          type: boolean
-        show_step_ingredients:
-          type: boolean
-        food_children_exist:
-          type: boolean
-          readOnly: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

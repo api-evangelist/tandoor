@@ -78,6 +78,37 @@ components:
         * `NEXTCLOUD` - Nextcloud
 
         * `LOCAL` - Local'
+    Sync:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        storage:
+          $ref: '#/components/schemas/Storage'
+        path:
+          type: string
+          maxLength: 512
+        active:
+          type: boolean
+        last_checked:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - storage
+      - updated_at
     PaginatedSyncLogList:
       type: object
       required:
@@ -173,37 +204,6 @@ components:
       - created_at
       - status
       - sync
-    Sync:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        storage:
-          $ref: '#/components/schemas/Storage'
-        path:
-          type: string
-          maxLength: 512
-        active:
-          type: boolean
-        last_checked:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - storage
-      - updated_at
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

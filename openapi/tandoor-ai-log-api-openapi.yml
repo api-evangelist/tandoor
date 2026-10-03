@@ -67,62 +67,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AiLog:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        ai_provider:
-          allOf:
-          - $ref: '#/components/schemas/AiProvider'
-          readOnly: true
-        function:
-          type: string
-          maxLength: 64
-        credit_cost:
-          type: number
-          format: double
-          exclusiveMinimum: -1000000000000
-          exclusiveMaximum: 1000000000000
-        credits_from_balance:
-          type: boolean
-        input_tokens:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        output_tokens:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        start_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        end_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        created_by:
-          type:
-          - integer
-          - 'null'
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - ai_provider
-      - created_at
-      - credit_cost
-      - function
-      - updated_at
     AiProvider:
       type: object
       properties:
@@ -192,6 +136,62 @@ components:
         timestamp:
           type: string
           format: date-time
+    AiLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        ai_provider:
+          allOf:
+          - $ref: '#/components/schemas/AiProvider'
+          readOnly: true
+        function:
+          type: string
+          maxLength: 64
+        credit_cost:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        credits_from_balance:
+          type: boolean
+        input_tokens:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        output_tokens:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_by:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - ai_provider
+      - created_at
+      - credit_cost
+      - function
+      - updated_at
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

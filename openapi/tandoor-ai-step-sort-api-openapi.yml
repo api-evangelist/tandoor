@@ -48,60 +48,165 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Ingredient:
+    Property:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        property_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+        property_type:
+          $ref: '#/components/schemas/PropertyType'
+      required:
+      - property_amount
+      - property_type
+    Unit:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        plural_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        description:
+          type:
+          - string
+          - 'null'
+        base_unit:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+      required:
+      - name
+    Keyword:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 64
+        label:
+          type: string
+          readOnly: true
+        description:
+          type: string
+        parent:
+          type: integer
+          readOnly: true
+        numchild:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        full_name:
+          type: string
+          description: 'Returns a string representation of a tree node and it''s ancestors,
+
+            e.g. ''Cuisine > Asian > Chinese > Catonese''.'
+          readOnly: true
+      required:
+      - created_at
+      - full_name
+      - label
+      - name
+      - numchild
+      - parent
+      - updated_at
+    UserFileView:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        file_download:
+          type: string
+          readOnly: true
+        preview:
+          type: string
+          readOnly: true
+        file_size_kb:
+          type: integer
+          readOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - file_download
+      - file_size_kb
+      - name
+      - preview
+    ShoppingList:
       type: object
       description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        food:
-          allOf:
-          - $ref: '#/components/schemas/Food'
-        unit:
-          allOf:
-          - $ref: '#/components/schemas/Unit'
-        amount:
-          type: number
-          format: double
-        conversions:
-          type: array
-          items: {}
-          readOnly: true
-        note:
+        name:
+          type: string
+          maxLength: 32
+        description:
+          type: string
+        color:
           type:
           - string
           - 'null'
-          maxLength: 256
-        order:
+          maxLength: 7
+      required: []
+    RecipeSimple:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        is_header:
-          type: boolean
-        no_amount:
-          type: boolean
-        original_text:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        used_in_recipes:
-          type: array
-          items: {}
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        url:
+          type: string
           readOnly: true
-        checked:
-          type: boolean
-          readOnly: true
-          default: false
-          description: Just laziness to have a checked field on the frontend API client
       required:
-      - amount
-      - checked
-      - conversions
-      - food
-      - unit
-      - used_in_recipes
+      - name
+      - url
     Food:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
@@ -211,6 +316,47 @@ components:
       - parent
       - shopping
       - substitute_onhand
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
     FoodSimple:
       type: object
       properties:
@@ -250,68 +396,6 @@ components:
           maxLength: 128
       required:
       - name
-    RecipeSimple:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        url:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - url
-    ShoppingList:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 32
-        description:
-          type: string
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
-      required: []
-    NutritionInformation:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        carbohydrates:
-          type: number
-          format: double
-        fats:
-          type: number
-          format: double
-        proteins:
-          type: number
-          format: double
-        calories:
-          type: number
-          format: double
-        source:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-      required:
-      - calories
-      - carbohydrates
-      - fats
-      - proteins
     PropertyType:
       type: object
       description: Adds nested create feature
@@ -348,22 +432,88 @@ components:
           minimum: -2147483648
       required:
       - name
-    FoodInheritField:
+    NutritionInformation:
       type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
       properties:
         id:
           type: integer
           readOnly: false
-        name:
+        carbohydrates:
+          type: number
+          format: double
+        fats:
+          type: number
+          format: double
+        proteins:
+          type: number
+          format: double
+        calories:
+          type: number
+          format: double
+        source:
           type:
           - string
           - 'null'
-        field:
+          maxLength: 512
+      required:
+      - calories
+      - carbohydrates
+      - fats
+      - proteins
+    Ingredient:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        food:
+          allOf:
+          - $ref: '#/components/schemas/Food'
+        unit:
+          allOf:
+          - $ref: '#/components/schemas/Unit'
+        amount:
+          type: number
+          format: double
+        conversions:
+          type: array
+          items: {}
+          readOnly: true
+        note:
           type:
           - string
           - 'null'
-      required: []
+          maxLength: 256
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        is_header:
+          type: boolean
+        no_amount:
+          type: boolean
+        original_text:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        used_in_recipes:
+          type: array
+          items: {}
+          readOnly: true
+        checked:
+          type: boolean
+          readOnly: true
+          default: false
+          description: Just laziness to have a checked field on the frontend API client
+      required:
+      - amount
+      - checked
+      - conversions
+      - food
+      - unit
+      - used_in_recipes
     Recipe:
       type: object
       description: Adds nested create feature
@@ -476,7 +626,7 @@ components:
       - rating
       - steps
       - updated_at
-    Keyword:
+    FoodInheritField:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
       properties:
@@ -484,164 +634,14 @@ components:
           type: integer
           readOnly: false
         name:
-          type: string
-          maxLength: 64
-        label:
-          type: string
-          readOnly: true
-        description:
-          type: string
-        parent:
-          type: integer
-          readOnly: true
-        numchild:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        full_name:
-          type: string
-          description: 'Returns a string representation of a tree node and it''s ancestors,
-
-            e.g. ''Cuisine > Asian > Chinese > Catonese''.'
-          readOnly: true
-      required:
-      - created_at
-      - full_name
-      - label
-      - name
-      - numchild
-      - parent
-      - updated_at
-    UserFileView:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        file_download:
-          type: string
-          readOnly: true
-        preview:
-          type: string
-          readOnly: true
-        file_size_kb:
-          type: integer
-          readOnly: true
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - created_by
-      - file_download
-      - file_size_kb
-      - name
-      - preview
-    Unit:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-          minLength: 1
-        plural_name:
           type:
           - string
           - 'null'
-          maxLength: 128
-        description:
+        field:
           type:
           - string
           - 'null'
-        base_unit:
-          type:
-          - string
-          - 'null'
-          maxLength: 256
-        open_data_slug:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-      required:
-      - name
-    Property:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        property_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-        property_type:
-          $ref: '#/components/schemas/PropertyType'
-      required:
-      - property_amount
-      - property_type
-    User:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        username:
-          type: string
-          readOnly: true
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        display_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_superuser:
-          type: boolean
-          readOnly: true
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-      required:
-      - display_name
-      - is_active
-      - is_staff
-      - is_superuser
-      - username
+      required: []
     Step:
       type: object
       description: Adds nested create feature

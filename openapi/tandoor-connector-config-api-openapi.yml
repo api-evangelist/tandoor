@@ -309,83 +309,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedConnectorConfig:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-          minLength: 1
-        type:
-          $ref: '#/components/schemas/ConnectorConfigTypeEnum'
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          maxLength: 200
-        token:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          maxLength: 512
-        todo_entity:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        enabled:
-          type: boolean
-          description: Is Connector Enabled
-        on_shopping_list_entry_created_enabled:
-          type: boolean
-        on_shopping_list_entry_updated_enabled:
-          type: boolean
-        on_shopping_list_entry_deleted_enabled:
-          type: boolean
-        supports_description_field:
-          type: boolean
-          description: Does the todo entity support the description field
-        created_by:
-          type: integer
-          readOnly: true
-    ConnectorConfigTypeEnum:
-      enum:
-      - HomeAssistant
-      type: string
-      description: '* `HomeAssistant` - HomeAssistant'
-    PaginatedConnectorConfigList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectorConfig'
-        timestamp:
-          type: string
-          format: date-time
     ConnectorConfig:
       type: object
       properties:
@@ -433,19 +356,50 @@ components:
       required:
       - created_by
       - name
-    GenericModelReference:
+    PatchedConnectorConfig:
       type: object
       properties:
         id:
           type: integer
           readOnly: false
-        model:
-          type: string
         name:
           type: string
-      required:
-      - model
-      - name
+          maxLength: 128
+          minLength: 1
+        type:
+          $ref: '#/components/schemas/ConnectorConfigTypeEnum'
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 512
+        todo_entity:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        enabled:
+          type: boolean
+          description: Is Connector Enabled
+        on_shopping_list_entry_created_enabled:
+          type: boolean
+        on_shopping_list_entry_updated_enabled:
+          type: boolean
+        on_shopping_list_entry_deleted_enabled:
+          type: boolean
+        supports_description_field:
+          type: boolean
+          description: Does the todo entity support the description field
+        created_by:
+          type: integer
+          readOnly: true
     PaginatedGenericModelReferenceList:
       type: object
       required:
@@ -474,6 +428,52 @@ components:
         timestamp:
           type: string
           format: date-time
+    ConnectorConfigTypeEnum:
+      enum:
+      - HomeAssistant
+      type: string
+      description: '* `HomeAssistant` - HomeAssistant'
+    PaginatedConnectorConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorConfig'
+        timestamp:
+          type: string
+          format: date-time
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

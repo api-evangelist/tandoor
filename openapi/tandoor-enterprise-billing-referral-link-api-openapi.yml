@@ -193,6 +193,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PatchedEnterpriseBillingReferralLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        created_by:
+          type:
+          - integer
+          - 'null'
+        space:
+          type: integer
+        token:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
     EnterpriseBillingReferralLink:
       type: object
       properties:
@@ -215,25 +234,6 @@ components:
       required:
       - created_at
       - space
-    PatchedEnterpriseBillingReferralLink:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        created_by:
-          type:
-          - integer
-          - 'null'
-        space:
-          type: integer
-        token:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
     PaginatedEnterpriseBillingReferralLinkList:
       type: object
       required:

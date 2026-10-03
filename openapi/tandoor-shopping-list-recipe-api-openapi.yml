@@ -252,6 +252,36 @@ components:
         timestamp:
           type: string
           format: date-time
+    MealType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
     ShoppingListRecipe:
       type: object
       properties:
@@ -289,6 +319,38 @@ components:
       - meal_plan_data
       - recipe_data
       - servings
+    PatchedShoppingListRecipe:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 32
+        recipe:
+          type:
+          - integer
+          - 'null'
+        recipe_data:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+          readOnly: true
+        meal_plan_data:
+          allOf:
+          - $ref: '#/components/schemas/MealPlan'
+          readOnly: true
+        mealplan:
+          type:
+          - integer
+          - 'null'
+        servings:
+          type: number
+          format: double
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
     User:
       type: object
       description: Adds nested create feature
@@ -330,6 +392,53 @@ components:
       - is_staff
       - is_superuser
       - username
+    ShoppingListEntryBulkCreate:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShoppingListEntrySimpleCreate'
+        shopping_lists_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - entries
+    ShoppingListEntrySimpleCreate:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        unit_id:
+          type:
+          - integer
+          - 'null'
+        food_id:
+          type:
+          - integer
+          - 'null'
+        ingredient_id:
+          type:
+          - integer
+          - 'null'
+      required:
+      - amount
+      - food_id
+      - ingredient_id
+      - unit_id
+    KeywordLabel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        label:
+          type: string
+          readOnly: true
+      required:
+      - label
     RecipeOverview:
       type: object
       description: Adds nested create feature
@@ -419,83 +528,6 @@ components:
       - updated_at
       - waiting_time
       - working_time
-    ShoppingListEntrySimpleCreate:
-      type: object
-      properties:
-        amount:
-          type: number
-          format: double
-        unit_id:
-          type:
-          - integer
-          - 'null'
-        food_id:
-          type:
-          - integer
-          - 'null'
-        ingredient_id:
-          type:
-          - integer
-          - 'null'
-      required:
-      - amount
-      - food_id
-      - ingredient_id
-      - unit_id
-    MealType:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        time:
-          type:
-          - string
-          - 'null'
-          format: time
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
-        created_by:
-          type: integer
-          readOnly: true
-      required:
-      - created_by
-      - name
-    ShoppingListEntryBulkCreate:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShoppingListEntrySimpleCreate'
-        shopping_lists_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - entries
-    KeywordLabel:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        label:
-          type: string
-          readOnly: true
-      required:
-      - label
     MealPlan:
       type: object
       description: Adds nested create feature
@@ -549,38 +581,6 @@ components:
       - recipe_name
       - servings
       - shopping
-    PatchedShoppingListRecipe:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 32
-        recipe:
-          type:
-          - integer
-          - 'null'
-        recipe_data:
-          allOf:
-          - $ref: '#/components/schemas/RecipeOverview'
-          readOnly: true
-        meal_plan_data:
-          allOf:
-          - $ref: '#/components/schemas/MealPlan'
-          readOnly: true
-        mealplan:
-          type:
-          - integer
-          - 'null'
-        servings:
-          type: number
-          format: double
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

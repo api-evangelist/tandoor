@@ -215,43 +215,6 @@ components:
           type: string
           format: date-time
           readOnly: true
-    ImportLog:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        type:
-          type: string
-          maxLength: 32
-        msg:
-          type: string
-        running:
-          type: boolean
-        keyword:
-          allOf:
-          - $ref: '#/components/schemas/Keyword'
-          readOnly: true
-        total_recipes:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        imported_recipes:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        created_by:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - created_by
-      - keyword
-      - type
     PaginatedImportLogList:
       type: object
       required:
@@ -323,6 +286,43 @@ components:
       - numchild
       - parent
       - updated_at
+    ImportLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        running:
+          type: boolean
+        keyword:
+          allOf:
+          - $ref: '#/components/schemas/Keyword'
+          readOnly: true
+        total_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        imported_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - keyword
+      - type
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

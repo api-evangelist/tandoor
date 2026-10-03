@@ -71,6 +71,39 @@ components:
           $ref: '#/components/schemas/ImportOpenDataResponseDetail'
         conversion:
           $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+    ImportOpenData:
+      type: object
+      properties:
+        selected_version:
+          type: string
+        selected_datatypes:
+          type: array
+          items:
+            type: string
+        update_existing:
+          type: boolean
+          default: true
+        use_metric:
+          type: boolean
+          default: true
+      required:
+      - selected_datatypes
+      - selected_version
+    ImportOpenDataResponseDetail:
+      type: object
+      properties:
+        total_created:
+          type: integer
+          default: 0
+        total_updated:
+          type: integer
+          default: 0
+        total_untouched:
+          type: integer
+          default: 0
+        total_errored:
+          type: integer
+          default: 0
     ImportOpenDataVersionMetaData:
       type: object
       properties:
@@ -161,39 +194,6 @@ components:
       - sl
       - versions
       - zh_Hans
-    ImportOpenData:
-      type: object
-      properties:
-        selected_version:
-          type: string
-        selected_datatypes:
-          type: array
-          items:
-            type: string
-        update_existing:
-          type: boolean
-          default: true
-        use_metric:
-          type: boolean
-          default: true
-      required:
-      - selected_datatypes
-      - selected_version
-    ImportOpenDataResponseDetail:
-      type: object
-      properties:
-        total_created:
-          type: integer
-          default: 0
-        total_updated:
-          type: integer
-          default: 0
-        total_untouched:
-          type: integer
-          default: 0
-        total_errored:
-          type: integer
-          default: 0
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

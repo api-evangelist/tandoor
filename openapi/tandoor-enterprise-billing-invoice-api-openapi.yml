@@ -200,34 +200,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedEnterpriseBillingInvoiceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnterpriseBillingInvoice'
-        timestamp:
-          type: string
-          format: date-time
+    InvoiceSystemEnum:
+      enum:
+      - ERPNEXT
+      - SEVDESK
+      - STRIPE
+      type: string
+      description: '* `ERPNEXT` - ErpNext
+
+        * `SEVDESK` - SevDesk
+
+        * `STRIPE` - Stripe'
     PatchedEnterpriseBillingInvoice:
       type: object
       properties:
@@ -268,6 +251,34 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PaginatedEnterpriseBillingInvoiceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseBillingInvoice'
+        timestamp:
+          type: string
+          format: date-time
     EnterpriseBillingInvoice:
       type: object
       properties:
@@ -317,17 +328,6 @@ components:
       - price_net
       - space
       - user
-    InvoiceSystemEnum:
-      enum:
-      - ERPNEXT
-      - SEVDESK
-      - STRIPE
-      type: string
-      description: '* `ERPNEXT` - ErpNext
-
-        * `SEVDESK` - SevDesk
-
-        * `STRIPE` - Stripe'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

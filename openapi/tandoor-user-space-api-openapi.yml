@@ -224,46 +224,34 @@ components:
           readOnly: true
       required:
       - name
-    UserSpaceBatchUpdate:
+    PaginatedUserSpaceList:
       type: object
-      properties:
-        user_spaces:
-          type: array
-          items:
-            type: integer
-        household:
-          type:
-          - integer
-          - 'null'
-        group_set:
-          type: array
-          items:
-            type: integer
       required:
-      - group_set
-      - user_spaces
-    Household:
-      type: object
-      description: Adds nested create feature
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        created_at:
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSpace'
+        timestamp:
           type: string
           format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - name
-      - updated_at
     UserSpace:
       type: object
       description: Adds nested create feature
@@ -311,74 +299,6 @@ components:
       - space
       - updated_at
       - user
-    PatchedUserSpace:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        user:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        space:
-          type: integer
-          readOnly: true
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/Group'
-        household:
-          allOf:
-          - $ref: '#/components/schemas/Household'
-        active:
-          type: boolean
-        internal_note:
-          type:
-          - string
-          - 'null'
-        invite_link:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PaginatedUserSpaceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserSpace'
-        timestamp:
-          type: string
-          format: date-time
     User:
       type: object
       description: Adds nested create feature
@@ -420,6 +340,86 @@ components:
       - is_staff
       - is_superuser
       - username
+    PatchedUserSpace:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        space:
+          type: integer
+          readOnly: true
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        household:
+          allOf:
+          - $ref: '#/components/schemas/Household'
+        active:
+          type: boolean
+        internal_note:
+          type:
+          - string
+          - 'null'
+        invite_link:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    UserSpaceBatchUpdate:
+      type: object
+      properties:
+        user_spaces:
+          type: array
+          items:
+            type: integer
+        household:
+          type:
+          - integer
+          - 'null'
+        group_set:
+          type: array
+          items:
+            type: integer
+      required:
+      - group_set
+      - user_spaces
+    Household:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -177,78 +177,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    OpenDataVersion:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        code:
-          type: string
-          maxLength: 16
-        comment:
-          type: string
-      required:
-      - code
-      - name
-    PatchedOpenDataStore:
+    OpenDataStoreCategory:
       type: object
       description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        version:
-          $ref: '#/components/schemas/OpenDataVersion'
-        slug:
-          type: string
-          maxLength: 128
-        name:
-          type: string
-          maxLength: 128
-        category_to_store:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/OpenDataStoreCategory'
-        comment:
-          type: string
-        created_by:
-          type: string
-          readOnly: true
-    OpenDataCategory:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
+        category:
+          $ref: '#/components/schemas/OpenDataCategory'
+        store:
           type: integer
-          readOnly: false
-        version:
-          $ref: '#/components/schemas/OpenDataVersion'
-        slug:
-          type: string
-          maxLength: 128
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type: string
-          maxLength: 512
-        comment:
-          type: string
-        created_by:
-          type: string
-          readOnly: true
+        order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
       required:
-      - created_by
-      - name
-      - slug
-      - version
+      - category
+      - store
     PaginatedOpenDataStoreList:
       type: object
       required:
@@ -309,25 +256,78 @@ components:
       - name
       - slug
       - version
-    OpenDataStoreCategory:
+    OpenDataCategory:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+          maxLength: 512
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - slug
+      - version
+    OpenDataVersion:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        code:
+          type: string
+          maxLength: 16
+        comment:
+          type: string
+      required:
+      - code
+      - name
+    PatchedOpenDataStore:
       type: object
       description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        category:
-          $ref: '#/components/schemas/OpenDataCategory'
-        store:
-          type: integer
-        order:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-      required:
-      - category
-      - store
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        category_to_store:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/OpenDataStoreCategory'
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -191,43 +191,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedEnterpriseSpace:
-      type: object
-      properties:
-        space:
-          type: integer
-          readOnly: true
-        billing_licensed_modules:
-          type: string
-          readOnly: true
-        billing_customer_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        billing_plan:
-          allOf:
-          - $ref: '#/components/schemas/EnterpriseBillingPlan'
-          readOnly: true
-        billing_subscription_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        billing_subscription_status:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        billing_monthly_price:
-          type: number
-          format: double
-          readOnly: true
-          exclusiveMinimum: -1000
-          exclusiveMaximum: 1000
-        billing_region:
-          allOf:
-          - $ref: '#/components/schemas/BillingRegionEnum'
     EnterpriseSpace:
       type: object
       properties:
@@ -273,6 +236,79 @@ components:
       - billing_subscription_id
       - billing_subscription_status
       - space
+    PatchedEnterpriseSpace:
+      type: object
+      properties:
+        space:
+          type: integer
+          readOnly: true
+        billing_licensed_modules:
+          type: string
+          readOnly: true
+        billing_customer_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_plan:
+          allOf:
+          - $ref: '#/components/schemas/EnterpriseBillingPlan'
+          readOnly: true
+        billing_subscription_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_subscription_status:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        billing_monthly_price:
+          type: number
+          format: double
+          readOnly: true
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        billing_region:
+          allOf:
+          - $ref: '#/components/schemas/BillingRegionEnum'
+    BillingRegionEnum:
+      enum:
+      - EWR
+      - WORLD
+      type: string
+      description: '* `EWR` - EWR
+
+        * `WORLD` - World'
+    PaginatedEnterpriseSpaceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseSpace'
+        timestamp:
+          type: string
+          format: date-time
     EnterpriseBillingPlan:
       type: object
       properties:
@@ -352,42 +388,6 @@ components:
       - price
       - price_id
       - product_id
-    PaginatedEnterpriseSpaceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnterpriseSpace'
-        timestamp:
-          type: string
-          format: date-time
-    BillingRegionEnum:
-      enum:
-      - EWR
-      - WORLD
-      type: string
-      description: '* `EWR` - EWR
-
-        * `WORLD` - World'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

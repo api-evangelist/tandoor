@@ -201,6 +201,105 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedAutomationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Automation'
+        timestamp:
+          type: string
+          format: date-time
+    AutomationTypeEnum:
+      enum:
+      - FOOD_ALIAS
+      - UNIT_ALIAS
+      - KEYWORD_ALIAS
+      - DESCRIPTION_REPLACE
+      - INSTRUCTION_REPLACE
+      - NEVER_UNIT
+      - TRANSPOSE_WORDS
+      - FOOD_REPLACE
+      - UNIT_REPLACE
+      - NAME_REPLACE
+      type: string
+      description: '* `FOOD_ALIAS` - Food Alias
+
+        * `UNIT_ALIAS` - Unit Alias
+
+        * `KEYWORD_ALIAS` - Keyword Alias
+
+        * `DESCRIPTION_REPLACE` - Description Replace
+
+        * `INSTRUCTION_REPLACE` - Instruction Replace
+
+        * `NEVER_UNIT` - Never Unit
+
+        * `TRANSPOSE_WORDS` - Transpose Words
+
+        * `FOOD_REPLACE` - Food Replace
+
+        * `UNIT_REPLACE` - Unit Replace
+
+        * `NAME_REPLACE` - Name Replace'
+    PatchedAutomation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          $ref: '#/components/schemas/AutomationTypeEnum'
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type:
+          - string
+          - 'null'
+        param_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_3:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        disabled:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
     Automation:
       type: object
       properties:
@@ -243,105 +342,6 @@ components:
       required:
       - created_by
       - type
-    PaginatedAutomationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Automation'
-        timestamp:
-          type: string
-          format: date-time
-    PatchedAutomation:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        type:
-          $ref: '#/components/schemas/AutomationTypeEnum'
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type:
-          - string
-          - 'null'
-        param_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        param_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        param_3:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        disabled:
-          type: boolean
-        created_by:
-          type: integer
-          readOnly: true
-    AutomationTypeEnum:
-      enum:
-      - FOOD_ALIAS
-      - UNIT_ALIAS
-      - KEYWORD_ALIAS
-      - DESCRIPTION_REPLACE
-      - INSTRUCTION_REPLACE
-      - NEVER_UNIT
-      - TRANSPOSE_WORDS
-      - FOOD_REPLACE
-      - UNIT_REPLACE
-      - NAME_REPLACE
-      type: string
-      description: '* `FOOD_ALIAS` - Food Alias
-
-        * `UNIT_ALIAS` - Unit Alias
-
-        * `KEYWORD_ALIAS` - Keyword Alias
-
-        * `DESCRIPTION_REPLACE` - Description Replace
-
-        * `INSTRUCTION_REPLACE` - Instruction Replace
-
-        * `NEVER_UNIT` - Never Unit
-
-        * `TRANSPOSE_WORDS` - Transpose Words
-
-        * `FOOD_REPLACE` - Food Replace
-
-        * `UNIT_REPLACE` - Unit Replace
-
-        * `NAME_REPLACE` - Name Replace'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

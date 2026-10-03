@@ -41,19 +41,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    FdcQueryFoods:
-      type: object
-      properties:
-        fdcId:
-          type: integer
-        description:
-          type: string
-        dataType:
-          type: string
-      required:
-      - dataType
-      - description
-      - fdcId
     FdcQuery:
       type: object
       properties:
@@ -72,6 +59,19 @@ components:
       - foods
       - totalHits
       - totalPages
+    FdcQueryFoods:
+      type: object
+      properties:
+        fdcId:
+          type: integer
+        description:
+          type: string
+        dataType:
+          type: string
+      required:
+      - dataType
+      - description
+      - fdcId
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

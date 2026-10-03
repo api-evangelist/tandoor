@@ -183,24 +183,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedHousehold:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
     Household:
       type: object
       description: Adds nested create feature
@@ -223,6 +205,24 @@ components:
       - created_at
       - name
       - updated_at
+    PatchedHousehold:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     PaginatedHouseholdList:
       type: object
       required:

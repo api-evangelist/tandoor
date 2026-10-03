@@ -203,6 +203,30 @@ components:
           type: string
           format: date-time
           readOnly: true
+    BookmarkletImport:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        html:
+          type: string
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - html
     BookmarkletImportList:
       type: object
       properties:
@@ -252,30 +276,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    BookmarkletImport:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        url:
-          type:
-          - string
-          - 'null'
-          maxLength: 256
-        html:
-          type: string
-        created_by:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - created_by
-      - html
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

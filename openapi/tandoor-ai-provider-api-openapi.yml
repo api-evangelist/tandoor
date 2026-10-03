@@ -309,47 +309,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedAiProviderList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiProvider'
-        timestamp:
-          type: string
-          format: date-time
-    GenericModelReference:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        model:
-          type: string
-        name:
-          type: string
-      required:
-      - model
-      - name
     PaginatedGenericModelReferenceList:
       type: object
       required:
@@ -378,6 +337,55 @@ components:
         timestamp:
           type: string
           format: date-time
+    PatchedAiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
     AiProvider:
       type: object
       properties:
@@ -419,42 +427,34 @@ components:
       - model_name
       - name
       - updated_at
-    PatchedAiProvider:
+    PaginatedAiProviderList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type: string
-        api_key:
-          type: string
-          writeOnly: true
-        model_name:
-          type: string
-          maxLength: 256
-        url:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          maxLength: 2048
-        log_credit_cost:
-          type: boolean
-        space:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
-          - integer
+          - string
           - 'null'
-        created_at:
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiProvider'
+        timestamp:
           type: string
           format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

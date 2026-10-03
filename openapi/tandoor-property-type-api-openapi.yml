@@ -322,7 +322,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedPropertyTypeList:
+    PaginatedGenericModelReferenceList:
       type: object
       required:
       - count
@@ -346,7 +346,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/PropertyType'
+            $ref: '#/components/schemas/GenericModelReference'
         timestamp:
           type: string
           format: date-time
@@ -399,6 +399,34 @@ components:
       required:
       - model
       - name
+    PaginatedPropertyTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyType'
+        timestamp:
+          type: string
+          format: date-time
     PatchedPropertyType:
       type: object
       description: Adds nested create feature
@@ -433,34 +461,6 @@ components:
           - 'null'
           maximum: 2147483647
           minimum: -2147483648
-    PaginatedGenericModelReferenceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericModelReference'
-        timestamp:
-          type: string
-          format: date-time
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

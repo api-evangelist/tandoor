@@ -35,6 +35,106 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    SourceImportUnit:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    AiImport:
+      type: object
+      properties:
+        ai_provider_id:
+          type: integer
+        file:
+          type:
+          - string
+          - 'null'
+          format: uri
+        text:
+          type:
+          - string
+          - 'null'
+        recipe_id:
+          type:
+          - string
+          - 'null'
+      required:
+      - ai_provider_id
+      - file
+      - recipe_id
+      - text
+    SourceImportKeyword:
+      type: object
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          readOnly: false
+        label:
+          type: string
+        name:
+          type: string
+        import_keyword:
+          type: boolean
+          default: true
+      required:
+      - label
+      - name
+    SourceImportFood:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    RecipeFromSourceResponse:
+      type: object
+      properties:
+        recipe:
+          $ref: '#/components/schemas/SourceImportRecipe'
+        recipe_id:
+          type: integer
+        images:
+          type: array
+          items:
+            type: string
+          default: []
+        error:
+          type: boolean
+          default: false
+        msg:
+          type: string
+          default: ''
+          maxLength: 1024
+        duplicates:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceImportDuplicate'
+          default: []
+    SourceImportPropertyType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+      required:
+      - name
+    SourceImportProperty:
+      type: object
+      properties:
+        property_type:
+          $ref: '#/components/schemas/SourceImportPropertyType'
+        property_amount:
+          type: number
+          format: double
+      required:
+      - property_amount
+      - property_type
     SourceImportRecipe:
       type: object
       properties:
@@ -81,6 +181,31 @@ components:
       - name
       - source_url
       - steps
+    SourceImportStep:
+      type: object
+      properties:
+        instruction:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceImportIngredient'
+        show_ingredients_table:
+          type: boolean
+          default: true
+      required:
+      - ingredients
+      - instruction
+    SourceImportDuplicate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+      required:
+      - name
     SourceImportIngredient:
       type: object
       properties:
@@ -104,131 +229,6 @@ components:
       - food
       - original_text
       - unit
-    AiImport:
-      type: object
-      properties:
-        ai_provider_id:
-          type: integer
-        file:
-          type:
-          - string
-          - 'null'
-          format: uri
-        text:
-          type:
-          - string
-          - 'null'
-        recipe_id:
-          type:
-          - string
-          - 'null'
-      required:
-      - ai_provider_id
-      - file
-      - recipe_id
-      - text
-    SourceImportUnit:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-    SourceImportKeyword:
-      type: object
-      properties:
-        id:
-          type:
-          - integer
-          - 'null'
-          readOnly: false
-        label:
-          type: string
-        name:
-          type: string
-        import_keyword:
-          type: boolean
-          default: true
-      required:
-      - label
-      - name
-    SourceImportDuplicate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-      required:
-      - name
-    RecipeFromSourceResponse:
-      type: object
-      properties:
-        recipe:
-          $ref: '#/components/schemas/SourceImportRecipe'
-        recipe_id:
-          type: integer
-        images:
-          type: array
-          items:
-            type: string
-          default: []
-        error:
-          type: boolean
-          default: false
-        msg:
-          type: string
-          default: ''
-          maxLength: 1024
-        duplicates:
-          type: array
-          items:
-            $ref: '#/components/schemas/SourceImportDuplicate'
-          default: []
-    SourceImportFood:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-    SourceImportPropertyType:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-      required:
-      - name
-    SourceImportStep:
-      type: object
-      properties:
-        instruction:
-          type: string
-        ingredients:
-          type: array
-          items:
-            $ref: '#/components/schemas/SourceImportIngredient'
-        show_ingredients_table:
-          type: boolean
-          default: true
-      required:
-      - ingredients
-      - instruction
-    SourceImportProperty:
-      type: object
-      properties:
-        property_type:
-          $ref: '#/components/schemas/SourceImportPropertyType'
-        property_amount:
-          type: number
-          format: double
-      required:
-      - property_amount
-      - property_type
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

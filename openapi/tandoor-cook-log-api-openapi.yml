@@ -229,6 +229,45 @@ components:
       - is_staff
       - is_superuser
       - username
+    CookLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        recipe:
+          type: integer
+        servings:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        rating:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        comment:
+          type:
+          - string
+          - 'null'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_by
+      - recipe
+      - updated_at
     PatchedCookLog:
       type: object
       properties:
@@ -292,45 +331,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    CookLog:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        recipe:
-          type: integer
-        servings:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        rating:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        comment:
-          type:
-          - string
-          - 'null'
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_by
-      - recipe
-      - updated_at
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

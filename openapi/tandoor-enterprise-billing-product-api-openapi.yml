@@ -177,6 +177,52 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PatchedEnterpriseBillingProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        price:
+          type: number
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        price_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Discounted price to show, update price_id from Stripe to use, null to disable discount.
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        discount_reason:
+          type:
+          - string
+          - 'null'
+          description: Text to show as reason for the discount
+          maxLength: 256
+        price_id:
+          type: string
+          maxLength: 256
+        product_id:
+          type: string
+          maxLength: 256
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_credits:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        disabled:
+          type: boolean
     EnterpriseBillingProduct:
       type: object
       properties:
@@ -256,52 +302,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    PatchedEnterpriseBillingProduct:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        price:
-          type: number
-          format: double
-          exclusiveMinimum: -1000
-          exclusiveMaximum: 1000
-        price_discount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Discounted price to show, update price_id from Stripe to use, null to disable discount.
-          exclusiveMinimum: -1000
-          exclusiveMaximum: 1000
-        discount_reason:
-          type:
-          - string
-          - 'null'
-          description: Text to show as reason for the discount
-          maxLength: 256
-        price_id:
-          type: string
-          maxLength: 256
-        product_id:
-          type: string
-          maxLength: 256
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        ai_credits:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        disabled:
-          type: boolean
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

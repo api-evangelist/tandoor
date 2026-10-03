@@ -79,14 +79,6 @@ components:
       - meal_type_id
       - servings
       - start_date
-    KeywordModeEnum:
-      enum:
-      - or
-      - and
-      type: string
-      description: '* `or` - or
-
-        * `and` - and'
     User:
       type: object
       description: Adds nested create feature
@@ -128,6 +120,14 @@ components:
       - is_staff
       - is_superuser
       - username
+    KeywordModeEnum:
+      enum:
+      - or
+      - and
+      type: string
+      description: '* `or` - or
+
+        * `and` - and'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

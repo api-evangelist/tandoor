@@ -315,7 +315,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedUserFileList:
+    PaginatedGenericModelReferenceList:
       type: object
       required:
       - count
@@ -339,7 +339,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/UserFile'
+            $ref: '#/components/schemas/GenericModelReference'
         timestamp:
           type: string
           format: date-time
@@ -373,6 +373,71 @@ components:
           type: string
           format: date-time
           readOnly: true
+    UserFile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        file:
+          type: string
+          format: uri
+          writeOnly: true
+        file_download:
+          type: string
+          readOnly: true
+        preview:
+          type: string
+          readOnly: true
+        file_size_kb:
+          type: integer
+          readOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - file_download
+      - file_size_kb
+      - name
+      - preview
+    PaginatedUserFileList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserFile'
+        timestamp:
+          type: string
+          format: date-time
     User:
       type: object
       description: Adds nested create feature
@@ -414,43 +479,6 @@ components:
       - is_staff
       - is_superuser
       - username
-    UserFile:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        file:
-          type: string
-          format: uri
-          writeOnly: true
-        file_download:
-          type: string
-          readOnly: true
-        preview:
-          type: string
-          readOnly: true
-        file_size_kb:
-          type: integer
-          readOnly: true
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - created_by
-      - file_download
-      - file_size_kb
-      - name
-      - preview
     GenericModelReference:
       type: object
       properties:
@@ -464,34 +492,6 @@ components:
       required:
       - model
       - name
-    PaginatedGenericModelReferenceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericModelReference'
-        timestamp:
-          type: string
-          format: date-time
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
