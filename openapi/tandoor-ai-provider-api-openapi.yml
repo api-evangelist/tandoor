@@ -373,19 +373,6 @@ components:
           type: string
           format: date-time
           readOnly: true
-    GenericModelReference:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        model:
-          type: string
-        name:
-          type: string
-      required:
-      - model
-      - name
     AiProvider:
       type: object
       properties:
@@ -455,6 +442,19 @@ components:
         timestamp:
           type: string
           format: date-time
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

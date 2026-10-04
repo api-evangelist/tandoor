@@ -337,86 +337,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    MethodEnum:
-      enum:
-      - DB
-      - NEXTCLOUD
-      - LOCAL
-      type: string
-      description: '* `DB` - Dropbox
-
-        * `NEXTCLOUD` - Nextcloud
-
-        * `LOCAL` - Local'
-    PaginatedStorageList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Storage'
-        timestamp:
-          type: string
-          format: date-time
-    PatchedStorage:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        method:
-          $ref: '#/components/schemas/MethodEnum'
-        username:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          maxLength: 128
-        token:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          maxLength: 4098
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          maxLength: 200
-        path:
-          type: string
-          maxLength: 256
-        created_by:
-          type: integer
-          readOnly: true
     Storage:
       type: object
       description: Adds nested create feature
@@ -461,6 +381,86 @@ components:
       required:
       - created_by
       - name
+    PaginatedStorageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Storage'
+        timestamp:
+          type: string
+          format: date-time
+    MethodEnum:
+      enum:
+      - DB
+      - NEXTCLOUD
+      - LOCAL
+      type: string
+      description: '* `DB` - Dropbox
+
+        * `NEXTCLOUD` - Nextcloud
+
+        * `LOCAL` - Local'
+    PatchedStorage:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        username:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 128
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 4098
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        path:
+          type: string
+          maxLength: 256
+        created_by:
+          type: integer
+          readOnly: true
     GenericModelReference:
       type: object
       properties:

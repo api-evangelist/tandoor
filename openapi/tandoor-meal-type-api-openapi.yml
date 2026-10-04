@@ -321,6 +321,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedMealTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealType'
+        timestamp:
+          type: string
+          format: date-time
     PaginatedGenericModelReferenceList:
       type: object
       required:
@@ -379,47 +407,6 @@ components:
       required:
       - created_by
       - name
-    PaginatedMealTypeList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MealType'
-        timestamp:
-          type: string
-          format: date-time
-    GenericModelReference:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        model:
-          type: string
-        name:
-          type: string
-      required:
-      - model
-      - name
     PatchedMealType:
       type: object
       description: Adds nested create feature
@@ -447,6 +434,19 @@ components:
         created_by:
           type: integer
           readOnly: true
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

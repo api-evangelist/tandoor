@@ -67,17 +67,73 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    MethodEnum:
-      enum:
-      - DB
-      - NEXTCLOUD
-      - LOCAL
-      type: string
-      description: '* `DB` - Dropbox
-
-        * `NEXTCLOUD` - Nextcloud
-
-        * `LOCAL` - Local'
+    SyncLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        sync:
+          allOf:
+          - $ref: '#/components/schemas/Sync'
+          readOnly: true
+        status:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - status
+      - sync
+    Storage:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        username:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 128
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 4098
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          maxLength: 200
+        path:
+          type: string
+          maxLength: 256
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
     Sync:
       type: object
       description: Adds nested create feature
@@ -137,73 +193,17 @@ components:
         timestamp:
           type: string
           format: date-time
-    Storage:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        method:
-          $ref: '#/components/schemas/MethodEnum'
-        username:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          maxLength: 128
-        token:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          maxLength: 4098
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          maxLength: 200
-        path:
-          type: string
-          maxLength: 256
-        created_by:
-          type: integer
-          readOnly: true
-      required:
-      - created_by
-      - name
-    SyncLog:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        sync:
-          allOf:
-          - $ref: '#/components/schemas/Sync'
-          readOnly: true
-        status:
-          type: string
-          maxLength: 32
-        msg:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - status
-      - sync
+    MethodEnum:
+      enum:
+      - DB
+      - NEXTCLOUD
+      - LOCAL
+      type: string
+      description: '* `DB` - Dropbox
+
+        * `NEXTCLOUD` - Nextcloud
+
+        * `LOCAL` - Local'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

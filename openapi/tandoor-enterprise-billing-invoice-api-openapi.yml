@@ -211,6 +211,55 @@ components:
         * `SEVDESK` - SevDesk
 
         * `STRIPE` - Stripe'
+    EnterpriseBillingInvoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        user:
+          type: integer
+        space:
+          type: integer
+        invoice_system:
+          $ref: '#/components/schemas/InvoiceSystemEnum'
+        invoice_id:
+          type: string
+          maxLength: 128
+        invoice_number:
+          type: string
+          maxLength: 128
+        language_code:
+          type: string
+          maxLength: 8
+        invoice_date:
+          type: string
+          format: date
+        price_net:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000000000000000000000
+          exclusiveMaximum: 1000000000000000000000000000000
+        price_gross:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000000000000000000000
+          exclusiveMaximum: 1000000000000000000000000000000
+        printed:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - invoice_date
+      - invoice_id
+      - invoice_number
+      - price_gross
+      - price_net
+      - space
+      - user
     PatchedEnterpriseBillingInvoice:
       type: object
       properties:
@@ -279,55 +328,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    EnterpriseBillingInvoice:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        user:
-          type: integer
-        space:
-          type: integer
-        invoice_system:
-          $ref: '#/components/schemas/InvoiceSystemEnum'
-        invoice_id:
-          type: string
-          maxLength: 128
-        invoice_number:
-          type: string
-          maxLength: 128
-        language_code:
-          type: string
-          maxLength: 8
-        invoice_date:
-          type: string
-          format: date
-        price_net:
-          type: number
-          format: double
-          exclusiveMinimum: -1000000000000000000000000000000
-          exclusiveMaximum: 1000000000000000000000000000000
-        price_gross:
-          type: number
-          format: double
-          exclusiveMinimum: -1000000000000000000000000000000
-          exclusiveMaximum: 1000000000000000000000000000000
-        printed:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - invoice_date
-      - invoice_id
-      - invoice_number
-      - price_gross
-      - price_net
-      - space
-      - user
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

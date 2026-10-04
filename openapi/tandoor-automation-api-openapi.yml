@@ -201,34 +201,48 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedAutomationList:
+    Automation:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Automation'
-        timestamp:
+          readOnly: false
+        type:
+          $ref: '#/components/schemas/AutomationTypeEnum'
+        name:
           type: string
-          format: date-time
+          maxLength: 128
+        description:
+          type:
+          - string
+          - 'null'
+        param_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        param_3:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        disabled:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - type
     AutomationTypeEnum:
       enum:
       - FOOD_ALIAS
@@ -300,48 +314,34 @@ components:
         created_by:
           type: integer
           readOnly: true
-    Automation:
+    PaginatedAutomationList:
       type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        type:
-          $ref: '#/components/schemas/AutomationTypeEnum'
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type:
-          - string
-          - 'null'
-        param_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        param_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        param_3:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        disabled:
-          type: boolean
-        created_by:
-          type: integer
-          readOnly: true
       required:
-      - created_by
-      - type
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Automation'
+        timestamp:
+          type: string
+          format: date-time
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

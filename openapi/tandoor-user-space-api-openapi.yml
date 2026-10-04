@@ -212,6 +212,68 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PatchedUserSpace:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        space:
+          type: integer
+          readOnly: true
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        household:
+          allOf:
+          - $ref: '#/components/schemas/Household'
+        active:
+          type: boolean
+        internal_note:
+          type:
+          - string
+          - 'null'
+        invite_link:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    Household:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
     Group:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
@@ -299,6 +361,24 @@ components:
       - space
       - updated_at
       - user
+    UserSpaceBatchUpdate:
+      type: object
+      properties:
+        user_spaces:
+          type: array
+          items:
+            type: integer
+        household:
+          type:
+          - integer
+          - 'null'
+        group_set:
+          type: array
+          items:
+            type: integer
+      required:
+      - group_set
+      - user_spaces
     User:
       type: object
       description: Adds nested create feature
@@ -340,86 +420,6 @@ components:
       - is_staff
       - is_superuser
       - username
-    PatchedUserSpace:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        user:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        space:
-          type: integer
-          readOnly: true
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/Group'
-        household:
-          allOf:
-          - $ref: '#/components/schemas/Household'
-        active:
-          type: boolean
-        internal_note:
-          type:
-          - string
-          - 'null'
-        invite_link:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    UserSpaceBatchUpdate:
-      type: object
-      properties:
-        user_spaces:
-          type: array
-          items:
-            type: integer
-        household:
-          type:
-          - integer
-          - 'null'
-        group_set:
-          type: array
-          items:
-            type: integer
-      required:
-      - group_set
-      - user_spaces
-    Household:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - name
-      - updated_at
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

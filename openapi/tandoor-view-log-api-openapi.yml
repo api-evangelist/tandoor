@@ -211,6 +211,21 @@ components:
         timestamp:
           type: string
           format: date-time
+    PatchedViewLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        recipe:
+          type: integer
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
     ViewLog:
       type: object
       properties:
@@ -230,21 +245,6 @@ components:
       - created_at
       - created_by
       - recipe
-    PatchedViewLog:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        recipe:
-          type: integer
-        created_by:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

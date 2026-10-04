@@ -350,29 +350,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CustomFilter:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        search:
-          type: string
-        shared:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        created_by:
-          type: integer
-          readOnly: true
-      required:
-      - created_by
-      - name
-      - search
     PaginatedGenericModelReferenceList:
       type: object
       required:
@@ -401,6 +378,84 @@ components:
         timestamp:
           type: string
           format: date-time
+    CustomFilter:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        search:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - search
+    PaginatedRecipeBookList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeBook'
+        timestamp:
+          type: string
+          format: date-time
+    PatchedRecipeBook:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        filter:
+          allOf:
+          - $ref: '#/components/schemas/CustomFilter'
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
     RecipeBook:
       type: object
       description: Adds nested create feature
@@ -432,33 +487,6 @@ components:
       - created_by
       - name
       - shared
-    PatchedRecipeBook:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type: string
-        shared:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        filter:
-          allOf:
-          - $ref: '#/components/schemas/CustomFilter'
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
     User:
       type: object
       description: Adds nested create feature
@@ -500,34 +528,6 @@ components:
       - is_staff
       - is_superuser
       - username
-    PaginatedRecipeBookList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecipeBook'
-        timestamp:
-          type: string
-          format: date-time
     GenericModelReference:
       type: object
       properties:

@@ -193,29 +193,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CustomFilter:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        search:
-          type: string
-        shared:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        created_by:
-          type: integer
-          readOnly: true
-      required:
-      - created_by
-      - name
-      - search
     PaginatedRecipeBookEntryList:
       type: object
       required:
@@ -244,6 +221,17 @@ components:
         timestamp:
           type: string
           format: date-time
+    KeywordLabel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        label:
+          type: string
+          readOnly: true
+      required:
+      - label
     RecipeBook:
       type: object
       description: Adds nested create feature
@@ -275,81 +263,6 @@ components:
       - created_by
       - name
       - shared
-    RecipeBookEntry:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        book:
-          type: integer
-        book_content:
-          allOf:
-          - $ref: '#/components/schemas/RecipeBook'
-          readOnly: true
-        recipe:
-          type: integer
-        recipe_content:
-          allOf:
-          - $ref: '#/components/schemas/RecipeOverview'
-          readOnly: true
-      required:
-      - book
-      - book_content
-      - recipe
-      - recipe_content
-    User:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        username:
-          type: string
-          readOnly: true
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        display_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_superuser:
-          type: boolean
-          readOnly: true
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-      required:
-      - display_name
-      - is_active
-      - is_staff
-      - is_superuser
-      - username
-    KeywordLabel:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        label:
-          type: string
-          readOnly: true
-      required:
-      - label
     RecipeOverview:
       type: object
       description: Adds nested create feature
@@ -439,6 +352,29 @@ components:
       - updated_at
       - waiting_time
       - working_time
+    RecipeBookEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        book:
+          type: integer
+        book_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeBook'
+          readOnly: true
+        recipe:
+          type: integer
+        recipe_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+          readOnly: true
+      required:
+      - book
+      - book_content
+      - recipe
+      - recipe_content
     PatchedRecipeBookEntry:
       type: object
       properties:
@@ -457,6 +393,70 @@ components:
           allOf:
           - $ref: '#/components/schemas/RecipeOverview'
           readOnly: true
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
+    CustomFilter:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        search:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - search
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

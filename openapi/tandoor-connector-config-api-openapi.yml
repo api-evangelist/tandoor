@@ -356,6 +356,67 @@ components:
       required:
       - created_by
       - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+    PaginatedConnectorConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorConfig'
+        timestamp:
+          type: string
+          format: date-time
+    ConnectorConfigTypeEnum:
+      enum:
+      - HomeAssistant
+      type: string
+      description: '* `HomeAssistant` - HomeAssistant'
     PatchedConnectorConfig:
       type: object
       properties:
@@ -400,67 +461,6 @@ components:
         created_by:
           type: integer
           readOnly: true
-    PaginatedGenericModelReferenceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericModelReference'
-        timestamp:
-          type: string
-          format: date-time
-    ConnectorConfigTypeEnum:
-      enum:
-      - HomeAssistant
-      type: string
-      description: '* `HomeAssistant` - HomeAssistant'
-    PaginatedConnectorConfigList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectorConfig'
-        timestamp:
-          type: string
-          format: date-time
     GenericModelReference:
       type: object
       properties:

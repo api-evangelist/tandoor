@@ -223,253 +223,6 @@ components:
           - string
           - 'null'
       required: []
-    User:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        username:
-          type: string
-          readOnly: true
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        display_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_superuser:
-          type: boolean
-          readOnly: true
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-      required:
-      - display_name
-      - is_active
-      - is_staff
-      - is_superuser
-      - username
-    Space:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        message:
-          type: string
-          maxLength: 512
-        max_recipes:
-          type: integer
-          readOnly: true
-        max_file_storage_mb:
-          type: integer
-          readOnly: true
-          description: Maximum file storage for space in MB. 0 for unlimited, -1 to disable file upload.
-        max_users:
-          type: integer
-          readOnly: true
-        allow_sharing:
-          type: boolean
-          readOnly: true
-        demo:
-          type: boolean
-          readOnly: true
-        food_inherit:
-          type: array
-          items:
-            $ref: '#/components/schemas/FoodInheritField'
-        user_count:
-          type: integer
-          readOnly: true
-        recipe_count:
-          type: integer
-          readOnly: true
-        file_size_mb:
-          type: number
-          format: double
-          readOnly: true
-        image:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        nav_logo:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        space_theme:
-          $ref: '#/components/schemas/SpaceThemeEnum'
-        custom_space_theme:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        nav_bg_color:
-          type: string
-          maxLength: 8
-        nav_text_color:
-          $ref: '#/components/schemas/SpaceNavTextColorEnum'
-        logo_color_32:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        logo_color_128:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        logo_color_144:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        logo_color_180:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        logo_color_192:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        logo_color_512:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        logo_color_svg:
-          allOf:
-          - $ref: '#/components/schemas/UserFileView'
-        ai_credits_monthly:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        ai_credits_balance:
-          type: number
-          format: double
-          exclusiveMinimum: -1000000000000
-          exclusiveMaximum: 1000000000000
-        ai_monthly_credits_used:
-          type: integer
-          readOnly: true
-        ai_enabled:
-          type: boolean
-        ai_default_provider:
-          allOf:
-          - $ref: '#/components/schemas/AiProvider'
-        space_setup_completed:
-          type: boolean
-        household_setup_completed:
-          type: boolean
-      required:
-      - ai_monthly_credits_used
-      - allow_sharing
-      - created_at
-      - created_by
-      - demo
-      - file_size_mb
-      - max_file_storage_mb
-      - max_recipes
-      - max_users
-      - recipe_count
-      - user_count
-    SpaceNavTextColorEnum:
-      enum:
-      - BLANK
-      - LIGHT
-      - DARK
-      type: string
-      description: '* `BLANK` - -------
-
-        * `LIGHT` - Light
-
-        * `DARK` - Dark'
-    AiProvider:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type: string
-        api_key:
-          type: string
-          writeOnly: true
-        model_name:
-          type: string
-          maxLength: 256
-        url:
-          type:
-          - string
-          - 'null'
-          maxLength: 2048
-        log_credit_cost:
-          type: boolean
-        space:
-          type:
-          - integer
-          - 'null'
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - model_name
-      - name
-      - updated_at
-    UserFileView:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        file_download:
-          type: string
-          readOnly: true
-        preview:
-          type: string
-          readOnly: true
-        file_size_kb:
-          type: integer
-          readOnly: true
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - created_by
-      - file_download
-      - file_size_kb
-      - name
-      - preview
     PatchedSpace:
       type: object
       description: Adds nested create feature
@@ -602,6 +355,253 @@ components:
         * `SUPERHERO` - Superhero
 
         * `TANDOOR_DARK` - Tandoor Dark (INCOMPLETE)'
+    AiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - model_name
+      - name
+      - updated_at
+    Space:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        message:
+          type: string
+          maxLength: 512
+        max_recipes:
+          type: integer
+          readOnly: true
+        max_file_storage_mb:
+          type: integer
+          readOnly: true
+          description: Maximum file storage for space in MB. 0 for unlimited, -1 to disable file upload.
+        max_users:
+          type: integer
+          readOnly: true
+        allow_sharing:
+          type: boolean
+          readOnly: true
+        demo:
+          type: boolean
+          readOnly: true
+        food_inherit:
+          type: array
+          items:
+            $ref: '#/components/schemas/FoodInheritField'
+        user_count:
+          type: integer
+          readOnly: true
+        recipe_count:
+          type: integer
+          readOnly: true
+        file_size_mb:
+          type: number
+          format: double
+          readOnly: true
+        image:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        nav_logo:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        space_theme:
+          $ref: '#/components/schemas/SpaceThemeEnum'
+        custom_space_theme:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        nav_bg_color:
+          type: string
+          maxLength: 8
+        nav_text_color:
+          $ref: '#/components/schemas/SpaceNavTextColorEnum'
+        logo_color_32:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_128:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_144:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_180:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_192:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_512:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        logo_color_svg:
+          allOf:
+          - $ref: '#/components/schemas/UserFileView'
+        ai_credits_monthly:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        ai_credits_balance:
+          type: number
+          format: double
+          exclusiveMinimum: -1000000000000
+          exclusiveMaximum: 1000000000000
+        ai_monthly_credits_used:
+          type: integer
+          readOnly: true
+        ai_enabled:
+          type: boolean
+        ai_default_provider:
+          allOf:
+          - $ref: '#/components/schemas/AiProvider'
+        space_setup_completed:
+          type: boolean
+        household_setup_completed:
+          type: boolean
+      required:
+      - ai_monthly_credits_used
+      - allow_sharing
+      - created_at
+      - created_by
+      - demo
+      - file_size_mb
+      - max_file_storage_mb
+      - max_recipes
+      - max_users
+      - recipe_count
+      - user_count
+    SpaceNavTextColorEnum:
+      enum:
+      - BLANK
+      - LIGHT
+      - DARK
+      type: string
+      description: '* `BLANK` - -------
+
+        * `LIGHT` - Light
+
+        * `DARK` - Dark'
+    UserFileView:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        file_download:
+          type: string
+          readOnly: true
+        preview:
+          type: string
+          readOnly: true
+        file_size_kb:
+          type: integer
+          readOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - file_download
+      - file_size_kb
+      - name
+      - preview
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

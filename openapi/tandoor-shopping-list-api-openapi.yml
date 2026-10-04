@@ -335,6 +335,24 @@ components:
         timestamp:
           type: string
           format: date-time
+    ShoppingList:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 32
+        description:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+      required: []
     PaginatedShoppingListList:
       type: object
       required:
@@ -363,37 +381,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    ShoppingList:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 32
-        description:
-          type: string
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
-      required: []
-    GenericModelReference:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        model:
-          type: string
-        name:
-          type: string
-      required:
-      - model
-      - name
     PatchedShoppingList:
       type: object
       description: Adds nested create feature
@@ -411,6 +398,19 @@ components:
           - string
           - 'null'
           maxLength: 7
+    GenericModelReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        model:
+          type: string
+        name:
+          type: string
+      required:
+      - model
+      - name
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -172,28 +172,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedAccessToken:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        token:
-          type: string
-          readOnly: true
-        expires:
-          type: string
-          format: date-time
-        scope:
-          type: string
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        updated:
-          type: string
-          format: date-time
-          readOnly: true
     AccessToken:
       type: object
       properties:
@@ -221,6 +199,28 @@ components:
       - expires
       - token
       - updated
+    PatchedAccessToken:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        token:
+          type: string
+          readOnly: true
+        expires:
+          type: string
+          format: date-time
+        scope:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

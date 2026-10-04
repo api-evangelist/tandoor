@@ -177,37 +177,21 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedOpenDataConversion:
+    OpenDataFoodProperty:
       type: object
       description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        version:
-          $ref: '#/components/schemas/OpenDataVersion'
-        slug:
-          type: string
-          maxLength: 128
-        food:
-          $ref: '#/components/schemas/OpenDataFood'
-        base_amount:
+        property:
+          $ref: '#/components/schemas/OpenDataProperty'
+        property_amount:
           type: number
           format: double
-        base_unit:
-          $ref: '#/components/schemas/OpenDataUnit'
-        converted_amount:
-          type: number
-          format: double
-        converted_unit:
-          $ref: '#/components/schemas/OpenDataUnit'
-        source:
-          type: string
-        comment:
-          type: string
-        created_by:
-          type: string
-          readOnly: true
+      required:
+      - property
+      - property_amount
     OpenDataCategory:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
@@ -236,132 +220,6 @@ components:
       - name
       - slug
       - version
-    OpenDataVersion:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        code:
-          type: string
-          maxLength: 16
-        comment:
-          type: string
-      required:
-      - code
-      - name
-    OpenDataFoodProperty:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        property:
-          $ref: '#/components/schemas/OpenDataProperty'
-        property_amount:
-          type: number
-          format: double
-      required:
-      - property
-      - property_amount
-    OpenDataProperty:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        version:
-          $ref: '#/components/schemas/OpenDataVersion'
-        slug:
-          type: string
-          maxLength: 128
-        name:
-          type: string
-          maxLength: 128
-        unit:
-          type: string
-          maxLength: 16
-        fdc_id:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        comment:
-          type: string
-        created_by:
-          type: string
-          readOnly: true
-      required:
-      - created_by
-      - name
-      - slug
-      - version
-    BaseUnitEnum:
-      enum:
-      - g
-      - kg
-      - ounce
-      - pound
-      - ml
-      - l
-      - fluid_ounce
-      - pint
-      - quart
-      - gallon
-      - tbsp
-      - tsp
-      - us_cup
-      - imperial_fluid_ounce
-      - imperial_pint
-      - imperial_quart
-      - imperial_gallon
-      - imperial_tbsp
-      - imperial_tsp
-      type: string
-      description: '* `g` - g
-
-        * `kg` - kg
-
-        * `ounce` - ounce
-
-        * `pound` - pound
-
-        * `ml` - ml
-
-        * `l` - l
-
-        * `fluid_ounce` - fluid_ounce
-
-        * `pint` - pint
-
-        * `quart` - quart
-
-        * `gallon` - gallon
-
-        * `tbsp` - tbsp
-
-        * `tsp` - tsp
-
-        * `us_cup` - US Cup
-
-        * `imperial_fluid_ounce` - imperial fluid ounce
-
-        * `imperial_pint` - imperial pint
-
-        * `imperial_quart` - imperial quart
-
-        * `imperial_gallon` - imperial gallon
-
-        * `imperial_tbsp` - imperial tbsp
-
-        * `imperial_tsp` - imperial tsp'
     PaginatedOpenDataConversionList:
       type: object
       required:
@@ -423,6 +281,114 @@ components:
       - slug
       - type
       - version
+    OpenDataVersion:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        code:
+          type: string
+          maxLength: 16
+        comment:
+          type: string
+      required:
+      - code
+      - name
+    BaseUnitEnum:
+      enum:
+      - g
+      - kg
+      - ounce
+      - pound
+      - ml
+      - l
+      - fluid_ounce
+      - pint
+      - quart
+      - gallon
+      - tbsp
+      - tsp
+      - us_cup
+      - imperial_fluid_ounce
+      - imperial_pint
+      - imperial_quart
+      - imperial_gallon
+      - imperial_tbsp
+      - imperial_tsp
+      type: string
+      description: '* `g` - g
+
+        * `kg` - kg
+
+        * `ounce` - ounce
+
+        * `pound` - pound
+
+        * `ml` - ml
+
+        * `l` - l
+
+        * `fluid_ounce` - fluid_ounce
+
+        * `pint` - pint
+
+        * `quart` - quart
+
+        * `gallon` - gallon
+
+        * `tbsp` - tbsp
+
+        * `tsp` - tsp
+
+        * `us_cup` - US Cup
+
+        * `imperial_fluid_ounce` - imperial fluid ounce
+
+        * `imperial_pint` - imperial pint
+
+        * `imperial_quart` - imperial quart
+
+        * `imperial_gallon` - imperial gallon
+
+        * `imperial_tbsp` - imperial tbsp
+
+        * `imperial_tsp` - imperial tsp'
+    PatchedOpenDataConversion:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        food:
+          $ref: '#/components/schemas/OpenDataFood'
+        base_amount:
+          type: number
+          format: double
+        base_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        converted_amount:
+          type: number
+          format: double
+        converted_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        source:
+          type: string
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
     OpenDataUnitTypeEnum:
       enum:
       - WEIGHT
@@ -434,6 +400,81 @@ components:
         * `VOLUME` - volume
 
         * `OTHER` - other'
+    OpenDataProperty:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 128
+        unit:
+          type: string
+          maxLength: 16
+        fdc_id:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - slug
+      - version
+    OpenDataConversion:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        version:
+          $ref: '#/components/schemas/OpenDataVersion'
+        slug:
+          type: string
+          maxLength: 128
+        food:
+          $ref: '#/components/schemas/OpenDataFood'
+        base_amount:
+          type: number
+          format: double
+        base_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        converted_amount:
+          type: number
+          format: double
+        converted_unit:
+          $ref: '#/components/schemas/OpenDataUnit'
+        source:
+          type: string
+        comment:
+          type: string
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - base_amount
+      - base_unit
+      - converted_amount
+      - converted_unit
+      - created_by
+      - food
+      - slug
+      - source
+      - version
     OpenDataFood:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
@@ -499,47 +540,6 @@ components:
       - properties_food_unit
       - slug
       - store_category
-      - version
-    OpenDataConversion:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        version:
-          $ref: '#/components/schemas/OpenDataVersion'
-        slug:
-          type: string
-          maxLength: 128
-        food:
-          $ref: '#/components/schemas/OpenDataFood'
-        base_amount:
-          type: number
-          format: double
-        base_unit:
-          $ref: '#/components/schemas/OpenDataUnit'
-        converted_amount:
-          type: number
-          format: double
-        converted_unit:
-          $ref: '#/components/schemas/OpenDataUnit'
-        source:
-          type: string
-        comment:
-          type: string
-        created_by:
-          type: string
-          readOnly: true
-      required:
-      - base_amount
-      - base_unit
-      - converted_amount
-      - converted_unit
-      - created_by
-      - food
-      - slug
-      - source
       - version
   securitySchemes:
     ApiKeyAuth:

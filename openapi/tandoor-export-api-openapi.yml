@@ -41,29 +41,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CustomFilter:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        search:
-          type: string
-        shared:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        created_by:
-          type: integer
-          readOnly: true
-      required:
-      - created_by
-      - name
-      - search
     ExportRequest:
       type: object
       properties:
@@ -98,6 +75,44 @@ components:
       required:
       - name
       - url
+    ExportLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        type:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        running:
+          type: boolean
+        total_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        exported_recipes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        cache_duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        possibly_not_expired:
+          type: boolean
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - type
     User:
       type: object
       description: Adds nested create feature
@@ -139,44 +154,29 @@ components:
       - is_staff
       - is_superuser
       - username
-    ExportLog:
+    CustomFilter:
       type: object
+      description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        type:
+        name:
           type: string
-          maxLength: 32
-        msg:
+          maxLength: 128
+        search:
           type: string
-        running:
-          type: boolean
-        total_recipes:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        exported_recipes:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        cache_duration:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        possibly_not_expired:
-          type: boolean
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
         created_by:
           type: integer
           readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
       required:
-      - created_at
       - created_by
-      - type
+      - name
+      - search
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

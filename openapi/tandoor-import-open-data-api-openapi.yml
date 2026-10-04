@@ -56,21 +56,28 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ImportOpenDataResponse:
+    ImportOpenDataVersionMetaData:
       type: object
       properties:
         food:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+          type: integer
         unit:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+          type: integer
         category:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+          type: integer
         property:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+          type: integer
         store:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+          type: integer
         conversion:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+          type: integer
+      required:
+      - category
+      - conversion
+      - food
+      - property
+      - store
+      - unit
     ImportOpenData:
       type: object
       properties:
@@ -104,28 +111,21 @@ components:
         total_errored:
           type: integer
           default: 0
-    ImportOpenDataVersionMetaData:
+    ImportOpenDataResponse:
       type: object
       properties:
         food:
-          type: integer
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
         unit:
-          type: integer
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
         category:
-          type: integer
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
         property:
-          type: integer
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
         store:
-          type: integer
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
         conversion:
-          type: integer
-      required:
-      - category
-      - conversion
-      - food
-      - property
-      - store
-      - unit
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
     ImportOpenDataMetaData:
       type: object
       properties:

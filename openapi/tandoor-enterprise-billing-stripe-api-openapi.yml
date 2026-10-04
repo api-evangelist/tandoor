@@ -56,13 +56,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    StripeCheckoutSessionRequest:
-      type: object
-      properties:
-        product_id:
-          type: integer
-        plan_id:
-          type: integer
     StripeCheckoutSessionResponse:
       type: object
       properties:
@@ -77,6 +70,13 @@ components:
       - session_id
       - stripe_public_key
       - url
+    StripeCheckoutSessionRequest:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        plan_id:
+          type: integer
     StripePortal:
       type: object
       properties:

@@ -218,7 +218,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CustomFilter:
+    PatchedCustomFilter:
       type: object
       description: Adds nested create feature
       properties:
@@ -237,10 +237,6 @@ components:
         created_by:
           type: integer
           readOnly: true
-      required:
-      - created_by
-      - name
-      - search
     PaginatedCustomFilterList:
       type: object
       required:
@@ -269,25 +265,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    PatchedCustomFilter:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        search:
-          type: string
-        shared:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        created_by:
-          type: integer
-          readOnly: true
     User:
       type: object
       description: Adds nested create feature
@@ -329,6 +306,29 @@ components:
       - is_staff
       - is_superuser
       - username
+    CustomFilter:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        search:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+      - search
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

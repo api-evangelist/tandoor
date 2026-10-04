@@ -35,61 +35,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SourceImportUnit:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-    AiImport:
-      type: object
-      properties:
-        ai_provider_id:
-          type: integer
-        file:
-          type:
-          - string
-          - 'null'
-          format: uri
-        text:
-          type:
-          - string
-          - 'null'
-        recipe_id:
-          type:
-          - string
-          - 'null'
-      required:
-      - ai_provider_id
-      - file
-      - recipe_id
-      - text
-    SourceImportKeyword:
+    SourceImportDuplicate:
       type: object
       properties:
         id:
-          type:
-          - integer
-          - 'null'
+          type: integer
           readOnly: false
-        label:
-          type: string
         name:
           type: string
-        import_keyword:
-          type: boolean
-          default: true
       required:
-      - label
       - name
-    SourceImportFood:
+    SourceImportProperty:
       type: object
       properties:
-        name:
-          type: string
+        property_type:
+          $ref: '#/components/schemas/SourceImportPropertyType'
+        property_amount:
+          type: number
+          format: double
       required:
-      - name
+      - property_amount
+      - property_type
     RecipeFromSourceResponse:
       type: object
       properties:
@@ -124,17 +90,54 @@ components:
           type: string
       required:
       - name
-    SourceImportProperty:
+    SourceImportFood:
       type: object
       properties:
-        property_type:
-          $ref: '#/components/schemas/SourceImportPropertyType'
-        property_amount:
+        name:
+          type: string
+      required:
+      - name
+    SourceImportIngredient:
+      type: object
+      properties:
+        amount:
           type: number
           format: double
+        food:
+          $ref: '#/components/schemas/SourceImportFood'
+        unit:
+          $ref: '#/components/schemas/SourceImportUnit'
+        note:
+          type: string
+        order:
+          type:
+          - integer
+          - 'null'
+        original_text:
+          type: string
       required:
-      - property_amount
-      - property_type
+      - amount
+      - food
+      - original_text
+      - unit
+    SourceImportKeyword:
+      type: object
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          readOnly: false
+        label:
+          type: string
+        name:
+          type: string
+        import_keyword:
+          type: boolean
+          default: true
+      required:
+      - label
+      - name
     SourceImportRecipe:
       type: object
       properties:
@@ -196,39 +199,36 @@ components:
       required:
       - ingredients
       - instruction
-    SourceImportDuplicate:
+    SourceImportUnit:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: false
         name:
           type: string
       required:
       - name
-    SourceImportIngredient:
+    AiImport:
       type: object
       properties:
-        amount:
-          type: number
-          format: double
-        food:
-          $ref: '#/components/schemas/SourceImportFood'
-        unit:
-          $ref: '#/components/schemas/SourceImportUnit'
-        note:
-          type: string
-        order:
+        ai_provider_id:
+          type: integer
+        file:
           type:
-          - integer
+          - string
           - 'null'
-        original_text:
-          type: string
+          format: uri
+        text:
+          type:
+          - string
+          - 'null'
+        recipe_id:
+          type:
+          - string
+          - 'null'
       required:
-      - amount
-      - food
-      - original_text
-      - unit
+      - ai_provider_id
+      - file
+      - recipe_id
+      - text
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

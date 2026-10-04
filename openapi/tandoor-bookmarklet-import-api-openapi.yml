@@ -183,7 +183,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedBookmarkletImport:
+    BookmarkletImportList:
       type: object
       properties:
         id:
@@ -194,8 +194,6 @@ components:
           - string
           - 'null'
           maxLength: 256
-        html:
-          type: string
         created_by:
           type: integer
           readOnly: true
@@ -203,6 +201,9 @@ components:
           type: string
           format: date-time
           readOnly: true
+      required:
+      - created_at
+      - created_by
     BookmarkletImport:
       type: object
       properties:
@@ -227,27 +228,6 @@ components:
       - created_at
       - created_by
       - html
-    BookmarkletImportList:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        url:
-          type:
-          - string
-          - 'null'
-          maxLength: 256
-        created_by:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - created_by
     PaginatedBookmarkletImportListList:
       type: object
       required:
@@ -276,6 +256,26 @@ components:
         timestamp:
           type: string
           format: date-time
+    PatchedBookmarkletImport:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        html:
+          type: string
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
