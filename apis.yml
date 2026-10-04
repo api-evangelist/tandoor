@@ -1265,6 +1265,8 @@ apis:
   humanURL: https://docs.tandoor.dev/
   baseURL: https://app.tandoor.dev/api/
   tags:
+  - Shopping list
+  tags_raw:
   - Shopping List
   properties:
   - type: OpenAPI
@@ -1559,6 +1561,8 @@ apis:
   humanURL: https://docs.tandoor.dev/
   baseURL: https://app.tandoor.dev/api/
   tags:
+  - UserPreference
+  tags_raw:
   - User Preference
   properties:
   - type: OpenAPI
@@ -1577,6 +1581,8 @@ apis:
   humanURL: https://docs.tandoor.dev/
   baseURL: https://app.tandoor.dev/api/
   tags:
+  - Userspace
+  tags_raw:
   - User Space
   properties:
   - type: OpenAPI
@@ -1608,6 +1614,9 @@ apis:
   - type: DataModel
     url: data-model/tandoor-data-model.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/tandoor-capability-edges.yml
+    name: Tandoor Recipes Business Capability Map
   - type: Overlay
     url: overlays/tandoor-api-overlay.yaml
   - type: DomainSecurity
