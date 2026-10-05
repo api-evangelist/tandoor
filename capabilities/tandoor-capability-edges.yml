@@ -1,0 +1,56 @@
+slug: tandoor
+provider: Tandoor Recipes
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Enterprise Billing Invoice
+  spec_file: tandoor-enterprise-billing-invoice-api-openapi.yml
+  capability_id: BC-4250.30
+  capability_id_l1: BC-4250
+  capability_name: Invoicing & Statement Management
+  confidence: 0.8
+  evidence: GET /api/enterprise-billing-invoice/{id}/download/  'Api enterprise billing invoice download
+    retrieve'; schemas EnterpriseBillingInvoice, InvoiceSystemEnum
+  reason: Manages and delivers invoices for the hosted (enterprise) subscription service, which is subscription
+    invoicing and statement management.
+- tag: Enterprise Billing Stripe
+  spec_file: tandoor-enterprise-billing-stripe-api-openapi.yml
+  capability_id: BC-4250.40
+  capability_id_l1: BC-4250
+  capability_name: Payment Collection & Dunning
+  confidence: 0.8
+  evidence: POST /api/enterprise-billing-stripe/checkout_session/ 'Api enterprise billing stripe checkout
+    session create'; schemas StripeCheckoutSessionRequest, StripePortal
+  reason: Creates Stripe checkout sessions and exposes the customer billing portal — payment authorisation
+    and payment-method management for the subscription.
+- tag: Enterprise Billing Plan
+  spec_file: tandoor-enterprise-billing-plan-api-openapi.yml
+  capability_id: BC-4240.10
+  capability_id_l1: BC-4240
+  capability_name: Plan & Entitlement Design
+  confidence: 0.7
+  evidence: POST /api/enterprise-billing-plan/ 'Api enterprise billing plan create'; schema EnterpriseBillingPlan
+  reason: CRUD over billing plans for the SaaS offering corresponds to definition of subscription plans;
+    sub-capability inferred from 'plan' with no explicit entitlement fields visible, hence moderate confidence.
+- tag: Enterprise Space
+  spec_file: tandoor-enterprise-space-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.7
+  evidence: 'POST /api/enterprise-space/ apiEnterpriseSpaceCreate; DELETE /api/enterprise-space/{space}/;
+    schemas: EnterpriseSpace, BillingRegionEnum, EnterpriseBillingPlan'
+  reason: A 'space' in Tandoor is the tenant boundary; create/update/delete plus 'current space' retrieval,
+    with billing plan and billing region attached, is tenant provisioning and lifecycle in a multi-tenant
+    hosted service. Some chance the intended reading is tenant configuration or subscription plan, hence
+    moderate confidence.
