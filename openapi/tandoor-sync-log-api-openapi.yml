@@ -67,29 +67,76 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SyncLog:
+    PaginatedSyncLogList:
       type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncLog'
+        timestamp:
+          type: string
+          format: date-time
+    MethodEnum:
+      enum:
+      - DB
+      - NEXTCLOUD
+      - LOCAL
+      type: string
+      description: '* `DB` - Dropbox
+
+        * `NEXTCLOUD` - Nextcloud
+
+        * `LOCAL` - Local'
+    Sync:
+      type: object
+      description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        sync:
-          allOf:
-          - $ref: '#/components/schemas/Sync'
-          readOnly: true
-        status:
+        storage:
+          $ref: '#/components/schemas/Storage'
+        path:
           type: string
-          maxLength: 32
-        msg:
-          type: string
+          maxLength: 512
+        active:
+          type: boolean
+        last_checked:
+          type:
+          - string
+          - 'null'
+          format: date-time
         created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
           type: string
           format: date-time
           readOnly: true
       required:
       - created_at
-      - status
-      - sync
+      - storage
+      - updated_at
     Storage:
       type: object
       description: Adds nested create feature
@@ -134,76 +181,29 @@ components:
       required:
       - created_by
       - name
-    Sync:
+    SyncLog:
       type: object
-      description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        storage:
-          $ref: '#/components/schemas/Storage'
-        path:
-          type: string
-          maxLength: 512
-        active:
-          type: boolean
-        last_checked:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
+        sync:
+          allOf:
+          - $ref: '#/components/schemas/Sync'
           readOnly: true
-        updated_at:
+        status:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        created_at:
           type: string
           format: date-time
           readOnly: true
       required:
       - created_at
-      - storage
-      - updated_at
-    PaginatedSyncLogList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SyncLog'
-        timestamp:
-          type: string
-          format: date-time
-    MethodEnum:
-      enum:
-      - DB
-      - NEXTCLOUD
-      - LOCAL
-      type: string
-      description: '* `DB` - Dropbox
-
-        * `NEXTCLOUD` - Nextcloud
-
-        * `LOCAL` - Local'
+      - status
+      - sync
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

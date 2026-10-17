@@ -345,29 +345,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SyncLog:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        sync:
-          allOf:
-          - $ref: '#/components/schemas/Sync'
-          readOnly: true
-        status:
-          type: string
-          maxLength: 32
-        msg:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - status
-      - sync
+    MethodEnum:
+      enum:
+      - DB
+      - NEXTCLOUD
+      - LOCAL
+      type: string
+      description: '* `DB` - Dropbox
+
+        * `NEXTCLOUD` - Nextcloud
+
+        * `LOCAL` - Local'
     PaginatedGenericModelReferenceList:
       type: object
       required:
@@ -396,7 +384,7 @@ components:
         timestamp:
           type: string
           format: date-time
-    PatchedSync:
+    Sync:
       type: object
       description: Adds nested create feature
       properties:
@@ -423,6 +411,10 @@ components:
           type: string
           format: date-time
           readOnly: true
+      required:
+      - created_at
+      - storage
+      - updated_at
     Storage:
       type: object
       description: Adds nested create feature
@@ -467,37 +459,6 @@ components:
       required:
       - created_by
       - name
-    Sync:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        storage:
-          $ref: '#/components/schemas/Storage'
-        path:
-          type: string
-          maxLength: 512
-        active:
-          type: boolean
-        last_checked:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - storage
-      - updated_at
     PaginatedSyncList:
       type: object
       required:
@@ -526,17 +487,56 @@ components:
         timestamp:
           type: string
           format: date-time
-    MethodEnum:
-      enum:
-      - DB
-      - NEXTCLOUD
-      - LOCAL
-      type: string
-      description: '* `DB` - Dropbox
-
-        * `NEXTCLOUD` - Nextcloud
-
-        * `LOCAL` - Local'
+    PatchedSync:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        storage:
+          $ref: '#/components/schemas/Storage'
+        path:
+          type: string
+          maxLength: 512
+        active:
+          type: boolean
+        last_checked:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    SyncLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        sync:
+          allOf:
+          - $ref: '#/components/schemas/Sync'
+          readOnly: true
+        status:
+          type: string
+          maxLength: 32
+        msg:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - status
+      - sync
     GenericModelReference:
       type: object
       properties:

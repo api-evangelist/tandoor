@@ -179,6 +179,138 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - model_name
+      - name
+      - updated_at
+    FoodInheritField:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type:
+          - string
+          - 'null'
+        field:
+          type:
+          - string
+          - 'null'
+      required: []
+    SpaceNavTextColorEnum:
+      enum:
+      - BLANK
+      - LIGHT
+      - DARK
+      type: string
+      description: '* `BLANK` - -------
+
+        * `LIGHT` - Light
+
+        * `DARK` - Dark'
+    SpaceThemeEnum:
+      enum:
+      - BLANK
+      - TANDOOR
+      - BOOTSTRAP
+      - DARKLY
+      - FLATLY
+      - SUPERHERO
+      - TANDOOR_DARK
+      type: string
+      description: '* `BLANK` - -------
+
+        * `TANDOOR` - Tandoor
+
+        * `BOOTSTRAP` - Bootstrap
+
+        * `DARKLY` - Darkly
+
+        * `FLATLY` - Flatly
+
+        * `SUPERHERO` - Superhero
+
+        * `TANDOOR_DARK` - Tandoor Dark (INCOMPLETE)'
+    User:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
     PaginatedSpaceList:
       type: object
       required:
@@ -207,22 +339,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    FoodInheritField:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type:
-          - string
-          - 'null'
-        field:
-          type:
-          - string
-          - 'null'
-      required: []
     PatchedSpace:
       type: object
       description: Adds nested create feature
@@ -332,70 +448,6 @@ components:
           type: boolean
         household_setup_completed:
           type: boolean
-    SpaceThemeEnum:
-      enum:
-      - BLANK
-      - TANDOOR
-      - BOOTSTRAP
-      - DARKLY
-      - FLATLY
-      - SUPERHERO
-      - TANDOOR_DARK
-      type: string
-      description: '* `BLANK` - -------
-
-        * `TANDOOR` - Tandoor
-
-        * `BOOTSTRAP` - Bootstrap
-
-        * `DARKLY` - Darkly
-
-        * `FLATLY` - Flatly
-
-        * `SUPERHERO` - Superhero
-
-        * `TANDOOR_DARK` - Tandoor Dark (INCOMPLETE)'
-    AiProvider:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type: string
-        api_key:
-          type: string
-          writeOnly: true
-        model_name:
-          type: string
-          maxLength: 256
-        url:
-          type:
-          - string
-          - 'null'
-          maxLength: 2048
-        log_credit_cost:
-          type: boolean
-        space:
-          type:
-          - integer
-          - 'null'
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - model_name
-      - name
-      - updated_at
     Space:
       type: object
       description: Adds nested create feature
@@ -517,17 +569,6 @@ components:
       - max_users
       - recipe_count
       - user_count
-    SpaceNavTextColorEnum:
-      enum:
-      - BLANK
-      - LIGHT
-      - DARK
-      type: string
-      description: '* `BLANK` - -------
-
-        * `LIGHT` - Light
-
-        * `DARK` - Dark'
     UserFileView:
       type: object
       properties:
@@ -561,47 +602,6 @@ components:
       - file_size_kb
       - name
       - preview
-    User:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        username:
-          type: string
-          readOnly: true
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        display_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_superuser:
-          type: boolean
-          readOnly: true
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-      required:
-      - display_name
-      - is_active
-      - is_staff
-      - is_superuser
-      - username
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

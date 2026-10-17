@@ -322,68 +322,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedGenericModelReferenceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericModelReference'
-        timestamp:
-          type: string
-          format: date-time
-    PatchedPropertyType:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        unit:
-          type:
-          - string
-          - 'null'
-          maxLength: 64
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        order:
-          type: integer
-          default: 0
-        open_data_slug:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        fdc_id:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
     PropertyType:
       type: object
       description: Adds nested create feature
@@ -420,6 +358,68 @@ components:
           minimum: -2147483648
       required:
       - name
+    PatchedPropertyType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        unit:
+          type:
+          - string
+          - 'null'
+          maxLength: 64
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        order:
+          type: integer
+          default: 0
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        fdc_id:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
     PaginatedPropertyTypeList:
       type: object
       required:

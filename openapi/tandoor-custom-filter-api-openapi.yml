@@ -237,34 +237,6 @@ components:
         created_by:
           type: integer
           readOnly: true
-    PaginatedCustomFilterList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomFilter'
-        timestamp:
-          type: string
-          format: date-time
     User:
       type: object
       description: Adds nested create feature
@@ -329,6 +301,34 @@ components:
       - created_by
       - name
       - search
+    PaginatedCustomFilterList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFilter'
+        timestamp:
+          type: string
+          format: date-time
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

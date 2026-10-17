@@ -98,41 +98,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedUser:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        username:
-          type: string
-          readOnly: true
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        display_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_superuser:
-          type: boolean
-          readOnly: true
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
     User:
       type: object
       description: Adds nested create feature
@@ -174,6 +139,41 @@ components:
       - is_staff
       - is_superuser
       - username
+    PatchedUser:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

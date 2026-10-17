@@ -212,6 +212,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedUserSpaceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSpace'
+        timestamp:
+          type: string
+          format: date-time
     PatchedUserSpace:
       type: object
       description: Adds nested create feature
@@ -252,68 +280,47 @@ components:
           type: string
           format: date-time
           readOnly: true
-    Household:
+    User:
       type: object
       description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - name
-      - updated_at
-    Group:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
+        username:
           type: string
           readOnly: true
-      required:
-      - name
-    PaginatedUserSpaceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserSpace'
-        timestamp:
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name:
           type: string
-          format: date-time
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        display_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+      required:
+      - display_name
+      - is_active
+      - is_staff
+      - is_superuser
+      - username
     UserSpace:
       type: object
       description: Adds nested create feature
@@ -361,6 +368,28 @@ components:
       - space
       - updated_at
       - user
+    Household:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
     UserSpaceBatchUpdate:
       type: object
       properties:
@@ -379,47 +408,18 @@ components:
       required:
       - group_set
       - user_spaces
-    User:
+    Group:
       type: object
-      description: Adds nested create feature
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
       properties:
         id:
           type: integer
           readOnly: false
-        username:
+        name:
           type: string
           readOnly: true
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        display_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_superuser:
-          type: boolean
-          readOnly: true
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_active:
-          type: boolean
-          readOnly: true
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
       required:
-      - display_name
-      - is_active
-      - is_staff
-      - is_superuser
-      - username
+      - name
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

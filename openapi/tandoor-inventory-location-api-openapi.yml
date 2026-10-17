@@ -309,28 +309,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Household:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - name
-      - updated_at
     PaginatedInventoryLocationList:
       type: object
       required:
@@ -418,6 +396,28 @@ components:
           type: boolean
         household:
           $ref: '#/components/schemas/Household'
+    Household:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
     GenericModelReference:
       type: object
       properties:

@@ -377,6 +377,33 @@ components:
         timestamp:
           type: string
           format: date-time
+    PatchedMealType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+        created_by:
+          type: integer
+          readOnly: true
     MealType:
       type: object
       description: Adds nested create feature
@@ -407,33 +434,6 @@ components:
       required:
       - created_by
       - name
-    PatchedMealType:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        time:
-          type:
-          - string
-          - 'null'
-          format: time
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
-        created_by:
-          type: integer
-          readOnly: true
     GenericModelReference:
       type: object
       properties:

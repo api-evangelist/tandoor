@@ -307,6 +307,24 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ShoppingList:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 32
+        description:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+      required: []
     PaginatedGenericModelReferenceList:
       type: object
       required:
@@ -335,7 +353,7 @@ components:
         timestamp:
           type: string
           format: date-time
-    ShoppingList:
+    PatchedShoppingList:
       type: object
       description: Adds nested create feature
       properties:
@@ -352,7 +370,6 @@ components:
           - string
           - 'null'
           maxLength: 7
-      required: []
     PaginatedShoppingListList:
       type: object
       required:
@@ -381,23 +398,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    PatchedShoppingList:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 32
-        description:
-          type: string
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
     GenericModelReference:
       type: object
       properties:

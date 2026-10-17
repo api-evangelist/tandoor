@@ -56,76 +56,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ImportOpenDataVersionMetaData:
-      type: object
-      properties:
-        food:
-          type: integer
-        unit:
-          type: integer
-        category:
-          type: integer
-        property:
-          type: integer
-        store:
-          type: integer
-        conversion:
-          type: integer
-      required:
-      - category
-      - conversion
-      - food
-      - property
-      - store
-      - unit
-    ImportOpenData:
-      type: object
-      properties:
-        selected_version:
-          type: string
-        selected_datatypes:
-          type: array
-          items:
-            type: string
-        update_existing:
-          type: boolean
-          default: true
-        use_metric:
-          type: boolean
-          default: true
-      required:
-      - selected_datatypes
-      - selected_version
-    ImportOpenDataResponseDetail:
-      type: object
-      properties:
-        total_created:
-          type: integer
-          default: 0
-        total_updated:
-          type: integer
-          default: 0
-        total_untouched:
-          type: integer
-          default: 0
-        total_errored:
-          type: integer
-          default: 0
-    ImportOpenDataResponse:
-      type: object
-      properties:
-        food:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
-        unit:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
-        category:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
-        property:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
-        store:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
-        conversion:
-          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
     ImportOpenDataMetaData:
       type: object
       properties:
@@ -194,6 +124,76 @@ components:
       - sl
       - versions
       - zh_Hans
+    ImportOpenDataResponseDetail:
+      type: object
+      properties:
+        total_created:
+          type: integer
+          default: 0
+        total_updated:
+          type: integer
+          default: 0
+        total_untouched:
+          type: integer
+          default: 0
+        total_errored:
+          type: integer
+          default: 0
+    ImportOpenData:
+      type: object
+      properties:
+        selected_version:
+          type: string
+        selected_datatypes:
+          type: array
+          items:
+            type: string
+        update_existing:
+          type: boolean
+          default: true
+        use_metric:
+          type: boolean
+          default: true
+      required:
+      - selected_datatypes
+      - selected_version
+    ImportOpenDataResponse:
+      type: object
+      properties:
+        food:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        unit:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        category:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        property:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        store:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+        conversion:
+          $ref: '#/components/schemas/ImportOpenDataResponseDetail'
+    ImportOpenDataVersionMetaData:
+      type: object
+      properties:
+        food:
+          type: integer
+        unit:
+          type: integer
+        category:
+          type: integer
+        property:
+          type: integer
+        store:
+          type: integer
+        conversion:
+          type: integer
+      required:
+      - category
+      - conversion
+      - food
+      - property
+      - store
+      - unit
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -329,29 +329,20 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SupermarketCategory:
+    GenericModelReference:
       type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
       properties:
         id:
           type: integer
           readOnly: false
+        model:
+          type: string
         name:
           type: string
-          maxLength: 128
-          minLength: 1
-        description:
-          type:
-          - string
-          - 'null'
-        open_data_slug:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
       required:
+      - model
       - name
-    Household:
+    PropertyType:
       type: object
       description: Adds nested create feature
       properties:
@@ -361,63 +352,50 @@ components:
         name:
           type: string
           maxLength: 128
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
+        unit:
+          type:
+          - string
+          - 'null'
+          maxLength: 64
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        order:
+          type: integer
+          default: 0
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        fdc_id:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
       required:
-      - created_at
       - name
-      - updated_at
-    FoodSimple:
+    ShoppingList:
       type: object
+      description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
         name:
           type: string
-          maxLength: 128
-          minLength: 1
-        plural_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-      required:
-      - name
-    PaginatedGenericModelReferenceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericModelReference'
-        timestamp:
+          maxLength: 32
+        description:
           type: string
-          format: date-time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+      required: []
     FoodInheritField:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
@@ -466,6 +444,73 @@ components:
           maxLength: 128
       required:
       - name
+    PaginatedGenericModelReferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericModelReference'
+        timestamp:
+          type: string
+          format: date-time
+    FoodSimple:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        plural_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+      required:
+      - name
+    SupermarketCategory:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+        open_data_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+      required:
+      - name
     InventoryLocation:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
@@ -483,23 +528,6 @@ components:
       required:
       - household
       - name
-    Property:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        property_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-        property_type:
-          $ref: '#/components/schemas/PropertyType'
-      required:
-      - property_amount
-      - property_type
     PatchedInventoryEntry:
       type: object
       description: Adds nested create feature
@@ -548,123 +576,6 @@ components:
         created_by:
           type: integer
           readOnly: true
-    ShoppingList:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 32
-        description:
-          type: string
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
-      required: []
-    PaginatedInventoryEntryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InventoryEntry'
-        timestamp:
-          type: string
-          format: date-time
-    RecipeSimple:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        url:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - url
-    InventoryEntry:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        inventory_location:
-          $ref: '#/components/schemas/InventoryLocation'
-        sub_location:
-          type:
-          - string
-          - 'null'
-          maxLength: 64
-        code:
-          type:
-          - string
-          - 'null'
-          maxLength: 16
-        food:
-          $ref: '#/components/schemas/Food'
-        unit:
-          $ref: '#/components/schemas/Unit'
-        amount:
-          type: number
-          format: double
-          exclusiveMinimum: -10000000000000000
-          exclusiveMaximum: 10000000000000000
-        expires:
-          type:
-          - string
-          - 'null'
-          format: date
-        note:
-          type:
-          - string
-          - 'null'
-          maxLength: 256
-        label:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        created_by:
-          type: integer
-          readOnly: true
-      required:
-      - created_at
-      - created_by
-      - food
-      - inventory_location
-      - label
-      - unit
     Food:
       type: object
       description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
@@ -774,7 +685,7 @@ components:
       - parent
       - shopping
       - substitute_onhand
-    PropertyType:
+    Household:
       type: object
       description: Adds nested create feature
       properties:
@@ -784,45 +695,134 @@ components:
         name:
           type: string
           maxLength: 128
-        unit:
-          type:
-          - string
-          - 'null'
-          maxLength: 64
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        order:
-          type: integer
-          default: 0
-        open_data_slug:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        fdc_id:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
+      - created_at
       - name
-    GenericModelReference:
+      - updated_at
+    RecipeSimple:
       type: object
+      description: Adds nested create feature
       properties:
         id:
           type: integer
           readOnly: false
-        model:
-          type: string
         name:
           type: string
+          maxLength: 128
+        url:
+          type: string
+          readOnly: true
       required:
-      - model
       - name
+      - url
+    Property:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        property_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+        property_type:
+          $ref: '#/components/schemas/PropertyType'
+      required:
+      - property_amount
+      - property_type
+    InventoryEntry:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        inventory_location:
+          $ref: '#/components/schemas/InventoryLocation'
+        sub_location:
+          type:
+          - string
+          - 'null'
+          maxLength: 64
+        code:
+          type:
+          - string
+          - 'null'
+          maxLength: 16
+        food:
+          $ref: '#/components/schemas/Food'
+        unit:
+          $ref: '#/components/schemas/Unit'
+        amount:
+          type: number
+          format: double
+          exclusiveMinimum: -10000000000000000
+          exclusiveMaximum: 10000000000000000
+        expires:
+          type:
+          - string
+          - 'null'
+          format: date
+        note:
+          type:
+          - string
+          - 'null'
+          maxLength: 256
+        label:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - food
+      - inventory_location
+      - label
+      - unit
+    PaginatedInventoryEntryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryEntry'
+        timestamp:
+          type: string
+          format: date-time
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

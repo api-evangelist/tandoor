@@ -193,76 +193,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedRecipeBookEntryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecipeBookEntry'
-        timestamp:
-          type: string
-          format: date-time
-    KeywordLabel:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        label:
-          type: string
-          readOnly: true
-      required:
-      - label
-    RecipeBook:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type: string
-        shared:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User'
-          readOnly: true
-        filter:
-          allOf:
-          - $ref: '#/components/schemas/CustomFilter'
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-      required:
-      - created_by
-      - name
-      - shared
     RecipeOverview:
       type: object
       description: Adds nested create feature
@@ -352,29 +282,34 @@ components:
       - updated_at
       - waiting_time
       - working_time
-    RecipeBookEntry:
+    PaginatedRecipeBookEntryList:
       type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        book:
-          type: integer
-        book_content:
-          allOf:
-          - $ref: '#/components/schemas/RecipeBook'
-          readOnly: true
-        recipe:
-          type: integer
-        recipe_content:
-          allOf:
-          - $ref: '#/components/schemas/RecipeOverview'
-          readOnly: true
       required:
-      - book
-      - book_content
-      - recipe
-      - recipe_content
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeBookEntry'
+        timestamp:
+          type: string
+          format: date-time
     PatchedRecipeBookEntry:
       type: object
       properties:
@@ -393,6 +328,48 @@ components:
           allOf:
           - $ref: '#/components/schemas/RecipeOverview'
           readOnly: true
+    KeywordLabel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        label:
+          type: string
+          readOnly: true
+      required:
+      - label
+    RecipeBook:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        shared:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        filter:
+          allOf:
+          - $ref: '#/components/schemas/CustomFilter'
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - created_by
+      - name
+      - shared
     User:
       type: object
       description: Adds nested create feature
@@ -434,6 +411,29 @@ components:
       - is_staff
       - is_superuser
       - username
+    RecipeBookEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        book:
+          type: integer
+        book_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeBook'
+          readOnly: true
+        recipe:
+          type: integer
+        recipe_content:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+          readOnly: true
+      required:
+      - book
+      - book_content
+      - recipe
+      - recipe_content
     CustomFilter:
       type: object
       description: Adds nested create feature

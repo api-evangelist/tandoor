@@ -42,43 +42,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AutoMealPlan:
-      type: object
-      properties:
-        start_date:
-          type: string
-          format: date-time
-        end_date:
-          type: string
-          format: date-time
-        meal_type_id:
-          type: integer
-        keywords:
-          type: array
-          items:
-            type: integer
-          default: []
-        keyword_mode:
-          allOf:
-          - $ref: '#/components/schemas/KeywordModeEnum'
-          default: and
-        servings:
-          type: number
-          format: double
-        shared:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/User'
-        addshopping:
-          type: boolean
-      required:
-      - addshopping
-      - end_date
-      - meal_type_id
-      - servings
-      - start_date
     User:
       type: object
       description: Adds nested create feature
@@ -120,6 +83,43 @@ components:
       - is_staff
       - is_superuser
       - username
+    AutoMealPlan:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        meal_type_id:
+          type: integer
+        keywords:
+          type: array
+          items:
+            type: integer
+          default: []
+        keyword_mode:
+          allOf:
+          - $ref: '#/components/schemas/KeywordModeEnum'
+          default: and
+        servings:
+          type: number
+          format: double
+        shared:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/User'
+        addshopping:
+          type: boolean
+      required:
+      - addshopping
+      - end_date
+      - meal_type_id
+      - servings
+      - start_date
     KeywordModeEnum:
       enum:
       - or

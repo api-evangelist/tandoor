@@ -182,6 +182,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedEnterpriseSocialEmbedList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnterpriseSocialEmbed'
+        timestamp:
+          type: string
+          format: date-time
     AlignmentEnum:
       enum:
       - start
@@ -193,6 +221,84 @@ components:
         * `center` - center
 
         * `end` - end'
+    EnterpriseSocialEmbed:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        type:
+          $ref: '#/components/schemas/EnterpriseSocialEmbedTypeEnum'
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/Keyword'
+        alignment:
+          $ref: '#/components/schemas/AlignmentEnum'
+        background_color:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        accent_color:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - keywords
+      - name
+      - type
+    Keyword:
+      type: object
+      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 64
+        label:
+          type: string
+          readOnly: true
+        description:
+          type: string
+        parent:
+          type: integer
+          readOnly: true
+        numchild:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        full_name:
+          type: string
+          description: 'Returns a string representation of a tree node and it''s ancestors,
+
+            e.g. ''Cuisine > Asian > Chinese > Catonese''.'
+          readOnly: true
+      required:
+      - created_at
+      - full_name
+      - label
+      - name
+      - numchild
+      - parent
+      - updated_at
     PatchedEnterpriseSocialEmbed:
       type: object
       description: Adds nested create feature
@@ -241,112 +347,6 @@ components:
         * `SHOPPING` - Shopping
 
         * `BOOK` - Book'
-    Keyword:
-      type: object
-      description: "Moves `UniqueValidator`'s from the validation stage to the save stage.\nIt solves the problem with nested validation for unique fields on update.\n\nIf you want more details, you can read related issues and articles:\nhttps://github.com/beda-software/drf-writable-nested/issues/1\nhttp://www.django-rest-framework.org/api-guide/validators/#updating-nested-serializers\n\nExample of usage:\n```\n    class Child(models.Model):\n    field = models.CharField(unique=True)\n\n\nclass Parent(models.Model):\n    child = models.ForeignKey('Child')\n\n\nclass ChildSerializer(UniqueFieldsMixin, serializers.ModelSerializer):\n    class Meta:\n        model = Child\n\n\nclass ParentSerializer(NestedUpdateMixin, serializers.ModelSerializer):\n    child = ChildSerializer()\n\n    class Meta:\n        model = Parent\n```\n\nNote: `UniqueFieldsMixin` must be applied only on the serializer\nwhich has unique fields.\n\nNote: When you are using both mixins\n(`UniqueFieldsMixin` and `NestedCreateMixin` or `NestedUpdateMixin`)\nyou should put `UniqueFieldsMixin` ahead."
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 64
-        label:
-          type: string
-          readOnly: true
-        description:
-          type: string
-        parent:
-          type: integer
-          readOnly: true
-        numchild:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        full_name:
-          type: string
-          description: 'Returns a string representation of a tree node and it''s ancestors,
-
-            e.g. ''Cuisine > Asian > Chinese > Catonese''.'
-          readOnly: true
-      required:
-      - created_at
-      - full_name
-      - label
-      - name
-      - numchild
-      - parent
-      - updated_at
-    PaginatedEnterpriseSocialEmbedList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnterpriseSocialEmbed'
-        timestamp:
-          type: string
-          format: date-time
-    EnterpriseSocialEmbed:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        type:
-          $ref: '#/components/schemas/EnterpriseSocialEmbedTypeEnum'
-        keywords:
-          type: array
-          items:
-            $ref: '#/components/schemas/Keyword'
-        alignment:
-          $ref: '#/components/schemas/AlignmentEnum'
-        background_color:
-          type:
-          - string
-          - 'null'
-          maxLength: 32
-        accent_color:
-          type:
-          - string
-          - 'null'
-          maxLength: 32
-        uuid:
-          type: string
-          format: uuid
-      required:
-      - keywords
-      - name
-      - type
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

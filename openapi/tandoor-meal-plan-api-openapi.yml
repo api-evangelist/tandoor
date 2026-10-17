@@ -251,172 +251,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    MealPlan:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        title:
-          type: string
-          maxLength: 64
-        recipe:
-          allOf:
-          - $ref: '#/components/schemas/RecipeOverview'
-        servings:
-          type: number
-          format: double
-        note:
-          type: string
-        note_markdown:
-          type: string
-          readOnly: true
-        from_date:
-          type: string
-          format: date-time
-        to_date:
-          type: string
-          format: date-time
-        meal_type:
-          $ref: '#/components/schemas/MealType'
-        created_by:
-          type: integer
-          readOnly: true
-        recipe_name:
-          type: string
-          readOnly: true
-        meal_type_name:
-          type: string
-          readOnly: true
-        shopping:
-          type: boolean
-          readOnly: true
-        addshopping:
-          type: boolean
-          writeOnly: true
-      required:
-      - created_by
-      - from_date
-      - meal_type
-      - meal_type_name
-      - note_markdown
-      - recipe_name
-      - servings
-      - shopping
-    PaginatedMealPlanList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MealPlan'
-        timestamp:
-          type: string
-          format: date-time
-    KeywordLabel:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        label:
-          type: string
-          readOnly: true
-      required:
-      - label
-    PatchedMealPlan:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        title:
-          type: string
-          maxLength: 64
-        recipe:
-          allOf:
-          - $ref: '#/components/schemas/RecipeOverview'
-        servings:
-          type: number
-          format: double
-        note:
-          type: string
-        note_markdown:
-          type: string
-          readOnly: true
-        from_date:
-          type: string
-          format: date-time
-        to_date:
-          type: string
-          format: date-time
-        meal_type:
-          $ref: '#/components/schemas/MealType'
-        created_by:
-          type: integer
-          readOnly: true
-        recipe_name:
-          type: string
-          readOnly: true
-        meal_type_name:
-          type: string
-          readOnly: true
-        shopping:
-          type: boolean
-          readOnly: true
-        addshopping:
-          type: boolean
-          writeOnly: true
-    MealType:
-      type: object
-      description: Adds nested create feature
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        time:
-          type:
-          - string
-          - 'null'
-          format: time
-        color:
-          type:
-          - string
-          - 'null'
-          maxLength: 7
-        created_by:
-          type: integer
-          readOnly: true
-      required:
-      - created_by
-      - name
     RecipeOverview:
       type: object
       description: Adds nested create feature
@@ -506,6 +340,61 @@ components:
       - updated_at
       - waiting_time
       - working_time
+    KeywordLabel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        label:
+          type: string
+          readOnly: true
+      required:
+      - label
+    PatchedMealPlan:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        title:
+          type: string
+          maxLength: 64
+        recipe:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+        servings:
+          type: number
+          format: double
+        note:
+          type: string
+        note_markdown:
+          type: string
+          readOnly: true
+        from_date:
+          type: string
+          format: date-time
+        to_date:
+          type: string
+          format: date-time
+        meal_type:
+          $ref: '#/components/schemas/MealType'
+        created_by:
+          type: integer
+          readOnly: true
+        recipe_name:
+          type: string
+          readOnly: true
+        meal_type_name:
+          type: string
+          readOnly: true
+        shopping:
+          type: boolean
+          readOnly: true
+        addshopping:
+          type: boolean
+          writeOnly: true
     User:
       type: object
       description: Adds nested create feature
@@ -547,6 +436,117 @@ components:
       - is_staff
       - is_superuser
       - username
+    MealType:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+        color:
+          type:
+          - string
+          - 'null'
+          maxLength: 7
+        created_by:
+          type: integer
+          readOnly: true
+      required:
+      - created_by
+      - name
+    MealPlan:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        title:
+          type: string
+          maxLength: 64
+        recipe:
+          allOf:
+          - $ref: '#/components/schemas/RecipeOverview'
+        servings:
+          type: number
+          format: double
+        note:
+          type: string
+        note_markdown:
+          type: string
+          readOnly: true
+        from_date:
+          type: string
+          format: date-time
+        to_date:
+          type: string
+          format: date-time
+        meal_type:
+          $ref: '#/components/schemas/MealType'
+        created_by:
+          type: integer
+          readOnly: true
+        recipe_name:
+          type: string
+          readOnly: true
+        meal_type_name:
+          type: string
+          readOnly: true
+        shopping:
+          type: boolean
+          readOnly: true
+        addshopping:
+          type: boolean
+          writeOnly: true
+      required:
+      - created_by
+      - from_date
+      - meal_type
+      - meal_type_name
+      - note_markdown
+      - recipe_name
+      - servings
+      - shopping
+    PaginatedMealPlanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealPlan'
+        timestamp:
+          type: string
+          format: date-time
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

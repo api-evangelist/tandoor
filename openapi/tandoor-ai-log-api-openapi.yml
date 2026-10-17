@@ -67,6 +67,47 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AiProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: false
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        api_key:
+          type: string
+          writeOnly: true
+        model_name:
+          type: string
+          maxLength: 256
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        log_credit_cost:
+          type: boolean
+        space:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - model_name
+      - name
+      - updated_at
     AiLog:
       type: object
       properties:
@@ -122,47 +163,6 @@ components:
       - created_at
       - credit_cost
       - function
-      - updated_at
-    AiProvider:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: false
-        name:
-          type: string
-          maxLength: 128
-        description:
-          type: string
-        api_key:
-          type: string
-          writeOnly: true
-        model_name:
-          type: string
-          maxLength: 256
-        url:
-          type:
-          - string
-          - 'null'
-          maxLength: 2048
-        log_credit_cost:
-          type: boolean
-        space:
-          type:
-          - integer
-          - 'null'
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - model_name
-      - name
       - updated_at
     PaginatedAiLogList:
       type: object
